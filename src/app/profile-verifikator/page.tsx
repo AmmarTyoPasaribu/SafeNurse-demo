@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function ProfileVerifikatorPage() {
-  const [userData, setUserData] = useState({
+  const [userData] = useState({
     nama: 'Dr. Ahmad Wijaya',
     noStr: '12345678901234567890',
     nip: '198501012010011001',

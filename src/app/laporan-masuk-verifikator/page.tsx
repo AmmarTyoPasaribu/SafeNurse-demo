@@ -2,6 +2,29 @@
 
 import { useState } from "react";
 
+interface Report {
+  id: number;
+  title: string;
+  status: string;
+  detailNamaPasien: string;
+  usia: string;
+  nomorRekamMedis: string;
+  ruangPerawatan: string;
+  keluhanUtama: string;
+  gejalaTambahan: string;
+  riwayatPenyakit: string;
+  riwayatAlergi: string;
+  polaTidurMakan: string;
+  aktivitasHarian: string;
+  faktorRisiko: string;
+  kesimpulanSementara: string;
+  kategori: string;
+  grading: string;
+  rencanaTindakanAwal: string;
+  perawatYangMelapor: string;
+  tanggalWaktu: string;
+}
+
 export default function LaporanMasukVerifikator() {
   const [reports] = useState([
     {
@@ -94,7 +117,7 @@ export default function LaporanMasukVerifikator() {
     },
   ]);
 
-  const [selectedReport, setSelectedReport] = useState(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [catatan, setCatatan] = useState("");
   const [showRevisiModal, setShowRevisiModal] = useState(false);
@@ -103,7 +126,7 @@ export default function LaporanMasukVerifikator() {
   const [catatanRevisi, setCatatanRevisi] = useState("");
   const [tindakanAwal, setTindakanAwal] = useState("");
 
-  const handleReportClick = (report) => {
+  const handleReportClick = (report: Report) => {
     setSelectedReport(report);
     setCatatan("");
     setShowModal(true);

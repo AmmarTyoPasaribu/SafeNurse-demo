@@ -2,6 +2,31 @@
 
 import { useState, useRef, useEffect } from 'react';
 
+// Extend Window interface for SpeechRecognition
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    SpeechRecognition: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    webkitSpeechRecognition: any;
+  }
+}
+
+interface ReportData {
+  namaPasien: string;
+  noRM: string;
+  umur: string;
+  jenisKelamin: string;
+  tglMasukRS: string;
+  unitPelapor: string;
+  tglKejadian: string;
+  judulInsiden: string;
+  kronologi: string;
+  tindakanSegera: string;
+  tindakanOleh: string;
+  frekuensiKejadian: string;
+}
+
 export default function TambahLaporanPage() {
   const [messages, setMessages] = useState([
     {
@@ -29,9 +54,7 @@ export default function TambahLaporanPage() {
     frekuensiKejadian: ''
   });
   const [isListening, setIsListening] = useState(false);
-  const messagesEndRef = useRef(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [datePickerType, setDatePickerType] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -41,7 +64,7 @@ export default function TambahLaporanPage() {
     scrollToBottom();
   }, [messages]);
 
-  const addMessage = (sender, text) => {
+  const addMessage = (sender: string, text: string) => {
     const newMessage = {
       id: messages.length + 1,
       sender,
@@ -59,11 +82,11 @@ export default function TambahLaporanPage() {
     setInputValue('');
   };
 
-  const saveToLocalStorage = (data) => {
+  const saveToLocalStorage = (data: ReportData) => {
     localStorage.setItem('reportData', JSON.stringify(data));
   };
 
-  const generateReportSummary = (data) => {
+  const generateReportSummary = (data: ReportData) => {
     return `**RINGKASAN LAPORAN INSIDEN**\n\n` +
            `**Data Pasien:**\n` +
            `• Nama Pasien: ${data.namaPasien}\n` +
@@ -81,9 +104,9 @@ export default function TambahLaporanPage() {
            `• Frekuensi Kejadian: ${data.frekuensiKejadian}`;
   };
 
-  const processUserResponse = (response) => {
+  const processUserResponse = (response: string) => {
     setTimeout(() => {
-      let updatedData = { ...reportData };
+      const updatedData = { ...reportData };
       
       switch (currentStep) {
         case 'greeting':
@@ -273,7 +296,7 @@ export default function TambahLaporanPage() {
   };
 
 
-  const handleQuickResponse = (response) => {
+  const handleQuickResponse = (response: string) => {
     addMessage('user', response);
     processUserResponse(response);
   };
@@ -291,7 +314,8 @@ export default function TambahLaporanPage() {
         setIsListening(true);
       };
       
-      recognition.onresult = (event) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInputValue(transcript);
         setIsListening(false);

@@ -46,12 +46,12 @@ export default function HomePage() {
               
               <div className="flex gap-6 max-w-md relative z-10">
                 <div className="bg-[#C9F1FA] rounded-lg p-6 w-44 flex flex-col items-center text-center">
-                  <img 
+                  <Image 
                     alt="3D style icon representing voice waves and a microphone in teal and blue colors" 
                     className="mb-3" 
-                    height="64" 
+                    height={64} 
                     src="https://storage.googleapis.com/a1aa/image/08e2ff8e-5068-4634-0e16-85a266224f0d.jpg" 
-                    width="64"
+                    width={64}
                   />
                   <p className="text-xs leading-tight text-black">
                     memudahkan
@@ -66,12 +66,12 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="bg-[#A1D9E5] rounded-lg p-6 w-44 flex flex-col items-center text-center">
-                  <img 
+                  <Image 
                     alt="3D style icon representing a chatbot with speech bubbles and a document in teal and blue colors" 
                     className="mb-3" 
-                    height="64" 
+                    height={64} 
                     src="https://storage.googleapis.com/a1aa/image/abbb7c3f-3d13-4ff1-470c-8c68bd9a565c.jpg" 
-                    width="64"
+                    width={64}
                   />
                   <p className="text-[9px] leading-tight text-black">
                     otomatis dibuatkan

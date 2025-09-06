@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function ProfileKepalaRuanganPage() {
-  const [userData, setUserData] = useState({
+  const [userData] = useState({
     nama: 'Dr. Siti Aminah',
     noStr: '12345678901234567890',
     nip: '198501012010012001',

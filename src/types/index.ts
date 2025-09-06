@@ -103,7 +103,7 @@ export interface Report {
     start: Date;
     end: Date;
   };
-  data: any; // This would be more specific based on report type
+  data: unknown; // This would be more specific based on report type
   generatedBy: string;
   generatedAt: Date;
 }

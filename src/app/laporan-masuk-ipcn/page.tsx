@@ -1,6 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+interface Report {
+  id: number;
+  title: string;
+  status: string;
+  detailNamaPasien: string;
+  usia: string;
+  nomorRekamMedis: string;
+  ruangPerawatan: string;
+  keluhanUtama: string;
+  gejalaTambahan: string;
+  riwayatPenyakit: string;
+  riwayatAlergi: string;
+  polaTidurMakan: string;
+  aktivitasHarian: string;
+  faktorRisiko: string;
+  kesimpulanSementara: string;
+  kategori: string;
+  grading: string;
+  rencanaTindakanAwal: string;
+  perawatYangMelapor: string;
+  tanggalWaktu: string;
+}
 
 export default function LaporanMasukIPCN() {
   const [reports] = useState([
@@ -94,7 +117,7 @@ export default function LaporanMasukIPCN() {
     }
   ]);
 
-  const [selectedReport, setSelectedReport] = useState(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [catatan, setCatatan] = useState('');
   const [showRevisiModal, setShowRevisiModal] = useState(false);
@@ -103,7 +126,7 @@ export default function LaporanMasukIPCN() {
   const [catatanRevisi, setCatatanRevisi] = useState('');
   const [tindakanAwal, setTindakanAwal] = useState('');
 
-  const handleReportClick = (report) => {
+  const handleReportClick = (report: Report) => {
     setSelectedReport(report);
     setCatatan('');
     setShowModal(true);
@@ -138,7 +161,7 @@ export default function LaporanMasukIPCN() {
 
   const handleKirimRevisi = () => {
     console.log('Kirim revisi:', {
-      reportId: selectedReport?.id,
+      reportId: selectedReport && typeof selectedReport === 'object' && 'id' in selectedReport ? (selectedReport as {id: unknown}).id : null,
       kategori: selectedKategori,
       grading: selectedGrading,
       catatan: catatanRevisi,
@@ -149,7 +172,7 @@ export default function LaporanMasukIPCN() {
   };
 
   const handleTolak = () => {
-    console.log('Tolak laporan:', selectedReport?.id, 'Catatan:', catatan);
+    console.log('Tolak laporan:', selectedReport && typeof selectedReport === 'object' && 'id' in selectedReport ? (selectedReport as {id: unknown}).id : null, 'Catatan:', catatan);
     handleCloseModal();
   };
 
@@ -270,103 +293,103 @@ export default function LaporanMasukIPCN() {
               {/* Detail Nama Pasien */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Detail Nama Pasien :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.detailNamaPasien}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.detailNamaPasien}</p>
               </div>
 
               {/* Usia */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Usia :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.usia}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.usia}</p>
               </div>
 
               {/* Nomor Rekam Medis */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Nomor Rekam Medis :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.nomorRekamMedis}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.nomorRekamMedis}</p>
               </div>
 
               {/* Ruang Perawatan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Ruang Perawatan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.ruangPerawatan}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.ruangPerawatan}</p>
               </div>
 
               {/* Keluhan Utama */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Keluhan Utama :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.keluhanUtama}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.keluhanUtama}</p>
               </div>
 
               {/* Gejala Tambahan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Gejala Tambahan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.gejalaTambahan}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.gejalaTambahan}</p>
               </div>
 
               {/* Riwayat Penyakit */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Riwayat Penyakit :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.riwayatPenyakit}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.riwayatPenyakit}</p>
               </div>
 
               {/* Riwayat Alergi */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Riwayat Alergi :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.riwayatAlergi}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.riwayatAlergi}</p>
               </div>
 
               {/* Pola Tidur & Makan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Pola Tidur & Makan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.polaTidurMakan}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.polaTidurMakan}</p>
               </div>
 
               {/* Aktivitas Harian */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Aktivitas Harian :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.aktivitasHarian}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.aktivitasHarian}</p>
               </div>
 
               {/* Faktor Risiko */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Faktor Risiko :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.faktorRisiko}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.faktorRisiko}</p>
               </div>
 
               {/* Kesimpulan Sementara */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Kesimpulan Sementara :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.kesimpulanSementara}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.kesimpulanSementara}</p>
               </div>
 
               {/* Kategori */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Kategori :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.kategori}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.kategori}</p>
               </div>
 
               {/* Grading */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Grading :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.grading}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.grading}</p>
               </div>
 
               {/* Rencana Tindakan Awal */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Rencana Tindakan Awal :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.rencanaTindakanAwal}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.rencanaTindakanAwal}</p>
               </div>
 
               {/* Perawat yang Melapor */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Perawat yang Melapor :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.perawatYangMelapor}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.perawatYangMelapor}</p>
               </div>
 
               {/* Tanggal & Waktu */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Tanggal & Waktu :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport.tanggalWaktu}</p>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.tanggalWaktu}</p>
               </div>
 
               {/* Catatan */}

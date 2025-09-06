@@ -143,7 +143,7 @@ export default function VideoTutorialPage() {
             {/* Video Grid - Horizontal Scrollable */}
             <div className="overflow-x-auto pb-4">
               <div className="flex space-x-6" style={{ width: 'max-content' }}>
-                {videos.map((video, index) => (
+                {videos.map((video) => (
                   <div 
                     key={video.id}
                     className="flex-shrink-0 w-80 bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
@@ -151,10 +151,12 @@ export default function VideoTutorialPage() {
                   >
                     {/* Video Thumbnail */}
                     <div className="relative h-48 bg-gray-200">
-                      <img
+                      <Image
                         src={video.thumbnail}
                         alt={video.title}
                         className="w-full h-full object-cover"
+                        width={320}
+                        height={180}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDMyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNDQgNzJMMTc2IDkwTDE0NCAxMDhWNzJaIiBmaWxsPSIjOUI5QjlCIi8+Cjwvc3ZnPgo=';
