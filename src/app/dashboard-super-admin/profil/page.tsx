@@ -1,27 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-export default function ProfilePage() {
+export default function ProfilSuperAdmin() {
+  const router = useRouter();
   const [userData] = useState({
-    nama: 'Siti Nurhaliza',
+    nama: 'Administrator Utama',
     noStr: '12345678901234567890',
     nip: '198501012010012001',
-    unitKerja: 'Ruang ICU',
-    jabatan: 'Perawat Pelaksana',
-    email: 'perawat@gmail.com'
+    unitKerja: 'Sistem Administrasi',
+    jabatan: 'Super Administrator',
+    email: 'admin@safenurse.com'
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showChangeProfileModal, setShowChangeProfileModal] = useState(false);
   const [editForm, setEditForm] = useState({
     email: '',
     password: '',
     confirmPassword: ''
-  });
-  const [profileForm, setProfileForm] = useState({
-    nama: userData.nama || ''
   });
 
   const handleChangeAccount = () => {
@@ -68,27 +66,29 @@ export default function ProfilePage() {
         
         {/* Navigation Items */}
         <div className="flex items-center space-x-6">
-          {/* Riwayat Laporan */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-perawat'}>
-            <i className="fas fa-clipboard-list text-lg mb-1"></i>
-            <span className="text-xs">Riwayat</span>
+          {/* User Management */}
+          <button 
+            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+            onClick={() => router.push('/dashboard-superadmin')}
+          >
+            <i className="fas fa-users text-lg mb-1"></i>
+            <span className="text-xs">User</span>
           </button>
           
-          {/* Notifikasi */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
-            <i className="fas fa-bell text-lg mb-1"></i>
-            <span className="text-xs">Notifikasi</span>
+          {/* Ruangan Management */}
+          <button 
+            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+            onClick={() => router.push('/dashboard-super-admin/ruangan')}
+          >
+            <i className="fas fa-hospital text-lg mb-1"></i>
+            <span className="text-xs">Ruangan</span>
           </button>
           
-          {/* Video Tutorial */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/video-tutorial-perawat'}>
-            <i className="fas fa-play-circle text-lg mb-1"></i>
-            <span className="text-xs">Tutorial</span>
-          </button>
-          
-          {/* Manage Profil - Active */}
-          <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
-            <i className="fas fa-user-cog text-lg mb-1"></i>
+          {/* Profil - Active */}
+          <button 
+            className="flex flex-col items-center transition-colors text-[#0B7A95]"
+          >
+            <i className="fas fa-user text-lg mb-1"></i>
             <span className="text-xs">Profil</span>
           </button>
         </div>
@@ -123,33 +123,17 @@ export default function ProfilePage() {
                   {/* Left Box - Profile Picture, Name, Email */}
                   <div className="bg-white/95 rounded-2xl p-6 shadow-2xl flex flex-col items-center">
                     <div className="w-24 h-24 bg-[#4A9B8E] rounded-full flex items-center justify-center mb-4">
-                      <i className="fas fa-user text-3xl text-white"></i>
+                      <i className="fas fa-user-shield text-3xl text-white"></i>
                     </div>
                     <h2 className="text-lg font-bold text-gray-800 text-center mb-1">Nama Lengkap</h2>
                     <p className="text-gray-600 text-center text-sm">{userData.email}</p>
                   </div>
                   
                   {/* Right Box - General Information */}
-                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl relative">
+                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">General Information</h3>
-                    <div className="space-y-3">
-                      <div className="flex">
-                        <span className="text-gray-600 w-40">Nama Lengkap :</span>
-                        <span className="text-gray-800">{userData.nama || '-'}</span>
-                      </div>
-                      <div className="flex">
-                        <span className="text-gray-600 w-40">Nama Ruangan :</span>
-                        <span className="text-gray-800">{userData.unitKerja || '-'}</span>
-                      </div>
-                    </div>
-                    {/* Change Profile Button */}
-                    <div className="mt-6 flex justify-end">
-                      <button 
-                        onClick={() => setShowChangeProfileModal(true)}
-                        className="bg-[#6B8CAE] text-white px-4 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-sm"
-                      >
-                        Change Profile
-                      </button>
+                    <div className="flex items-center justify-center h-32">
+                      <p className="text-gray-500 text-center italic">No general information available</p>
                     </div>
                   </div>
                 </div>
@@ -250,55 +234,6 @@ export default function ProfilePage() {
                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                    className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
                    placeholder="Konfirmasi password baru"
-                   required
-                 />
-               </div>
-              
-              {/* Submit Button */}
-              <div className="flex justify-center pt-4">
-                <button
-                  type="submit"
-                  className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Change Profile Modal */}
-      {showChangeProfileModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-[#A8C8D8] rounded-2xl p-8 max-w-md w-full mx-4 relative shadow-2xl">
-            {/* Close Button */}
-             <button 
-               onClick={() => setShowChangeProfileModal(false)}
-               className="absolute top-4 right-4 w-8 h-8 bg-[#6B8CAE] rounded-full flex items-center justify-center text-white hover:bg-[#5A7A9A] transition-colors"
-             >
-               <i className="fas fa-times"></i>
-             </button>
-             
-             {/* Modal Header */}
-             <div className="text-center mb-6">
-               <div className="w-12 h-12 bg-[#6B8CAE] rounded-full flex items-center justify-center mx-auto mb-3">
-                 <i className="fas fa-user-edit text-white text-xl"></i>
-               </div>
-               <h2 className="text-xl font-bold text-[#2C3E50]">Change Profile</h2>
-             </div>
-            
-            {/* Form */}
-             <form className="space-y-4">
-               {/* Nama Lengkap Field */}
-               <div>
-                 <label className="block text-[#2C3E50] font-medium mb-2">Nama Lengkap :</label>
-                 <input
-                   type="text"
-                   value={profileForm.nama}
-                   onChange={(e) => setProfileForm({...profileForm, nama: e.target.value})}
-                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
-                   placeholder="Masukkan nama lengkap"
                    required
                  />
                </div>

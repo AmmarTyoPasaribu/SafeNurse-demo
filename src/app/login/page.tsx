@@ -13,7 +13,9 @@ export default function LoginPage() {
     console.log('Login attempt:', { email, password });
     
     // Simple authentication with if-else
-    if (email === 'perawat@gmail.com' && password === '12345678') {
+    if (email === 'admin@gmail.com' && password === '12345678') {
+      window.location.href = '/dashboard-superadmin';
+    } else if (email === 'perawat@gmail.com' && password === '12345678') {
       window.location.href = '/dashboard-perawat';
     } else if (email === 'kepalaruangan@gmail.com' && password === '12345678') {
       window.location.href = '/dashboard-kepala-ruangan';
@@ -78,7 +80,7 @@ export default function LoginPage() {
                     </label>
                     <div className="flex items-center border-b border-[#0E364A]">
                       <input
-                        className="bg-transparent text-[#a0cbd9] placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
                         id="email"
                         placeholder="perawat@gmail.com"
                         type="email"
@@ -97,7 +99,7 @@ export default function LoginPage() {
                     </label>
                     <div className="flex items-center border-b border-[#0E364A]">
                       <input
-                        className="bg-transparent text-[#a0cbd9] placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
                         id="password"
                         placeholder="***************"
                         type="password"

@@ -10,14 +10,22 @@ export default function ProfileVerifikatorPage() {
     nip: '198501012010011001',
     unitKerja: 'Tim Verifikator',
     jabatan: 'Verifikator Senior',
+    noTelp: '081234567890',
     email: 'verifikator@gmail.com'
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showChangeProfileModal, setShowChangeProfileModal] = useState(false);
   const [editForm, setEditForm] = useState({
     email: '',
     password: '',
     confirmPassword: ''
+  });
+  const [profileForm, setProfileForm] = useState({
+    nama: userData.nama || '',
+    jabatan: userData.jabatan || '',
+    unitKerja: userData.unitKerja || '',
+    noTelp: userData.noTelp || ''
   });
 
   const handleChangeAccount = () => {
@@ -27,6 +35,10 @@ export default function ProfileVerifikatorPage() {
       confirmPassword: ''
     });
     setShowEditModal(true);
+  };
+
+  const handleChangeProfile = () => {
+    setShowChangeProfileModal(true);
   };
 
   const handleCloseModal = () => {
@@ -132,29 +144,34 @@ export default function ProfileVerifikatorPage() {
                   </div>
                   
                   {/* Right Box - General Information */}
-                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl">
+                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl relative">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">General Information</h3>
                     <div className="space-y-3">
                       <div className="flex">
-                        <span className="text-gray-600 w-40">Nama :</span>
+                        <span className="text-gray-600 w-40">Nama Lengkap :</span>
                         <span className="text-gray-800">{userData.nama || '-'}</span>
                       </div>
                       <div className="flex">
-                        <span className="text-gray-600 w-40">No STR :</span>
-                        <span className="text-gray-800">{userData.noStr || '-'}</span>
+                        <span className="text-gray-600 w-40">Jabatan :</span>
+                        <span className="text-gray-800">{userData.jabatan || '-'}</span>
                       </div>
                       <div className="flex">
-                        <span className="text-gray-600 w-40">NIP / ID Pegawai :</span>
-                        <span className="text-gray-800">{userData.nip || '-'}</span>
-                      </div>
-                      <div className="flex">
-                        <span className="text-gray-600 w-40">Unit Kerja / Ruangan :</span>
+                        <span className="text-gray-600 w-40">Unit Kerja :</span>
                         <span className="text-gray-800">{userData.unitKerja || '-'}</span>
                       </div>
                       <div className="flex">
-                        <span className="text-gray-600 w-40">Jabatan / Posisi :</span>
-                        <span className="text-gray-800">{userData.jabatan || '-'}</span>
+                        <span className="text-gray-600 w-40">No Telp :</span>
+                        <span className="text-gray-800">{userData.noTelp || '-'}</span>
                       </div>
+                    </div>
+                    {/* Change Profile Button */}
+                    <div className="mt-6 flex justify-end">
+                      <button 
+                        onClick={handleChangeProfile}
+                        className="bg-[#6B8CAE] text-white px-4 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-sm"
+                      >
+                        Change Profile
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -255,6 +272,94 @@ export default function ProfileVerifikatorPage() {
                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                    className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
                    placeholder="Konfirmasi password baru"
+                   required
+                 />
+               </div>
+              
+              {/* Submit Button */}
+              <div className="flex justify-center pt-4">
+                <button
+                  type="submit"
+                  className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Change Profile Modal */}
+      {showChangeProfileModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-[#A8C8D8] rounded-2xl p-8 max-w-md w-full mx-4 relative shadow-2xl">
+            {/* Close Button */}
+             <button 
+               onClick={() => setShowChangeProfileModal(false)}
+               className="absolute top-4 right-4 w-8 h-8 bg-[#6B8CAE] rounded-full flex items-center justify-center text-white hover:bg-[#5A7A9A] transition-colors"
+             >
+               <i className="fas fa-times"></i>
+             </button>
+             
+             {/* Modal Header */}
+             <div className="text-center mb-6">
+               <div className="w-12 h-12 bg-[#6B8CAE] rounded-full flex items-center justify-center mx-auto mb-3">
+                 <i className="fas fa-user-edit text-white text-xl"></i>
+               </div>
+               <h2 className="text-xl font-bold text-[#2C3E50]">Change Profile</h2>
+             </div>
+            
+            {/* Form */}
+             <form className="space-y-4">
+               {/* Nama Lengkap Field */}
+               <div>
+                 <label className="block text-[#2C3E50] font-medium mb-2">Nama Lengkap :</label>
+                 <input
+                   type="text"
+                   value={profileForm.nama}
+                   onChange={(e) => setProfileForm({...profileForm, nama: e.target.value})}
+                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                   placeholder="Masukkan nama lengkap"
+                   required
+                 />
+               </div>
+               
+               {/* Jabatan Field */}
+               <div>
+                 <label className="block text-[#2C3E50] font-medium mb-2">Jabatan :</label>
+                 <input
+                   type="text"
+                   value={profileForm.jabatan}
+                   onChange={(e) => setProfileForm({...profileForm, jabatan: e.target.value})}
+                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                   placeholder="Masukkan jabatan"
+                   required
+                 />
+               </div>
+               
+               {/* Unit Kerja Field */}
+               <div>
+                 <label className="block text-[#2C3E50] font-medium mb-2">Unit Kerja :</label>
+                 <input
+                   type="text"
+                   value={profileForm.unitKerja}
+                   onChange={(e) => setProfileForm({...profileForm, unitKerja: e.target.value})}
+                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                   placeholder="Masukkan unit kerja"
+                   required
+                 />
+               </div>
+               
+               {/* No Telp Field */}
+               <div>
+                 <label className="block text-[#2C3E50] font-medium mb-2">No Telp :</label>
+                 <input
+                   type="tel"
+                   value={profileForm.noTelp}
+                   onChange={(e) => setProfileForm({...profileForm, noTelp: e.target.value})}
+                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                   placeholder="Masukkan nomor telepon"
                    required
                  />
                </div>

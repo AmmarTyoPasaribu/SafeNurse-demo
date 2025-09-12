@@ -1,0 +1,185 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+export default function RuanganSuperAdmin() {
+  const router = useRouter();
+  const [ruangan, setRuangan] = useState([
+    { id: 1, nama: 'IGD' },
+    { id: 2, nama: 'ICU' },
+    { id: 3, nama: 'Rawat Inap A' },
+    { id: 4, nama: 'Rawat Inap B' },
+    { id: 5, nama: 'Kamar Operasi' },
+    { id: 6, nama: 'Laboratorium' }
+  ]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newRoom, setNewRoom] = useState({
+    nama: ''
+  });
+
+  return (
+    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+      {/* Header/Navbar */}
+      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <h1 className="text-white text-xl font-bold">
+          Safe
+          <span className="font-bold text-[#0B7A95]">Nurse</span>
+        </h1>
+        
+        {/* Navigation Items */}
+        <div className="flex items-center space-x-6">
+          {/* User Management */}
+          <button 
+            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+            onClick={() => router.push('/dashboard-superadmin')}
+          >
+            <i className="fas fa-users text-lg mb-1"></i>
+            <span className="text-xs">User</span>
+          </button>
+          
+          {/* Ruangan Management - Active */}
+          <button 
+            className="flex flex-col items-center transition-colors text-[#0B7A95]"
+          >
+            <i className="fas fa-hospital text-lg mb-1"></i>
+            <span className="text-xs">Ruangan</span>
+          </button>
+          
+          {/* Profil */}
+          <button 
+            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+            onClick={() => router.push('/dashboard-super-admin/profil')}
+          >
+            <i className="fas fa-user text-lg mb-1"></i>
+            <span className="text-xs">Profil</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <main className="flex-1 px-6 py-6">
+        <div 
+          className="relative rounded-xl p-8 h-full"
+          style={{
+            background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
+          }}
+        >
+          <div 
+            className="absolute inset-0 opacity-20 pointer-events-none rounded-xl"
+            style={{
+              backgroundImage: `url('/bgperawat.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              zIndex: 0
+            }}
+          ></div>
+          
+          {/* Content Container */}
+          <div className="relative z-10">
+            {/* Page Title */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-white mb-2">Manajemen Ruangan</h2>
+              <p className="text-white/80">Kelola dan pantau daftar ruangan dalam sistem</p>
+            </div>
+
+            {/* Rooms Table */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 overflow-hidden">
+              {/* Table Header */}
+              <div className="bg-[#0E364A] px-6 py-4">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="text-center">
+                    <h3 className="text-white font-semibold text-lg">NAMA RUANGAN</h3>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-white font-semibold text-lg">AKSI</h3>
+                  </div>
+                </div>
+              </div>
+
+              {/* Table Body */}
+              <div className="divide-y divide-gray-200">
+                {ruangan.map((room, index) => (
+                  <div key={room.id} className={`grid grid-cols-2 gap-6 px-6 py-4 ${index % 2 === 0 ? 'bg-[#B9D9DD]' : 'bg-white'}`}>
+                    <div className="text-center text-gray-800 font-medium">{room.nama}</div>
+                    <div className="text-center">
+                      <div className="flex justify-center space-x-2">
+                        <button className="bg-[#0B7A95] text-white px-3 py-1 rounded text-sm hover:bg-[#095a6b] transition-colors">
+                          Edit
+                        </button>
+                        <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
+                          Hapus
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+      
+      {/* Floating Add Button */}
+        <button 
+          onClick={() => setShowCreateModal(true)}
+          className="fixed bottom-6 right-6 bg-[#0B7A95] text-white w-16 h-16 rounded-full shadow-lg hover:bg-[#095a6b] transition-colors flex items-center justify-center z-50"
+        >
+          <i className="fas fa-plus text-2xl"></i>
+        </button>
+
+        {/* Create Room Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-[#B9D9DD] rounded-lg p-8 w-96 max-w-md mx-4 relative">
+              <button 
+                onClick={() => setShowCreateModal(false)}
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 text-xl"
+              >
+                ×
+              </button>
+              
+              <h2 className="text-xl font-semibold text-center mb-6 text-[#0E364A]">Create Room</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[#0E364A] font-medium mb-2">Nama Ruangan :</label>
+                  <input 
+                    type="text"
+                    value={newRoom.nama}
+                    onChange={(e) => setNewRoom({...newRoom, nama: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black bg-white"
+                    placeholder="Masukkan nama ruangan"
+                  />
+                </div>
+              </div>
+              
+              <div className="mt-6 flex justify-center">
+                <button 
+                  onClick={() => {
+                    if (newRoom.nama) {
+                      const newId = Math.max(...ruangan.map(r => r.id)) + 1;
+                      setRuangan([...ruangan, {
+                        id: newId,
+                        nama: newRoom.nama
+                      }]);
+                      setShowCreateModal(false);
+                      setNewRoom({
+                        nama: ''
+                      });
+                    }
+                  }}
+                  className="bg-[#0E364A] text-white px-8 py-2 rounded-md hover:bg-[#1a4a5a] transition-colors"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+    </div>
+  );
+}
