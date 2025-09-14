@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 // Extend Window interface for SpeechRecognition
 declare global {
@@ -54,6 +55,11 @@ export default function TambahLaporanPage() {
     frekuensiKejadian: ''
   });
   const [isListening, setIsListening] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -407,43 +413,101 @@ export default function TambahLaporanPage() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
-        
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* Riwayat */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-perawat'}>
-            <i className="fas fa-clipboard-list text-lg mb-1"></i>
-            <span className="text-xs">Riwayat</span>
-          </button>
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
           
-          {/* Notifikasi */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
-            <i className="fas fa-bell text-lg mb-1"></i>
-            <span className="text-xs">Notifikasi</span>
-          </button>
-          
-          {/* Tutorial */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors">
-            <i className="fas fa-play-circle text-lg mb-1"></i>
-            <span className="text-xs">Tutorial</span>
-          </button>
-          
-          {/* Profil */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-perawat'}>
-            <i className="fas fa-user text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Riwayat */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-perawat'}>
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Riwayat</span>
+            </button>
+            
+            {/* Notifikasi */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
+              <i className="fas fa-bell text-lg mb-1"></i>
+              <span className="text-xs">Notifikasi</span>
+            </button>
+            
+            {/* Tutorial */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+              <i className="fas fa-play-circle text-lg mb-1"></i>
+              <span className="text-xs">Tutorial</span>
+            </button>
+            
+            {/* Profil */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-perawat'}>
+              <i className="fas fa-user text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
+          >
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+            <div className="flex flex-col space-y-3">
+              {/* Riwayat */}
+              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/dashboard-perawat'}>
+                <i className="fas fa-clipboard-list text-lg mr-3"></i>
+                <span>Riwayat</span>
+              </button>
+              
+              {/* Notifikasi */}
+              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/notifications-perawat'}>
+                <i className="fas fa-bell text-lg mr-3"></i>
+                <span>Notifikasi</span>
+              </button>
+              
+              {/* Tutorial */}
+              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+                <i className="fas fa-play-circle text-lg mr-3"></i>
+                <span>Tutorial</span>
+              </button>
+              
+              {/* Profil */}
+              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/profile-perawat'}>
+                <i className="fas fa-user text-lg mr-3"></i>
+                <span>Profil</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main Chat Container */}
       <main className="flex-1 px-6 py-6">
-        <div className="bg-white rounded-xl shadow-lg h-full flex flex-col max-w-2xl mx-auto">
+        <div 
+          className="bg-white rounded-lg p-6 h-full relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
+          }}
+        >
+          {/* Background pattern */}
+          <Image
+            alt="Background medical pattern"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+            src="/bgperawat.png"
+            fill
+            style={{ zIndex: 0 }}
+          />
+          
+          {/* Content Container */}
+          <div className="relative z-10 h-full flex justify-center items-center">
+            <div className="bg-white rounded-xl shadow-lg h-full flex flex-col max-w-2xl w-full">
           {/* Chat Header */}
           <div className="bg-[#0B7A95] text-white p-4 rounded-t-xl flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
@@ -458,7 +522,12 @@ export default function TambahLaporanPage() {
           {/* Messages Container */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4" style={{ maxHeight: 'calc(100vh - 300px)' }}>
             {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start items-start'}`}>
+                {message.sender === 'bot' && (
+                  <div className="w-8 h-8 bg-[#0B7A95] rounded-full flex items-center justify-center mr-2 mt-1 flex-shrink-0">
+                    <i className="fas fa-robot text-white text-sm"></i>
+                  </div>
+                )}
                 <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                   message.sender === 'user' 
                     ? 'bg-[#0B7A95] text-white' 
@@ -518,6 +587,8 @@ export default function TambahLaporanPage() {
               </div>
             </div>
           )}
+            </div>
+          </div>
         </div>
       </main>
     </div>

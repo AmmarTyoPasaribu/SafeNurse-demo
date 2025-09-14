@@ -26,7 +26,13 @@ interface Report {
 }
 
 export default function LaporanMasukVerifikator() {
-  const [reports] = useState([
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const [reports] = useState<Report[]>([
     {
       id: 1,
       title: "Laporan Pasien A",
@@ -179,60 +185,123 @@ export default function LaporanMasukVerifikator() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
 
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* Dashboard */}
-          <button
-            className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-            onClick={() => (window.location.href = "/dashboard-verifikator")}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Dashboard */}
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/dashboard-verifikator")}
+            >
+              <i className="fas fa-chart-bar text-lg mb-1"></i>
+              <span className="text-xs">Dashboard</span>
+            </button>
+
+            {/* Riwayat Laporan */}
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() =>
+                (window.location.href = "/riwayat-laporan-verifikator")
+              }
+            >
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Riwayat</span>
+            </button>
+
+            {/* Notifikasi */}
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() =>
+                (window.location.href = "/notifications-verifikator")
+              }
+            >
+              <i className="fas fa-bell text-lg mb-1"></i>
+              <span className="text-xs">Notifikasi</span>
+            </button>
+
+            {/* Laporan Masuk - Active */}
+            <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
+              <i className="fas fa-envelope text-lg mb-1"></i>
+              <span className="text-xs">Laporan Masuk</span>
+            </button>
+
+            {/* Manage Profil */}
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/profile-verifikator")}
+            >
+              <i className="fas fa-user text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
           >
-            <i className="fas fa-chart-bar text-lg mb-1"></i>
-            <span className="text-xs">Dashboard</span>
-          </button>
-
-          {/* Riwayat Laporan */}
-          <button
-            className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-            onClick={() =>
-              (window.location.href = "/riwayat-laporan-verifikator")
-            }
-          >
-            <i className="fas fa-clipboard-list text-lg mb-1"></i>
-            <span className="text-xs">Riwayat</span>
-          </button>
-
-          {/* Notifikasi */}
-          <button
-            className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-            onClick={() =>
-              (window.location.href = "/notifications-verifikator")
-            }
-          >
-            <i className="fas fa-bell text-lg mb-1"></i>
-            <span className="text-xs">Notifikasi</span>
-          </button>
-
-          {/* Laporan Masuk - Active */}
-          <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
-            <i className="fas fa-envelope text-lg mb-1"></i>
-            <span className="text-xs">Laporan Masuk</span>
-          </button>
-
-          {/* Manage Profil */}
-          <button
-            className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-            onClick={() => (window.location.href = "/profile-verifikator")}
-          >
-            <i className="fas fa-user text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+            <div className="flex flex-col space-y-3">
+              {/* Dashboard */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => (window.location.href = "/dashboard-verifikator")}
+              >
+                <i className="fas fa-chart-bar text-lg mr-3"></i>
+                <span>Dashboard</span>
+              </button>
+
+              {/* Riwayat Laporan */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() =>
+                  (window.location.href = "/riwayat-laporan-verifikator")
+                }
+              >
+                <i className="fas fa-clipboard-list text-lg mr-3"></i>
+                <span>Riwayat</span>
+              </button>
+
+              {/* Notifikasi */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() =>
+                  (window.location.href = "/notifications-verifikator")
+                }
+              >
+                <i className="fas fa-bell text-lg mr-3"></i>
+                <span>Notifikasi</span>
+              </button>
+
+              {/* Laporan Masuk - Active */}
+              <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
+                <i className="fas fa-envelope text-lg mr-3"></i>
+                <span>Laporan Masuk</span>
+              </button>
+
+              {/* Manage Profil */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => (window.location.href = "/profile-verifikator")}
+              >
+                <i className="fas fa-user text-lg mr-3"></i>
+                <span>Profil</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main content */}

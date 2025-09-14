@@ -6,14 +6,20 @@ import Image from 'next/image';
 
 export default function DashboardSuperAdmin() {
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const [users, setUsers] = useState([
-    { id: 1, nama: 'Dr. Ahmad Santoso', email: 'ahmad@hospital.com', role: 'verifikator', ruangan: 'ICU' },
+    { id: 1, nama: 'Dr. Ahmad Santoso', email: 'ahmad@hospital.com', role: 'verifikator', ruangan: '-' },
     { id: 2, nama: 'Siti Nurhaliza', email: 'siti@hospital.com', role: 'perawat', ruangan: 'IGD' },
     { id: 3, nama: 'Budi Prasetyo', email: 'budi@hospital.com', role: 'perawat', ruangan: 'Bedah' },
-    { id: 4, nama: 'Dr. Maya Sari', email: 'maya@hospital.com', role: 'verifikator', ruangan: 'Anak' },
+    { id: 4, nama: 'Dr. Maya Sari', email: 'maya@hospital.com', role: 'verifikator', ruangan: '-' },
     { id: 5, nama: 'Rina Wati', email: 'rina@hospital.com', role: 'perawat', ruangan: 'Kandungan' },
     { id: 6, nama: 'Agus Setiawan', email: 'agus@hospital.com', role: 'kepalaruangan', ruangan: 'ICU' },
-    { id: 7, nama: 'Dewi Lestari', email: 'dewi@hospital.com', role: 'ipcn', ruangan: 'Semua' },
+    { id: 7, nama: 'Dewi Lestari', email: 'dewi@hospital.com', role: 'chiefnursing', ruangan: '-' },
     { id: 8, nama: 'Admin System', email: 'admin@hospital.com', role: 'admin', ruangan: 'System' }
   ]);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -33,40 +39,83 @@ export default function DashboardSuperAdmin() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
-        
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* User Management - Active */}
-          <button 
-            className="flex flex-col items-center transition-colors text-[#0B7A95]"
-          >
-            <i className="fas fa-users text-lg mb-1"></i>
-            <span className="text-xs">User</span>
-          </button>
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
           
-          {/* Ruangan Management */}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* User Management - Active */}
+            <button 
+              className="flex flex-col items-center transition-colors text-[#0B7A95]"
+            >
+              <i className="fas fa-users text-lg mb-1"></i>
+              <span className="text-xs">User</span>
+            </button>
+            
+            {/* Ruangan Management */}
+            <button 
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+              onClick={() => router.push('/dashboard-super-admin/ruangan')}
+            >
+              <i className="fas fa-hospital text-lg mb-1"></i>
+              <span className="text-xs">Ruangan</span>
+            </button>
+            
+            {/* Profil */}
+            <button 
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+              onClick={() => router.push('/dashboard-super-admin/profil')}
+            >
+              <i className="fas fa-user text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
           <button 
-            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
-            onClick={() => router.push('/dashboard-super-admin/ruangan')}
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
           >
-            <i className="fas fa-hospital text-lg mb-1"></i>
-            <span className="text-xs">Ruangan</span>
-          </button>
-          
-          {/* Profil */}
-          <button 
-            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
-            onClick={() => router.push('/dashboard-super-admin/profil')}
-          >
-            <i className="fas fa-user text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+            <div className="flex flex-col space-y-3">
+              {/* User Management - Active */}
+              <button 
+                className="flex items-center text-[#0B7A95] transition-colors p-2 rounded"
+              >
+                <i className="fas fa-users text-lg mr-3"></i>
+                <span>User Management</span>
+              </button>
+              
+              {/* Ruangan Management */}
+              <button 
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => router.push('/dashboard-super-admin/ruangan')}
+              >
+                <i className="fas fa-hospital text-lg mr-3"></i>
+                <span>Ruangan Management</span>
+              </button>
+              
+              {/* Profil */}
+              <button 
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => router.push('/dashboard-super-admin/profil')}
+              >
+                <i className="fas fa-user text-lg mr-3"></i>
+                <span>Profil</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main Content */}
@@ -107,7 +156,7 @@ export default function DashboardSuperAdmin() {
                     <option value="">Semua Role</option>
                     <option value="perawat">Perawat</option>
                     <option value="kepalaruangan">Kepala Ruangan</option>
-                    <option value="ipcn">IPCN</option>
+                    <option value="chief-nursing">Chief Nursing</option>
                     <option value="verifikator">Verifikator</option>
                     <option value="admin">Admin</option>
                   </select>
@@ -148,9 +197,6 @@ export default function DashboardSuperAdmin() {
                     <div className="text-center text-gray-600">{user.ruangan}</div>
                     <div className="text-center">
                       <div className="flex justify-center space-x-2">
-                        <button className="bg-[#0B7A95] text-white px-3 py-1 rounded text-sm hover:bg-[#095a6b] transition-colors">
-                          Edit
-                        </button>
                         <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
                           Hapus
                         </button>
@@ -208,7 +254,7 @@ export default function DashboardSuperAdmin() {
                   <option value="">Pilih Role</option>
                   <option value="perawat">Perawat</option>
                   <option value="kepalaruangan">Kepala Ruangan</option>
-                  <option value="ipcn">IPCN</option>
+                  <option value="chief-nursing">Chief Nursing</option>
                   <option value="verifikator">Verifikator</option>
                   <option value="admin">Admin</option>
                 </select>

@@ -19,8 +19,8 @@ export default function LoginPage() {
       window.location.href = '/dashboard-perawat';
     } else if (email === 'kepalaruangan@gmail.com' && password === '12345678') {
       window.location.href = '/dashboard-kepala-ruangan';
-    } else if (email === 'ipcn@gmail.com' && password === '12345678') {
-      window.location.href = '/dashboard-ipcn';
+    } else if (email === 'chiefnursing@gmail.com' && password === '12345678') {
+      window.location.href = '/dashboard-chiefnursing';
     } else if (email === 'verifikator@gmail.com' && password === '12345678') {
       window.location.href = '/dashboard-verifikator';
     } else {

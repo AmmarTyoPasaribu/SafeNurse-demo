@@ -6,6 +6,12 @@ import Image from 'next/image';
 
 export default function ProfilSuperAdmin() {
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const [userData] = useState({
     nama: 'Administrator Utama',
     noStr: '12345678901234567890',
@@ -58,40 +64,83 @@ export default function ProfilSuperAdmin() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
-        
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* User Management */}
-          <button 
-            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
-            onClick={() => router.push('/dashboard-superadmin')}
-          >
-            <i className="fas fa-users text-lg mb-1"></i>
-            <span className="text-xs">User</span>
-          </button>
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
           
-          {/* Ruangan Management */}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* User Management */}
+            <button 
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+              onClick={() => router.push('/dashboard-superadmin')}
+            >
+              <i className="fas fa-users text-lg mb-1"></i>
+              <span className="text-xs">User</span>
+            </button>
+            
+            {/* Ruangan Management */}
+            <button 
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
+              onClick={() => router.push('/dashboard-super-admin/ruangan')}
+            >
+              <i className="fas fa-hospital text-lg mb-1"></i>
+              <span className="text-xs">Ruangan</span>
+            </button>
+            
+            {/* Profil - Active */}
+            <button 
+              className="flex flex-col items-center transition-colors text-[#0B7A95]"
+            >
+              <i className="fas fa-user text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
           <button 
-            className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
-            onClick={() => router.push('/dashboard-super-admin/ruangan')}
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
           >
-            <i className="fas fa-hospital text-lg mb-1"></i>
-            <span className="text-xs">Ruangan</span>
-          </button>
-          
-          {/* Profil - Active */}
-          <button 
-            className="flex flex-col items-center transition-colors text-[#0B7A95]"
-          >
-            <i className="fas fa-user text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+            <div className="flex flex-col space-y-3">
+              {/* User Management */}
+              <button 
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => router.push('/dashboard-superadmin')}
+              >
+                <i className="fas fa-users text-lg mr-3"></i>
+                <span>User Management</span>
+              </button>
+              
+              {/* Ruangan Management */}
+              <button 
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => router.push('/dashboard-super-admin/ruangan')}
+              >
+                <i className="fas fa-hospital text-lg mr-3"></i>
+                <span>Ruangan Management</span>
+              </button>
+              
+              {/* Profil - Active */}
+              <button 
+                className="flex items-center text-[#0B7A95] transition-colors p-2 rounded"
+              >
+                <i className="fas fa-user text-lg mr-3"></i>
+                <span>Profil</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main content */}

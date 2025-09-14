@@ -4,6 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function ProfileKepalaRuanganPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const [userData] = useState({
     nama: 'Dr. Siti Aminah',
     noStr: '12345678901234567890',
@@ -67,38 +73,88 @@ export default function ProfileKepalaRuanganPage() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
-        
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* Daftar Perawat */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-kepala-ruangan'}>
-            <i className="fas fa-clipboard-list text-lg mb-1"></i>
-            <span className="text-xs">Daftar Perawat</span>
-          </button>
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
           
-          {/* Notifikasi */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-kepala-ruangan'}>
-            <i className="fas fa-bell text-lg mb-1"></i>
-            <span className="text-xs">Notifikasi</span>
-          </button>
-          
-          {/* Laporan Masuk */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/laporan-masuk-kepala-ruangan'}>
-            <i className="fas fa-envelope text-lg mb-1"></i>
-            <span className="text-xs">Laporan Masuk</span>
-          </button>
-          
-          {/* Manage Profil - Active */}
-          <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
-            <i className="fas fa-user-cog text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Daftar Perawat */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-kepala-ruangan'}>
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Daftar Perawat</span>
+            </button>
+            
+            {/* Notifikasi */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-kepala-ruangan'}>
+              <i className="fas fa-bell text-lg mb-1"></i>
+              <span className="text-xs">Notifikasi</span>
+            </button>
+            
+            {/* Laporan Masuk */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/laporan-masuk-kepala-ruangan'}>
+              <i className="fas fa-envelope text-lg mb-1"></i>
+              <span className="text-xs">Laporan Masuk</span>
+            </button>
+            
+            {/* Manage Profil - Active */}
+            <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
+              <i className="fas fa-user-cog text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
+          >
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+            <div className="flex flex-col space-y-3">
+              {/* Daftar Perawat */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => window.location.href = '/dashboard-kepala-ruangan'}
+              >
+                <i className="fas fa-clipboard-list text-lg mr-3"></i>
+                <span>Daftar Perawat</span>
+              </button>
+              
+              {/* Notifikasi */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => window.location.href = '/notifications-kepala-ruangan'}
+              >
+                <i className="fas fa-bell text-lg mr-3"></i>
+                <span>Notifikasi</span>
+              </button>
+              
+              {/* Laporan Masuk */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                onClick={() => window.location.href = '/laporan-masuk-kepala-ruangan'}
+              >
+                <i className="fas fa-envelope text-lg mr-3"></i>
+                <span>Laporan Masuk</span>
+              </button>
+              
+              {/* Manage Profil - Active */}
+              <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
+                <i className="fas fa-user-cog text-lg mr-3"></i>
+                <span>Profil</span>
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main content */}

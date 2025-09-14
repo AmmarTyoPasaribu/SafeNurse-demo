@@ -11,11 +11,11 @@ export default function DashboardPerawatPage() {
     {
       id: 1,
       tanggal: '01 / 01 / 2025',
-      kategori: '',
-      status: '',
-      grading: '',
-      catatan: '',
-      kode: ''
+      kategori: 'Keselamatan Pasien',
+      status: 'Selesai',
+      grading: 'Hijau',
+      catatan: 'Laporan telah diverifikasi dan ditindaklanjuti',
+      kode: 'LP001'
     },
     {
       id: 2,
@@ -73,6 +73,12 @@ export default function DashboardPerawatPage() {
     }
   ]);
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleAddReport = () => {
     router.push('/tambah-laporan');
   };
@@ -80,45 +86,83 @@ export default function DashboardPerawatPage() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <h1 className="text-white text-xl font-bold">
-          Safe
-          <span className="font-bold text-[#0B7A95]">Nurse</span>
-        </h1>
-        
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-6">
-          {/* Riwayat Laporan - Active */}
-          <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
-            <i className="fas fa-clipboard-list text-lg mb-1"></i>
-            <span className="text-xs">Riwayat</span>
-          </button>
+      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6">
+        <div className="flex justify-between items-center px-6 py-3">
+          <h1 className="text-white text-xl font-bold">
+            Safe
+            <span className="font-bold text-[#0B7A95]">Nurse</span>
+          </h1>
           
-          {/* Notifikasi */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
-            <i className="fas fa-bell text-lg mb-1"></i>
-            <span className="text-xs">Notifikasi</span>
-          </button>
-          
-          {/* Video Tutorial */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/video-tutorial-perawat'}>
-            <i className="fas fa-play-circle text-lg mb-1"></i>
-            <span className="text-xs">Tutorial</span>
-          </button>
-          
-          {/* Manage Profil */}
-          <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-perawat'}>
-            <i className="fas fa-user-cog text-lg mb-1"></i>
-            <span className="text-xs">Profil</span>
-          </button>
+          {/* Desktop Navigation Items */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Riwayat Laporan - Active */}
+            <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Riwayat</span>
+            </button>
+            
+            {/* Notifikasi */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
+              <i className="fas fa-bell text-lg mb-1"></i>
+              <span className="text-xs">Notifikasi</span>
+            </button>
+            
+            {/* Video Tutorial */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+              <i className="fas fa-play-circle text-lg mb-1"></i>
+              <span className="text-xs">Tutorial</span>
+            </button>
+            
+            {/* Manage Profil */}
+            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-perawat'}>
+              <i className="fas fa-user-cog text-lg mb-1"></i>
+              <span className="text-xs">Profil</span>
+            </button>
+          </div>
 
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            onClick={toggleMobileMenu}
+          >
+            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+          </button>
+        </div>
+
+        {/* Mobile Navigation Menu */}
+        <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'} px-6 pb-4`}>
+          <div className="flex flex-col space-y-4">
+            {/* Riwayat Laporan - Active */}
+            <button className="flex items-center text-[#0B7A95] transition-colors py-2">
+              <i className="fas fa-clipboard-list text-lg mr-3"></i>
+              <span className="text-sm">Riwayat Laporan</span>
+            </button>
+            
+            {/* Notifikasi */}
+            <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/notifications-perawat'}>
+              <i className="fas fa-bell text-lg mr-3"></i>
+              <span className="text-sm">Notifikasi</span>
+            </button>
+            
+            {/* Video Tutorial */}
+            <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+              <i className="fas fa-play-circle text-lg mr-3"></i>
+              <span className="text-sm">Video Tutorial</span>
+            </button>
+            
+            {/* Manage Profil */}
+            <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/profile-perawat'}>
+              <i className="fas fa-user-cog text-lg mr-3"></i>
+              <span className="text-sm">Kelola Profil</span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Main content */}
       <main className="flex-1 px-6 py-6">
         <div 
-          className="bg-white rounded-lg p-6 h-full relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden"
           style={{
             background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
           }}
