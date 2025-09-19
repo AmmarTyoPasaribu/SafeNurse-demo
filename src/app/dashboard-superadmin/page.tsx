@@ -72,7 +72,7 @@ export default function DashboardSuperAdmin() {
   ]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
+  const [userToDelete, setUserToDelete] = useState<{ id: number; nama: string; email: string; role: string; ruangan: string } | null>(null);
   const [filterRole, setFilterRole] = useState("");
   const [newUser, setNewUser] = useState({
     nama: "",
@@ -89,7 +89,7 @@ export default function DashboardSuperAdmin() {
     : users;
 
   // Handle delete user
-  const handleDeleteUser = (user) => {
+  const handleDeleteUser = (user: { id: number; nama: string; email: string; role: string; ruangan: string }) => {
     setUserToDelete(user);
     setShowDeleteModal(true);
   };
@@ -308,7 +308,7 @@ export default function DashboardSuperAdmin() {
 
               {/* Mobile Cards - Visible on Mobile */}
               <div className="md:hidden space-y-4 p-4">
-                {filteredUsers.map((user, index) => (
+                {filteredUsers.map((user) => (
                   <div
                     key={user.id}
                     className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm"

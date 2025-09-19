@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function RuanganSuperAdmin() {
   const router = useRouter();
@@ -22,13 +21,13 @@ export default function RuanganSuperAdmin() {
   ]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [roomToDelete, setRoomToDelete] = useState(null);
+  const [roomToDelete, setRoomToDelete] = useState<{ id: number; nama: string } | null>(null);
   const [newRoom, setNewRoom] = useState({
     nama: "",
   });
 
   // Handle delete room
-  const handleDeleteRoom = (room) => {
+  const handleDeleteRoom = (room: { id: number; nama: string }) => {
     setRoomToDelete(room);
     setShowDeleteModal(true);
   };
@@ -206,7 +205,7 @@ export default function RuanganSuperAdmin() {
 
               {/* Mobile Cards - Visible on Mobile */}
               <div className="md:hidden space-y-4 p-4">
-                {ruangan.map((room, index) => (
+                {ruangan.map((room) => (
                   <div
                     key={room.id}
                     className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm"

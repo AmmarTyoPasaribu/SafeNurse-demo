@@ -1,10 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('perawat@gmail.com');
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +22,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+      <header className={`flex justify-between items-center bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
         <h1 className="text-white text-xl font-bold">
           Safe
           <span className="font-bold text-[#0B7A95]">Nurse</span>
@@ -25,7 +30,7 @@ export default function ForgotPasswordPage() {
         
         {/* Login Button */}
         <button 
-          className="bg-[#0B7A95] text-white px-6 py-2 rounded-lg hover:bg-[#095a6b] transition-colors font-medium"
+          className="bg-[#0B7A95] text-white px-6 py-2 rounded-lg hover:bg-[#095a6b] transition-all duration-300 hover:scale-105 font-medium"
           onClick={() => window.location.href = '/login'}
         >
           Login
@@ -33,13 +38,13 @@ export default function ForgotPasswordPage() {
       </header>
 
       {/* Main content */}
-      <main className="flex justify-between items-center px-6 py-10">
+      <main className={`flex justify-between items-center px-6 py-10 transition-all duration-1200 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <section
           className="relative flex w-full rounded-lg overflow-hidden"
           style={{ minHeight: '520px', height: '520px' }}
         >
           {/* Left side with gradient and background icons */}
-          <div className="w-full md:w-1/2 p-8 flex flex-col justify-center" style={{ background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)' }}>
+          <div className={`w-full md:w-1/2 p-8 flex flex-col justify-center transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`} style={{ background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)' }}>
             {/* Background icons behind content */}
             <Image
               alt="Background medical icons with microphone, clipboard, and sound waves in light blue shades"
@@ -50,22 +55,24 @@ export default function ForgotPasswordPage() {
             />
             <div className="flex flex-col justify-center items-center h-full">
               <div className="relative z-10 max-w-xs">
-                <div>
+                <div className={`transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                   <h1 className="text-white text-center text-5xl font-bold mb-1">
                     Safe
                     <span className="font-extrabold text-[#09839C]"> Nurse </span>
                   </h1>
                 </div>
-                <h2 className="text-white text-center text-3xl font-extrabold mb-8">
+                <h2 className={`text-white text-center text-3xl font-extrabold mb-8 transition-all duration-1000 delay-800 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                   Reset <span className="text-[#09839C]">Password</span>
                 </h2>
-                <p className="text-white text-sm">
-                  The verification email will be sent to your mailbox.
-                </p>
-                <p className="text-[#0E364A] font-bold text-sm mb-4">
-                  Please check it.
-                </p>
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className={`transition-all duration-1000 delay-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                  <p className="text-white text-sm">
+                    The verification email will be sent to your mailbox.
+                  </p>
+                  <p className="text-[#0E364A] font-bold text-sm mb-4">
+                    Please check it.
+                  </p>
+                </div>
+                <form className={`space-y-6 transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} onSubmit={handleSubmit}>
                   <div>
                     <label
                       className="block text-white font-semibold text-lg mb-1"
@@ -75,14 +82,14 @@ export default function ForgotPasswordPage() {
                     </label>
                     <div className="flex items-center border-b border-[#0E364A]">
                       <input
-                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1 focus:scale-105 transition-transform duration-300"
                         id="email"
                         placeholder="perawat@gmail.com"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <i className="fas fa-envelope text-[#0E364A] text-lg"></i>
+                      <i className="fas fa-envelope text-[#0E364A] text-lg hover:scale-110 transition-transform duration-200"></i>
                     </div>
                   </div>
                   
@@ -90,7 +97,7 @@ export default function ForgotPasswordPage() {
                   <div className="h-16"></div>
 
                   <button
-                    className="mt-6 bg-[#0E364A] text-white font-semibold text-lg rounded-lg py-2 w-full hover:brightness-110 transition"
+                    className="mt-6 bg-[#0E364A] text-white font-semibold text-lg rounded-lg py-2 w-full hover:brightness-110 hover:scale-105 transition-all duration-300"
                     type="submit"
                   >
                     Send
@@ -103,7 +110,7 @@ export default function ForgotPasswordPage() {
           {/* Right side image with angled shapes */}
           <div
             id="right-side"
-            className="hidden md:flex md:w-1/2 relative items-center justify-center overflow-hidden"
+            className={`hidden md:flex md:w-1/2 relative items-center justify-center overflow-hidden transition-all duration-1000 delay-600 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
             style={{ background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)' }}
           >
             <Image
@@ -122,7 +129,7 @@ export default function ForgotPasswordPage() {
             />
             <Image
               alt="Photo of a doctor and nurse pointing at a clipboard with medical documents"
-              className="absolute inset-0 w-full h-full object-cover z-10"
+              className="absolute inset-0 w-full h-full object-cover z-10 hover:scale-105 transition-transform duration-500"
               src="/dokterkanan.png"
               fill
               style={{ objectFit: 'cover' }}
