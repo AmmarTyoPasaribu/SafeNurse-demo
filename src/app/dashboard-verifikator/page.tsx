@@ -68,9 +68,9 @@ export default function DashboardVerifikatorPage() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+      <header className="bg-[#B9D9DD] rounded-xl px-4 sm:px-6 py-3 mx-4 sm:mx-6 mt-4 sm:mt-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold">
+          <h1 className="text-white text-lg sm:text-xl font-bold">
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
@@ -192,8 +192,8 @@ export default function DashboardVerifikatorPage() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
-        <div className="bg-[#A8C8E1] rounded-lg p-6 h-full relative overflow-hidden">
+      <main className="flex-1 px-4 sm:px-6 py-4 sm:py-6">
+        <div className="bg-[#A8C8E1] rounded-lg p-4 sm:p-6 h-full relative overflow-hidden">
           {/* Background pattern */}
           <Image
             alt="Background medical pattern"
@@ -206,18 +206,18 @@ export default function DashboardVerifikatorPage() {
           {/* Content */}
           <div className="relative z-10">
             {/* Header */}
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-[#2C3E50] mb-2">
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#2C3E50] mb-2">
                 Dashboard Insiden dan Data
               </h2>
             </div>
 
             {/* Filter Data Section */}
-            <div className="bg-white rounded-lg p-4 mb-6">
-              <h3 className="text-lg font-semibold text-[#2C3E50] mb-4">
+            <div className="bg-white rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-semibold text-[#2C3E50] mb-3 sm:mb-4">
                 Filter Data
               </h3>
-              <div className="grid grid-cols-6 gap-4 items-end">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4 items-end">
                 {/* Unit */}
                 <div>
                   <label className="block text-sm font-medium text-[#2C3E50] mb-1">
@@ -301,34 +301,38 @@ export default function DashboardVerifikatorPage() {
                 </div>
 
                 {/* Filter Button */}
-                <div>
+                <div className="sm:col-span-2 lg:col-span-1">
                   <button
                     onClick={handleFilter}
-                    className="w-12 h-10 bg-[#6B8CAE] text-white rounded hover:bg-[#5a7a9e] transition-colors flex items-center justify-center"
+                    className="w-full sm:w-12 h-10 bg-[#6B8CAE] text-white rounded hover:bg-[#5a7a9e] transition-colors flex items-center justify-center"
                   >
                     <i className="fas fa-search"></i>
+                    <span className="ml-2 sm:hidden">Filter</span>
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Charts Section */}
-            <div className="grid grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
               {/* Grafik Tren Insiden */}
-              <div className="bg-white rounded-lg p-4">
-                <h4 className="text-lg font-semibold text-[#2C3E50] mb-4">
+              <div className="bg-white rounded-lg p-3 sm:p-4">
+                <h4 className="text-base sm:text-lg font-semibold text-[#2C3E50] mb-3 sm:mb-4">
                   Grafik Tren Insiden
                 </h4>
-                <div className="h-48 flex items-end justify-center space-x-2">
+                <div className="h-32 sm:h-48 flex items-end justify-center space-x-1 sm:space-x-2">
                   {/* Bar Chart Simulation */}
                   {[65, 45, 80, 60, 90, 70, 85, 55].map((height, index) => (
                     <div key={index} className="flex flex-col items-center">
                       <div
-                        className="bg-[#6B8CAE] w-6 rounded-t"
+                        className="bg-[#6B8CAE] w-4 sm:w-6 rounded-t"
                         style={{ height: `${height}%` }}
                       ></div>
-                      <span className="text-xs text-[#2C3E50] mt-1">
+                      <span className="text-xs text-[#2C3E50] mt-1 hidden sm:block">
                         Week {index + 1}
+                      </span>
+                      <span className="text-xs text-[#2C3E50] mt-1 sm:hidden">
+                        W{index + 1}
                       </span>
                     </div>
                   ))}
@@ -336,14 +340,14 @@ export default function DashboardVerifikatorPage() {
               </div>
 
               {/* Distribusi Berdasarkan Kategori */}
-              <div className="bg-white rounded-lg p-4">
-                <h4 className="text-lg font-semibold text-[#2C3E50] mb-4">
+              <div className="bg-white rounded-lg p-3 sm:p-4">
+                <h4 className="text-base sm:text-lg font-semibold text-[#2C3E50] mb-3 sm:mb-4">
                   Distribusi Berdasarkan Kategori
                 </h4>
-                <div className="h-48 flex items-center justify-center">
+                <div className="h-32 sm:h-48 flex items-center justify-center">
                   {/* Pie Chart Simulation */}
                   <div
-                    className="w-32 h-32 rounded-full relative"
+                      className="w-24 h-24 sm:w-32 sm:h-32 rounded-full relative"
                     style={{
                       background: `conic-gradient(
                       #3b82f6 0deg 144deg,
@@ -354,14 +358,14 @@ export default function DashboardVerifikatorPage() {
                     )`,
                     }}
                   >
-                    <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center">
-                      <span className="text-xs font-semibold text-[#2C3E50]">
-                        Total
-                      </span>
-                    </div>
+                    <div className="absolute inset-3 sm:inset-4 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-xs font-semibold text-[#2C3E50]">
+                          Total
+                        </span>
+                      </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <div className="flex flex-wrap justify-center gap-1 sm:gap-2 mt-3 sm:mt-4">
                   <div className="flex items-center space-x-1">
                     <div className="w-3 h-3 bg-[#3b82f6] rounded"></div>
                     <span className="text-xs text-[#2C3E50]">KTD</span>
@@ -386,14 +390,14 @@ export default function DashboardVerifikatorPage() {
               </div>
 
               {/* Distribusi Berdasarkan Grading */}
-              <div className="bg-white rounded-lg p-4">
-                <h4 className="text-lg font-semibold text-[#2C3E50] mb-4">
+              <div className="bg-white rounded-lg p-3 sm:p-4">
+                <h4 className="text-base sm:text-lg font-semibold text-[#2C3E50] mb-3 sm:mb-4">
                   Distribusi Berdasarkan Grading
                 </h4>
-                <div className="h-48 flex items-center justify-center">
+                <div className="h-32 sm:h-48 flex items-center justify-center">
                   {/* Pie Chart Simulation */}
                   <div
-                    className="w-32 h-32 rounded-full relative"
+                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-full relative"
                     style={{
                       background: `conic-gradient(
                       #ef4444 0deg 108deg,
@@ -403,29 +407,25 @@ export default function DashboardVerifikatorPage() {
                     )`,
                     }}
                   >
-                    <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center">
+                    <div className="absolute inset-3 sm:inset-4 bg-white rounded-full flex items-center justify-center">
                       <span className="text-xs font-semibold text-[#2C3E50]">
                         Total
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <div className="flex flex-wrap justify-center gap-1 sm:gap-2 mt-3 sm:mt-4">
                   <div className="flex items-center space-x-1">
                     <div className="w-3 h-3 bg-[#ef4444] rounded"></div>
-                    <span className="text-xs text-[#2C3E50]">Merah</span>
+                    <span className="text-xs sm:text-sm text-[#2C3E50]">High</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <div className="w-3 h-3 bg-[#f59e0b] rounded"></div>
-                    <span className="text-xs text-[#2C3E50]">Kuning</span>
+                    <span className="text-xs sm:text-sm text-[#2C3E50]">Medium</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 bg-[#22c55e] rounded"></div>
-                    <span className="text-xs text-[#2C3E50]">Hijau</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 bg-[#3b82f6] rounded"></div>
-                    <span className="text-xs text-[#2C3E50]">Biru</span>
+                    <div className="w-3 h-3 bg-[#10b981] rounded"></div>
+                    <span className="text-xs sm:text-sm text-[#2C3E50]">Low</span>
                   </div>
                 </div>
               </div>
@@ -433,21 +433,21 @@ export default function DashboardVerifikatorPage() {
 
             {/* Data Insiden Table */}
             <div className="bg-white rounded-lg overflow-hidden">
-              <div className="flex justify-between items-center p-4 border-b">
-                <h4 className="text-lg font-semibold text-[#2C3E50]">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-b space-y-2 sm:space-y-0">
+                <h4 className="text-base sm:text-lg font-semibold text-[#2C3E50]">
                   Data Insiden
                 </h4>
-                <div className="flex space-x-2">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
                   <button
                     onClick={handleExportPDF}
-                    className="bg-[#6B8CAE] text-white px-4 py-2 rounded text-sm hover:bg-[#5a7a9e] transition-colors flex items-center space-x-2"
+                    className="bg-[#6B8CAE] text-white px-3 sm:px-4 py-2 rounded text-xs sm:text-sm hover:bg-[#5a7a9e] transition-colors flex items-center justify-center space-x-2"
                   >
                     <i className="fas fa-file-pdf"></i>
                     <span>Ekspor PDF</span>
                   </button>
                   <button
                     onClick={handleExportExcel}
-                    className="bg-[#6B8CAE] text-white px-4 py-2 rounded text-sm hover:bg-[#5a7a9e] transition-colors flex items-center space-x-2"
+                    className="bg-[#6B8CAE] text-white px-3 sm:px-4 py-2 rounded text-xs sm:text-sm hover:bg-[#5a7a9e] transition-colors flex items-center justify-center space-x-2"
                   >
                     <i className="fas fa-file-excel"></i>
                     <span>Ekspor Excel</span>
@@ -455,8 +455,8 @@ export default function DashboardVerifikatorPage() {
                 </div>
               </div>
 
-              {/* Table Header */}
-              <div className="bg-[#2C3E50] text-white">
+              {/* Table Header - Hidden on mobile */}
+              <div className="bg-[#2C3E50] text-white hidden sm:block">
                 <div className="grid grid-cols-4 gap-4 px-4 py-3 text-sm font-medium">
                   <div className="text-center">Tanggal</div>
                   <div className="text-center">Unit</div>
@@ -468,23 +468,51 @@ export default function DashboardVerifikatorPage() {
               {/* Table Body */}
               <div className="divide-y divide-gray-200">
                 {insidenData.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`grid grid-cols-4 gap-4 px-4 py-3 text-sm ${
-                      index % 2 === 0 ? "bg-[#A8C8E1]" : "bg-white"
-                    } hover:bg-blue-50 transition-colors`}
-                  >
-                    <div className="text-center font-medium text-[#2C3E50]">
-                      {item.tanggal}
+                  <div key={item.id}>
+                    {/* Desktop View */}
+                    <div
+                      className={`hidden sm:grid grid-cols-4 gap-4 px-4 py-3 text-sm ${
+                        index % 2 === 0 ? "bg-[#A8C8E1]" : "bg-white"
+                      } hover:bg-blue-50 transition-colors`}
+                    >
+                      <div className="text-center font-medium text-[#2C3E50]">
+                        {item.tanggal}
+                      </div>
+                      <div className="text-center text-[#2C3E50]">
+                        {item.unit}
+                      </div>
+                      <div className="text-center text-[#2C3E50]">
+                        {item.kategori}
+                      </div>
+                      <div className="text-center text-[#2C3E50]">
+                        {item.grading}
+                      </div>
                     </div>
-                    <div className="text-center text-[#2C3E50]">
-                      {item.unit}
-                    </div>
-                    <div className="text-center text-[#2C3E50]">
-                      {item.kategori}
-                    </div>
-                    <div className="text-center text-[#2C3E50]">
-                      {item.grading}
+
+                    {/* Mobile Card View */}
+                    <div
+                      className={`sm:hidden p-4 ${
+                        index % 2 === 0 ? "bg-[#A8C8E1]" : "bg-white"
+                      }`}
+                    >
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-medium text-gray-600">Tanggal:</span>
+                          <span className="text-sm font-medium text-[#2C3E50]">{item.tanggal}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-medium text-gray-600">Unit:</span>
+                          <span className="text-sm text-[#2C3E50]">{item.unit}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-medium text-gray-600">Kategori:</span>
+                          <span className="text-sm text-[#2C3E50]">{item.kategori}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-medium text-gray-600">Grading:</span>
+                          <span className="text-sm text-[#2C3E50]">{item.grading}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -186,9 +186,9 @@ export default function LaporanMasukVerifikator() {
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+      <header className="bg-[#B9D9DD] rounded-xl px-4 sm:px-6 py-3 mx-4 sm:mx-6 mt-4 sm:mt-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold">
+          <h1 className="text-white text-lg sm:text-xl font-bold">
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
@@ -312,9 +312,9 @@ export default function LaporanMasukVerifikator() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-4 sm:py-6">
         <div
-          className="relative rounded-xl p-8 h-full"
+          className="relative rounded-xl p-4 sm:p-8 h-full"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -332,30 +332,30 @@ export default function LaporanMasukVerifikator() {
           {/* Content Container */}
           <div className="relative z-10">
             {/* Page Title */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-2">
+            <div className="mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                 Daftar Laporan Masuk
               </h2>
             </div>
 
             {/* Reports List */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {reports.map((report) => (
                 <div
                   key={report.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 hover:bg-white/95 transition-colors cursor-pointer"
+                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-4 sm:p-6 hover:bg-white/95 transition-colors cursor-pointer"
                   onClick={() => handleReportClick(report)}
                 >
-                     <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-[#0B7A95] p-3 rounded-lg">
-                        <i className="fas fa-envelope text-white text-lg"></i>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 sm:space-x-4">
+                      <div className="bg-[#0B7A95] p-2 sm:p-3 rounded-lg">
+                        <i className="fas fa-envelope text-white text-base sm:text-lg"></i>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-800">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-800">
                           Laporan dari Perawat {report.namaPerawatYangMenangani}
                         </h3>
-                        
+
                         <p className="text-xs text-gray-500 mt-1">
                           Judul Insiden : {report.judulInsiden}
                         </p>
@@ -386,26 +386,28 @@ export default function LaporanMasukVerifikator() {
 
       {/* Modal Detail Laporan */}
       {showModal && selectedReport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#A8C8D8] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-[#A8C8D8] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto relative mx-2 sm:mx-0">
             {/* Header Modal */}
-            <div className="bg-[#6B8CAE] rounded-t-2xl p-4 flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="bg-white p-2 rounded-lg">
-                  <i className="fas fa-envelope text-[#6B8CAE] text-lg"></i>
+            <div className="bg-[#6B8CAE] rounded-t-2xl p-2 sm:p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div className="bg-white p-1.5 sm:p-2 rounded-lg">
+                  <i className="fas fa-envelope text-[#6B8CAE] text-base sm:text-lg"></i>
                 </div>
-                <h2 className="text-white font-bold text-lg">Detail Laporan</h2>
+                <h2 className="text-white font-bold text-sm sm:text-lg">
+                  Detail Laporan
+                </h2>
               </div>
               <button
                 onClick={handleCloseModal}
                 className="text-white hover:text-gray-200 transition-colors"
               >
-                <i className="fas fa-times text-xl"></i>
+                <i className="fas fa-times text-lg sm:text-xl"></i>
               </button>
             </div>
 
             {/* Content Modal */}
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
               {/* Kode Laporan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
@@ -721,23 +723,23 @@ export default function LaporanMasukVerifikator() {
               </div>
 
               {/* Action Buttons - Moved above Catatan */}
-              <div className="flex justify-center space-x-3 pt-4 pb-4">
+              <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-3 pt-4 pb-4">
                 <button
                   onClick={handleValidasi}
-                  className="bg-[#28a745] text-white px-6 py-2 rounded-lg hover:bg-[#218838] transition-colors font-medium text-sm"
+                  className="bg-[#28a745] text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-[#218838] transition-colors font-medium text-sm"
                 >
                   Validasi
                 </button>
                 <button
                   onClick={handleRevisi}
-                  className="bg-[#ffc107] text-white px-6 py-2 rounded-lg hover:bg-[#e0a800] transition-colors font-medium text-sm"
+                  className="bg-[#ffc107] text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-[#e0a800] transition-colors font-medium text-sm"
                 >
                   Revisi
                 </button>
 
                 <button
                   onClick={() => setShowRiwayatModal(true)}
-                  className="bg-[#6B8CAE] text-white px-6 py-2 rounded-lg hover:bg-[#5a7a9a] transition-colors font-medium text-sm"
+                  className="bg-[#6B8CAE] text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-[#5a7a9a] transition-colors font-medium text-sm"
                 >
                   Riwayat
                 </button>
@@ -751,7 +753,7 @@ export default function LaporanMasukVerifikator() {
                 <textarea
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800 resize-none"
+                  className="w-full px-3 py-2 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800 resize-none text-sm"
                   rows={3}
                   placeholder="Tambahkan catatan..."
                 />
@@ -764,7 +766,7 @@ export default function LaporanMasukVerifikator() {
                     console.log("Kirim catatan:", catatan);
                     // Add your send note logic here
                   }}
-                  className="bg-[#0B7A95] text-white px-8 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
+                  className="bg-[#0B7A95] text-white px-6 sm:px-8 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
                 >
                   Kirim Catatan
                 </button>
@@ -776,15 +778,15 @@ export default function LaporanMasukVerifikator() {
 
       {/* Modal Revisi Laporan */}
       {showRevisiModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#A8C8E1] rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-[#A8C8E1] rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+            <div className="p-4 sm:p-6">
               {/* Header */}
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-[#6B8CAE] rounded-full flex items-center justify-center">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#6B8CAE] rounded-full flex items-center justify-center">
                     <svg
-                      className="w-4 h-4 text-white"
+                      className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -797,13 +799,13 @@ export default function LaporanMasukVerifikator() {
                       />
                     </svg>
                   </div>
-                  <h2 className="text-lg font-semibold text-[#2C3E50]">
+                  <h2 className="text-sm sm:text-lg font-semibold text-[#2C3E50]">
                     Revisi Laporan
                   </h2>
                 </div>
                 <button
                   onClick={handleCloseRevisiModal}
-                  className="text-[#2C3E50] hover:text-gray-700 text-xl font-bold"
+                  className="text-[#2C3E50] hover:text-gray-700 text-lg sm:text-xl font-bold"
                 >
                   ×
                 </button>
@@ -936,12 +938,14 @@ export default function LaporanMasukVerifikator() {
 
             {/* Content Modal */}
             <div className="p-6 space-y-6">
-              {/* Tabel Riwayat Catatan */}
+              {/* Riwayat Catatan */}
               <div>
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Catatan
                 </h3>
-                <div className="bg-white/50 rounded-lg overflow-hidden">
+
+                {/* Desktop Table */}
+                <div className="hidden md:block bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
@@ -981,14 +985,82 @@ export default function LaporanMasukVerifikator() {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden space-y-2">
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-15 10:30
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Pasien menunjukkan perbaikan kondisi
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-14 14:20
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Perlu monitoring lebih intensif
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-13 09:15
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Catatan awal laporan
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Tabel Riwayat Tindakan */}
+              {/* Riwayat Tindakan */}
               <div>
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Tindakan
                 </h3>
-                <div className="bg-white/50 rounded-lg overflow-hidden">
+
+                {/* Desktop Table */}
+                <div className="hidden md:block bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
@@ -1069,6 +1141,150 @@ export default function LaporanMasukVerifikator() {
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden space-y-3">
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-15 10:30
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Aksi
+                          </span>
+                          <div className="mt-1">
+                            <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                              Validasi
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Grading
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 2</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Lanjutkan perawatan standar
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-14 14:20
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Aksi
+                          </span>
+                          <div className="mt-1">
+                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                              Revisi
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori B
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Grading
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 1</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Perlu evaluasi ulang
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          2024-01-13 09:15
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Aksi
+                          </span>
+                          <div className="mt-1">
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                              Submit
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Grading
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 1</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-500 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Tindakan awal sesuai protokol
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

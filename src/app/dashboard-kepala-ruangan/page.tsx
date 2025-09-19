@@ -34,6 +34,104 @@ interface Report {
   tanggalWaktuPelaporan: string;
 }
 
+// Mobile Report Card Component for Kepala Ruangan
+interface MobileReportCardProps {
+  report: Report;
+  onDetailClick: (report: Report) => void;
+}
+
+function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+      {/* Main Card Content */}
+      <div className="p-4">
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-800 text-sm mb-1">
+              {report.kategori}
+            </h3>
+            <p className="text-xs text-gray-600">Tanggal: {report.tanggal}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                report.status === "Selesai"
+                  ? "bg-green-100 text-green-800"
+                  : report.status
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {report.status}
+            </span>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <i
+                className={`fas fa-chevron-${
+                  isExpanded ? "up" : "down"
+                } text-xs`}
+              ></i>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => onDetailClick(report)}
+            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+          >
+            Detail
+          </button>
+        </div>
+      </div>
+
+      {/* Expanded Details */}
+      {isExpanded && (
+        <div className="border-t border-gray-200 p-4 bg-gray-50">
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Grading:</span>
+              <span className="text-gray-800">{report.grading}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Kode Laporan:</span>
+              <span className="text-gray-800">{report.kode}</span>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Kepala Ruangan:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanKepalaRuangan || "Belum ada catatan"}
+              </p>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Chief Nursing:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanChiefnursing || "Belum ada catatan"}
+              </p>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Verifikator:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanVerifikator || "Belum ada catatan"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DashboardChiefNursing() {
   const [selectedDate, setSelectedDate] = useState("2025-01-01");
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -321,7 +419,7 @@ export default function DashboardChiefNursing() {
   const handleCloseRiwayatModal = () => {
     setShowRiwayatModal(false);
   };
-   const handleTolak = () => {
+  const handleTolak = () => {
     console.log("Tolak laporan:", selectedReport?.id, "Catatan:", catatan);
     handleCloseModal();
   };
@@ -467,13 +565,16 @@ export default function DashboardChiefNursing() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95]"
+                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black"
+                  style={{
+                    colorScheme: "light",
+                  }}
                 />
               </div>
             </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
+            {/* Desktop Table - Hidden on Mobile */}
+            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Table Header */}
               <div className="bg-[#0B7A95] text-white">
                 <div className="grid grid-cols-9 gap-2 px-4 py-3 text-sm font-medium">
@@ -533,6 +634,17 @@ export default function DashboardChiefNursing() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile Card Layout - Visible on Mobile */}
+            <div className="lg:hidden space-y-4">
+              {reports.map((report) => (
+                <MobileReportCard
+                  key={report.id}
+                  report={report}
+                  onDetailClick={handleDetailClick}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -793,7 +905,7 @@ export default function DashboardChiefNursing() {
                 >
                   Revisi
                 </button>
-                 <button
+                <button
                   onClick={handleTolak}
                   className="bg-[#dc3545] text-white px-6 py-2 rounded-lg hover:bg-[#c82333] transition-colors font-medium text-sm"
                 >
@@ -1003,7 +1115,9 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Catatan
                 </h3>
-                <div className="bg-white/50 rounded-lg overflow-hidden">
+                
+                {/* Desktop Table */}
+                <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
@@ -1043,6 +1157,48 @@ export default function DashboardChiefNursing() {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden space-y-3">
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                      </div>
+                      <div className="border-t pt-2">
+                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
+                        <p className="text-sm text-gray-800 mt-1">Pasien menunjukkan perbaikan kondisi</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                      </div>
+                      <div className="border-t pt-2">
+                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
+                        <p className="text-sm text-gray-800 mt-1">Perlu monitoring lebih intensif</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                      </div>
+                      <div className="border-t pt-2">
+                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
+                        <p className="text-sm text-gray-800 mt-1">Catatan awal laporan</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Tabel Riwayat Tindakan */}
@@ -1050,7 +1206,9 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Tindakan
                 </h3>
-                <div className="bg-white/50 rounded-lg overflow-hidden">
+                
+                {/* Desktop Table */}
+                <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
@@ -1131,6 +1289,102 @@ export default function DashboardChiefNursing() {
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden space-y-3">
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <div className="mt-1">
+                            <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                              Validasi
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
+                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 2</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
+                          <p className="text-sm text-gray-800 mt-1">Lanjutkan perawatan standar</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <div className="mt-1">
+                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                              Revisi
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
+                          <p className="text-sm text-gray-800 mt-1">Kategori B</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 1</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
+                          <p className="text-sm text-gray-800 mt-1">Perlu evaluasi ulang</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/50 rounded-lg p-4">
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
+                        <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <div className="mt-1">
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                              Submit
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
+                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <p className="text-sm text-gray-800 mt-1">Grade 1</p>
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
+                          <p className="text-sm text-gray-800 mt-1">Tindakan awal sesuai protokol</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

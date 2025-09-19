@@ -24,17 +24,20 @@ export default function ProfilSuperAdmin() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editForm, setEditForm] = useState({
     email: '',
+    oldPassword: '',
     password: '',
     confirmPassword: ''
   });
 
   // Password visibility states
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChangeAccount = () => {
     setEditForm({
       email: userData.email,
+      oldPassword: '',
       password: '',
       confirmPassword: ''
     });
@@ -43,7 +46,7 @@ export default function ProfilSuperAdmin() {
 
   const handleCloseModal = () => {
     setShowEditModal(false);
-    setEditForm({ email: '', password: '', confirmPassword: '' });
+    setEditForm({ email: '', oldPassword: '', password: '', confirmPassword: '' });
   };
 
   const handleSubmitEdit = (e: React.FormEvent) => {
@@ -265,9 +268,31 @@ export default function ProfilSuperAdmin() {
                  />
                </div>
                
+               {/* Old Password Field */}
+               <div>
+                 <label className="block text-[#2C3E50] font-medium mb-2">Password Lama :</label>
+                 <div className="relative">
+                   <input
+                     type={showOldPassword ? "text" : "password"}
+                     value={editForm.oldPassword}
+                     onChange={(e) => handleInputChange('oldPassword', e.target.value)}
+                     className="w-full px-4 py-3 pr-12 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                     placeholder="Masukkan password lama"
+                     required
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowOldPassword(!showOldPassword)}
+                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                   >
+                     <i className={`fas ${showOldPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                   </button>
+                 </div>
+               </div>
+               
                {/* Password Field */}
                <div>
-                 <label className="block text-[#2C3E50] font-medium mb-2">Password :</label>
+                 <label className="block text-[#2C3E50] font-medium mb-2">Password Baru :</label>
                  <div className="relative">
                    <input
                      type={showPassword ? "text" : "password"}

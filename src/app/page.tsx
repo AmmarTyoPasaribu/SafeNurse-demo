@@ -76,11 +76,11 @@ export default function HomePage() {
                   <p className="text-[9px] leading-tight text-black">
                     otomatis dibuatkan
                     <br/>
-                    laporan oleh
+                    laporan oleh 
                     <span className="font-bold">
                       chatbot
                     </span>
-                    dan
+                     dan
                     <br/>
                     dikirim ke validator secara
                     <br/>

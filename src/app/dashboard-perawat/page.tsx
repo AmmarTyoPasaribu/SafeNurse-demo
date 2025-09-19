@@ -35,6 +35,103 @@ interface Report {
   tanggalWaktuPelaporan: string;
 }
 
+// Mobile Report Card Component
+interface MobileReportCardProps {
+  report: Report;
+  onDetailClick: (report: Report) => void;
+}
+
+function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+      {/* Main Card Content */}
+      <div
+        className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-800 text-sm mb-1">
+              {report.kategori}
+            </h3>
+            <p className="text-xs text-gray-600">Tanggal: {report.tanggal}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                report.status === "Selesai"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-yellow-100 text-yellow-800"
+              }`}
+            >
+              {report.status}
+            </span>
+            <i
+              className={`fas fa-chevron-${
+                isExpanded ? "up" : "down"
+              } text-gray-400 text-xs`}
+            ></i>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetailClick(report);
+            }}
+            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+          >
+            Detail
+          </button>
+        </div>
+      </div>
+
+      {/* Expanded Details */}
+      {isExpanded && (
+        <div className="border-t border-gray-200 p-4 bg-gray-50">
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Grading:</span>
+              <span className="text-gray-800">{report.grading}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Kode Laporan:</span>
+              <span className="text-gray-800">{report.kode}</span>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Kepala Ruangan:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanKepalaRuangan}
+              </p>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Chief Nursing:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanChiefnursing}
+              </p>
+            </div>
+            <div className="mt-3">
+              <span className="font-medium text-gray-600 block mb-1">
+                Catatan Verifikator:
+              </span>
+              <p className="text-gray-800 text-xs leading-relaxed">
+                {report.catatanVerifikator}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DashboardPerawatPage() {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState("2025-01-01");
@@ -391,10 +488,10 @@ export default function DashboardPerawatPage() {
           {/* Content */}
           <div className="relative z-10">
             {/* Header section with date picker and add button */}
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <button
-                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition"
+                  className="bg-[#0E364A] text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition w-full sm:w-auto"
                   onClick={() => console.log("Pilih Bulan clicked")}
                 >
                   Pilih Bulan
@@ -403,12 +500,15 @@ export default function DashboardPerawatPage() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95]"
+                  className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] w-full sm:w-auto text-black"
+                  style={{
+                    colorScheme: "light",
+                  }}
                 />
               </div>
 
               <button
-                className="bg-[#0B7A95] text-white px-6 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition flex items-center space-x-2"
+                className="bg-[#0B7A95] text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition flex items-center justify-center space-x-2 w-full sm:w-auto max-w-xs sm:max-w-none"
                 onClick={handleAddReport}
               >
                 <i className="fas fa-plus"></i>
@@ -416,8 +516,8 @@ export default function DashboardPerawatPage() {
               </button>
             </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
+            {/* Desktop Table - Hidden on Mobile */}
+            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Table Header */}
               <div className="bg-[#0B7A95] text-white">
                 <div className="grid grid-cols-9 gap-2 px-4 py-3 text-sm font-medium">
@@ -477,6 +577,17 @@ export default function DashboardPerawatPage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile Card Layout - Visible on Mobile */}
+            <div className="lg:hidden space-y-4">
+              {reports.map((report) => (
+                <MobileReportCard
+                  key={report.id}
+                  report={report}
+                  onDetailClick={handleDetailClick}
+                />
+              ))}
             </div>
           </div>
         </div>
