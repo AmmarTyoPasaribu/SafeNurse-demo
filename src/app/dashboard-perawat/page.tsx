@@ -14,7 +14,9 @@ export default function DashboardPerawatPage() {
       kategori: 'Keselamatan Pasien',
       status: 'Selesai',
       grading: 'Hijau',
-      catatan: 'Laporan telah diverifikasi dan ditindaklanjuti',
+      catatanKepalaRuangan: 'Sudah ditindaklanjuti dengan baik',
+      catatanChiefnursing: 'Perlu monitoring berkelanjutan',
+      catatanVerifikator: 'Laporan telah diverifikasi',
       kode: 'LP001'
     },
     {
@@ -23,7 +25,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     },
     {
@@ -32,7 +36,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     },
     {
@@ -41,7 +47,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     },
     {
@@ -50,7 +58,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     },
     {
@@ -59,7 +69,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     },
     {
@@ -68,7 +80,9 @@ export default function DashboardPerawatPage() {
       kategori: '',
       status: '',
       grading: '',
-      catatan: '',
+      catatanKepalaRuangan: '',
+      catatanChiefnursing: '',
+      catatanVerifikator: '',
       kode: ''
     }
   ]);
@@ -208,12 +222,14 @@ export default function DashboardPerawatPage() {
             <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Table Header */}
               <div className="bg-[#0B7A95] text-white">
-                <div className="grid grid-cols-6 gap-4 px-4 py-3 text-sm font-medium">
+                <div className="grid grid-cols-8 gap-2 px-4 py-3 text-sm font-medium">
                   <div className="text-center">Tanggal Laporan</div>
                   <div className="text-center">Kategori Insiden</div>
                   <div className="text-center">Status Laporan</div>
                   <div className="text-center">Grading</div>
-                  <div className="text-center">Catatan</div>
+                  <div className="text-center">Catatan kepala ruangan</div>
+                  <div className="text-center">Catatan Chief Nursing</div>
+                  <div className="text-center">Catatan verifikator</div>
                   <div className="text-center">Kode Laporan</div>
                 </div>
               </div>
@@ -223,18 +239,20 @@ export default function DashboardPerawatPage() {
                 {reports.map((report, index) => (
                   <div 
                     key={report.id} 
-                    className={`grid grid-cols-6 gap-4 px-4 py-3 text-sm ${
+                    className={`grid grid-cols-8 gap-2 px-4 py-3 text-sm ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     } hover:bg-blue-50 transition-colors`}
                   >
                     <div className="bg-[#0E364A] text-white px-3 py-1 rounded text-center text-xs font-medium">
                       {report.tanggal}
                     </div>
-                    <div className="text-gray-600">{report.kategori}</div>
-                    <div className="text-gray-600">{report.status}</div>
-                    <div className="text-gray-600">{report.grading}</div>
-                    <div className="text-gray-600">{report.catatan}</div>
-                    <div className="text-gray-600">{report.kode}</div>
+                    <div className="text-gray-600 text-center">{report.kategori}</div>
+                    <div className="text-gray-600 text-center">{report.status}</div>
+                    <div className="text-gray-600 text-center">{report.grading}</div>
+                    <div className="text-gray-600 text-center">{report.catatanKepalaRuangan}</div>
+                    <div className="text-gray-600 text-center">{report.catatanChiefnursing}</div>
+                    <div className="text-gray-600 text-center">{report.catatanVerifikator}</div>
+                    <div className="text-gray-600 text-center">{report.kode}</div>
                   </div>
                 ))}
               </div>

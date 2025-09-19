@@ -1,218 +1,288 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import Image from "next/image";
 
 export default function DashboardKepalaRuangan() {
+  const [selectedDate, setSelectedDate] = useState("2025-01-01");
+  const [reports] = useState([
+    {
+      id: 1,
+      tanggal: "01 / 01 / 2025",
+      kategori: "Keselamatan Pasien",
+      status: "Selesai",
+      grading: "Hijau",
+      catatanKepalaRuangan: "Sudah ditindaklanjuti dengan baik",
+      catatanChiefnursing: "Perlu monitoring berkelanjutan",
+      catatanVerifikator: "Laporan telah diverifikasi",
+      kode: "LP001",
+    },
+    {
+      id: 2,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+    {
+      id: 3,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+    {
+      id: 4,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+    {
+      id: 5,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+    {
+      id: 6,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+    {
+      id: 7,
+      tanggal: "01 / 01 / 2025",
+      kategori: "",
+      status: "",
+      grading: "",
+      catatanKepalaRuangan: "",
+      catatanChiefnursing: "",
+      catatanVerifikator: "",
+      kode: "",
+    },
+  ]);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const [nurses] = useState([
-    {
-      id: 1,
-      name: "Budi Santoso",
-      str: "1234567890",
-      nip: "9876543210"
-    },
-    {
-      id: 2,
-      name: "Budi Santoso",
-      str: "1234567890",
-      nip: "9876543210"
-    },
-    {
-      id: 3,
-      name: "Budi Santoso",
-      str: "1234567890",
-      nip: "9876543210"
-    },
-    {
-      id: 4,
-      name: "Budi Santoso",
-      str: "1234567890",
-      nip: "9876543210"
-    },
-    {
-      id: 5,
-      name: "Budi Santoso",
-      str: "1234567890",
-      nip: "9876543210"
-    }
-  ]);
-
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <div className="flex justify-between items-center">
+      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6">
+        <div className="flex justify-between items-center px-6 py-3">
           <h1 className="text-white text-xl font-bold">
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
-          
-          {/* Desktop Navigation */}
+
+          {/* Desktop Navigation Items */}
           <div className="hidden md:flex items-center space-x-6">
-            {/* Daftar Perawat - Active */}
+            {/* Riwayat Laporan - Active */}
             <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
-              <i className="fas fa-users text-lg mb-1"></i>
-              <span className="text-xs">Daftar Perawat</span>
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Riwayat</span>
             </button>
-            
+
             {/* Notifikasi */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-kepala-ruangan'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() =>
+                (window.location.href = "/notifications-kepala-ruangan")
+              }
+            >
               <i className="fas fa-bell text-lg mb-1"></i>
               <span className="text-xs">Notifikasi</span>
             </button>
-            
+
             {/* Laporan Masuk */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/laporan-masuk-kepala-ruangan'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() =>
+                (window.location.href = "/laporan-masuk-kepala-ruangan")
+              }
+            >
               <i className="fas fa-envelope text-lg mb-1"></i>
               <span className="text-xs">Laporan Masuk</span>
             </button>
-            
+
             {/* Manage Profil */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-kepala-ruangan'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/profile-kepala-ruangan")}
+            >
               <i className="fas fa-user text-lg mb-1"></i>
               <span className="text-xs">Profil</span>
             </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
             onClick={toggleMobileMenu}
           >
-            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            <i
+              className={`fas ${
+                isMobileMenuOpen ? "fa-times" : "fa-bars"
+              } text-xl`}
+            ></i>
           </button>
         </div>
 
         {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
-            <div className="flex flex-col space-y-3">
-              {/* Daftar Perawat - Active */}
-              <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
-                <i className="fas fa-users text-lg mr-3"></i>
-                <span>Daftar Perawat</span>
-              </button>
-              
-              {/* Notifikasi */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded" onClick={() => window.location.href = '/notifications-kepala-ruangan'}>
-                <i className="fas fa-bell text-lg mr-3"></i>
-                <span>Notifikasi</span>
-              </button>
-              
-              {/* Laporan Masuk */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded" onClick={() => window.location.href = '/laporan-masuk-kepala-ruangan'}>
-                <i className="fas fa-envelope text-lg mr-3"></i>
-                <span>Laporan Masuk</span>
-              </button>
-              
-              {/* Manage Profil */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded" onClick={() => window.location.href = '/profile-kepala-ruangan'}>
-                <i className="fas fa-user text-lg mr-3"></i>
-                <span>Profil</span>
-              </button>
-            </div>
+        <div
+          className={`md:hidden ${
+            isMobileMenuOpen ? "block" : "hidden"
+          } px-6 pb-4`}
+        >
+          <div className="flex flex-col space-y-4">
+            {/* Riwayat Laporan - Active */}
+            <button className="flex items-center text-[#0B7A95] transition-colors py-2">
+              <i className="fas fa-clipboard-list text-lg mr-3"></i>
+              <span className="text-sm">Riwayat Laporan</span>
+            </button>
+
+            {/* Notifikasi */}
+            <button
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              onClick={() =>
+                (window.location.href = "/notifications-kepala-ruangan")
+              }
+            >
+              <i className="fas fa-bell text-lg mr-3"></i>
+              <span className="text-sm">Notifikasi</span>
+            </button>
+
+            {/* Laporan Masuk */}
+            <button
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              onClick={() =>
+                (window.location.href = "/laporan-masuk-kepala-ruangan")
+              }
+            >
+              <i className="fas fa-envelope text-lg mr-3"></i>
+              <span className="text-sm">Laporan Masuk</span>
+            </button>
+
+            {/* Manage Profil */}
+            <button
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              onClick={() => (window.location.href = "/profile-kepala-ruangan")}
+            >
+              <i className="fas fa-user text-lg mr-3"></i>
+              <span className="text-sm">Profil</span>
+            </button>
           </div>
-        )}
+        </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main content */}
       <main className="flex-1 px-6 py-6">
-        {/* Background Pattern */}
-        <div 
-          className="relative rounded-xl p-8 h-full"
+        <div
+          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden"
           style={{
-            background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
+            background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
         >
-          <div 
-            className="absolute inset-0 opacity-20 pointer-events-none rounded-xl"
-            style={{
-              backgroundImage: `url('/bgperawat.png')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              zIndex: 0
-            }}
-          ></div>
-          
-          {/* Content Container */}
+          {/* Background pattern */}
+          <Image
+            alt="Background medical pattern"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+            src="/bgperawat.png"
+            fill
+            style={{ zIndex: 0 }}
+          />
+
+          {/* Content */}
           <div className="relative z-10">
-            {/* Page Title */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-2">Daftar Perawat</h2>
-              <p className="text-white/80">Kelola dan pantau daftar perawat di ruangan Anda</p>
+            {/* Header section with date picker */}
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center space-x-4">
+                <button
+                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition"
+                  onClick={() => console.log("Pilih Bulan clicked")}
+                >
+                  Pilih Bulan
+                </button>
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95]"
+                />
+              </div>
             </div>
 
-            {/* Nurses Table */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 overflow-hidden">
+            {/* Table */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Table Header */}
-              <div className="bg-[#7BB3C7] px-6 py-4">
-                <div className="grid grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <h3 className="text-white font-semibold text-lg">Nama Perawat</h3>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-white font-semibold text-lg">No.STR</h3>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-white font-semibold text-lg">NIP</h3>
-                  </div>
+              <div className="bg-[#0B7A95] text-white">
+                <div className="grid grid-cols-8 gap-2 px-4 py-3 text-sm font-medium">
+                  <div className="text-center">Tanggal Laporan</div>
+                  <div className="text-center">Kategori Insiden</div>
+                  <div className="text-center">Status Laporan</div>
+                  <div className="text-center">Grading</div>
+                  <div className="text-center">Catatan kepala ruangan</div>
+                  <div className="text-center">Catatan Chief Nursing</div>
+                  <div className="text-center">Catatan verifikator</div>
+                  <div className="text-center">Kode Laporan</div>
                 </div>
               </div>
 
               {/* Table Body */}
               <div className="divide-y divide-gray-200">
-                {nurses.map((nurse, index) => (
-                  <div 
-                    key={nurse.id}
-                    className={`px-6 py-4 hover:bg-gray-50 transition-colors ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                    }`}
+                {reports.map((report, index) => (
+                  <div
+                    key={report.id}
+                    className={`grid grid-cols-8 gap-2 px-4 py-3 text-sm ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    } hover:bg-blue-50 transition-colors`}
                   >
-                    <div className="grid grid-cols-3 gap-6">
-                      <div className="text-center">
-                        <p className="text-gray-800 font-medium">{nurse.name}</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-gray-600">{nurse.str}</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-gray-600">{nurse.nip}</p>
-                      </div>
+                    <div className="bg-[#0E364A] text-white px-3 py-1 rounded text-center text-xs font-medium">
+                      {report.tanggal}
                     </div>
+                    <div className="text-gray-600 text-center">{report.kategori}</div>
+                    <div className="text-gray-600 text-center">{report.status}</div>
+                    <div className="text-gray-600 text-center">{report.grading}</div>
+                    <div className="text-gray-600 text-center">
+                      {report.catatanKepalaRuangan}
+                    </div>
+                    <div className="text-gray-600 text-center">
+                      {report.catatanChiefnursing}
+                    </div>
+                    <div className="text-gray-600 text-center">
+                      {report.catatanVerifikator}
+                    </div>
+                    <div className="text-gray-600 text-center">{report.kode}</div>
                   </div>
                 ))}
               </div>
-
-              {/* Empty rows to match the UI */}
-              {Array.from({ length: 10 - nurses.length }).map((_, index) => (
-                <div 
-                  key={`empty-${index}`}
-                  className={`px-6 py-4 ${
-                    (nurses.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                  }`}
-                >
-                  <div className="grid grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <p className="text-transparent">-</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-transparent">-</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-transparent">-</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
-
-
           </div>
         </div>
       </main>

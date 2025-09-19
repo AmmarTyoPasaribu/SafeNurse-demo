@@ -55,10 +55,10 @@ export default function NotificationsChiefNursingPage() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            {/* Daftar Perawat */}
+            {/* Riwayat */}
             <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-chiefnursing'}>
-              <i className="fas fa-users text-lg mb-1"></i>
-              <span className="text-xs">Daftar Perawat</span>
+              <i className="fas fa-clipboard-list text-lg mb-1"></i>
+              <span className="text-xs">Riwayat</span>
             </button>
             
             {/* Notifikasi - Active */}
@@ -93,13 +93,13 @@ export default function NotificationsChiefNursingPage() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-white/20">
             <div className="flex flex-col space-y-3">
-              {/* Daftar Perawat */}
+              {/* Riwayat */}
               <button
                 className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
                 onClick={() => window.location.href = '/dashboard-chiefnursing'}
               >
-                <i className="fas fa-users text-lg mr-3"></i>
-                <span>Daftar Perawat</span>
+                <i className="fas fa-history text-lg mr-3"></i>
+                <span>Riwayat</span>
               </button>
               
               {/* Notifikasi - Active */}

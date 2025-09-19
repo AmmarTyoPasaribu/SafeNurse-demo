@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 // Extend Window interface for SpeechRecognition
 declare global {
@@ -25,6 +25,7 @@ interface ReportData {
   kronologi: string;
   tindakanSegera: string;
   tindakanOleh: string;
+  dampakInsiden: string;
   frekuensiKejadian: string;
 }
 
@@ -32,30 +33,37 @@ export default function TambahLaporanPage() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      sender: 'bot',
-      text: 'Halo, apakah Anda ingin melaporkan insiden?',
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-    }
+      sender: "bot",
+      text: "Halo, apakah Anda ingin melaporkan insiden?",
+      timestamp: new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    },
   ]);
-  
-  const [currentStep, setCurrentStep] = useState('greeting');
-  const [inputValue, setInputValue] = useState('');
+
+  const [currentStep, setCurrentStep] = useState("greeting");
+  const [inputValue, setInputValue] = useState("");
   const [reportData, setReportData] = useState({
-    namaPasien: '',
-    noRM: '',
-    umur: '',
-    jenisKelamin: '',
-    tglMasukRS: '',
-    unitPelapor: '',
-    tglKejadian: '',
-    judulInsiden: '',
-    kronologi: '',
-    tindakanSegera: '',
-    tindakanOleh: '',
-    frekuensiKejadian: ''
+    namaPasien: "",
+    noRM: "",
+    umur: "",
+    jenisKelamin: "",
+    tglMasukRS: "",
+    unitPelapor: "",
+    tglKejadian: "",
+    judulInsiden: "",
+    kronologi: "",
+    tindakanSegera: "",
+    tindakanOleh: "",
+    dampakInsiden: "",
+    frekuensiKejadian: "",
   });
   const [isListening, setIsListening] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProcessingResponse, setIsProcessingResponse] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedIncidentDate, setSelectedIncidentDate] = useState("");
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -63,7 +71,7 @@ export default function TambahLaporanPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -75,338 +83,1501 @@ export default function TambahLaporanPage() {
       id: messages.length + 1,
       sender,
       text,
-      timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
-    setMessages(prev => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
   };
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
-    
-    addMessage('user', inputValue);
+    if (isProcessingResponse) return;
+
+    addMessage("user", inputValue);
     processUserResponse(inputValue);
-    setInputValue('');
+    setInputValue("");
   };
 
   const saveToLocalStorage = (data: ReportData) => {
-    localStorage.setItem('reportData', JSON.stringify(data));
+    localStorage.setItem("reportData", JSON.stringify(data));
   };
 
   const generateReportSummary = (data: ReportData) => {
-    return `**RINGKASAN LAPORAN INSIDEN**\n\n` +
-           `**Data Pasien:**\n` +
-           `• Nama Pasien: ${data.namaPasien}\n` +
-           `• No. RM: ${data.noRM}\n` +
-           `• Umur: ${data.umur}\n` +
-           `• Jenis Kelamin: ${data.jenisKelamin}\n` +
-           `• Tanggal Masuk RS: ${data.tglMasukRS}\n\n` +
-           `**Rincian Kejadian:**\n` +
-           `• Unit Pelapor: ${data.unitPelapor}\n` +
-           `• Tanggal/Jam Kejadian: ${data.tglKejadian}\n` +
-           `• Judul Insiden: ${data.judulInsiden}\n` +
-           `• Kronologi: ${data.kronologi}\n` +
-           `• Tindakan Segera: ${data.tindakanSegera}\n` +
-           `• Tindakan Oleh: ${data.tindakanOleh}\n` +
-           `• Frekuensi Kejadian: ${data.frekuensiKejadian}`;
+    return (
+      `**Ringkasan Laporan Insiden**\n\n` +
+      `**Data Pasien**\n` +
+      `1. Nama Pasien : ${data.namaPasien}\n` +
+      `2. No. RM : ${data.noRM}\n` +
+      `3. Umur : ${data.umur}\n` +
+      `4. Jenis Kelamin : ${data.jenisKelamin}\n` +
+      `5. Tanggal Masuk RS : ${data.tglMasukRS}\n\n` +
+      `**Rincian Kejadian**\n` +
+      `1. Unit Pelapor : ${data.unitPelapor}\n` +
+      `2. Tanggal/Jam Kejadian : ${data.tglKejadian}\n` +
+      `3. Judul Insiden : ${data.judulInsiden}\n` +
+      `4. Kronologi : ${data.kronologi}\n` +
+      `5. Tindakan Segera : ${data.tindakanSegera}\n` +
+      `6. Tindakan Oleh : ${data.tindakanOleh}\n` +
+      `7. Dampak Insiden : ${data.dampakInsiden}\n` +
+      `8. Frekuensi Kejadian : ${data.frekuensiKejadian}`
+    );
   };
 
   const processUserResponse = (response: string) => {
+    setIsProcessingResponse(true);
     setTimeout(() => {
       const updatedData = { ...reportData };
-      
+
       switch (currentStep) {
-        case 'greeting':
-          if (response.toLowerCase().includes('ya') || response.toLowerCase().includes('iya')) {
-            addMessage('bot', 'Nama pasien?');
-            setCurrentStep('namaPasien');
+        case "greeting":
+          if (
+            response.toLowerCase().includes("ya") ||
+            response.toLowerCase().includes("iya")
+          ) {
+            addMessage("bot", "Nama pasien?");
+            setCurrentStep("namaPasien");
           } else {
-            addMessage('bot', 'Baik, terima kasih. Jika suatu saat Anda ingin melaporkan insiden, silakan buka kembali aplikasi ini.');
-            setCurrentStep('end');
+            addMessage(
+              "bot",
+              "Terima kasih. Jika suatu saat Anda ingin melaporkan insiden, silakan buka kembali aplikasi ini."
+            );
+            setCurrentStep("end");
           }
           break;
-          
-        case 'namaPasien':
+
+        case "namaPasien":
           updatedData.namaPasien = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'No.RM?');
-          setCurrentStep('noRM');
+          addMessage("bot", "No.RM?");
+          setCurrentStep("noRM");
           break;
-          
-        case 'noRM':
+
+        case "noRM":
           updatedData.noRM = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Umur?');
-          setCurrentStep('umur');
+          addMessage("bot", "Umur?");
+          setCurrentStep("umur");
           break;
-          
-        case 'umur':
+
+        case "umur":
           updatedData.umur = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Jenis Kelamin?');
-          setCurrentStep('jenisKelamin');
+          addMessage("bot", "Jenis Kelamin?");
+          setCurrentStep("jenisKelamin");
           break;
-          
-        case 'jenisKelamin':
+
+        case "jenisKelamin":
           updatedData.jenisKelamin = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Tgl masuk RS?');
-          setCurrentStep('tglMasukRS');
+          addMessage("bot", "Tanggal masuk RS?");
+          setCurrentStep("tglMasukRS");
           break;
-          
-        case 'tglMasukRS':
+
+        case "tglMasukRS":
           updatedData.tglMasukRS = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Unit yang melaporkan?');
-          setCurrentStep('unitPelapor');
+          addMessage("bot", "Unit yang melaporkan?");
+          setCurrentStep("unitPelapor");
           break;
-          
-        case 'unitPelapor':
+
+        case "unitPelapor":
           updatedData.unitPelapor = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Tgl/bulan/tahun/jam terjadinya insiden?');
-          setCurrentStep('tglKejadian');
+          addMessage("bot", "Tgl/bulan/tahun/jam terjadinya insiden?");
+          setCurrentStep("tglKejadian");
           break;
-          
-        case 'tglKejadian':
+
+        case "tglKejadian":
           updatedData.tglKejadian = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Judul Insiden?');
-          setCurrentStep('judulInsiden');
+          addMessage("bot", "Judul Insiden?");
+          setCurrentStep("judulInsiden");
           break;
-          
-        case 'judulInsiden':
+
+        case "judulInsiden":
           updatedData.judulInsiden = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Kronologi kejadian?');
-          setCurrentStep('kronologi');
+          addMessage(
+            "bot",
+            "Jelaskan kronologi insiden secara detail dan berurutan. Untuk memastikan laporan Anda lengkap, mohon sertakan informasi berikut:\n\nSiapa: Nama pasien dan staf yang terlibat atau merespons pertama kali.\n\nKapan & Di Mana: Tanggal, jam, dan lokasi spesifik kejadian.\n\nApa & Bagaimana: Apa insiden yang terjadi dan bagaimana urutan kejadiannya dari awal hingga akhir.\n\nMengapa: Dugaan penyebab atau faktor yang berkontribusi pada insiden. (Jika teridentifikasi)"
+          );
+          setCurrentStep("kronologi");
           break;
-          
-        case 'kronologi':
+
+        case "kronologi":
           updatedData.kronologi = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Tindakan yang dilakukan segera setelah kejadian & apa hasilnya?');
-          setCurrentStep('tindakanSegera');
+          addMessage(
+            "bot",
+            "Tindakan yang dilakukan segera setelah kejadian & apa hasilnya?"
+          );
+          setCurrentStep("tindakanSegera");
           break;
-          
-        case 'tindakanSegera':
+
+        case "tindakanSegera":
           updatedData.tindakanSegera = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Tindakan diberikan oleh?');
-          setCurrentStep('tindakanOleh');
+          addMessage("bot", "Tindakan diberikan oleh?");
+          setCurrentStep("tindakanOleh");
           break;
-          
-        case 'tindakanOleh':
+
+        case "tindakanOleh":
           updatedData.tindakanOleh = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          addMessage('bot', 'Seberapa sering kejadian yang sama terjadi di unit tempat anda bekerja?');
-          setCurrentStep('frekuensiKejadian');
+          addMessage("bot", "Dampak insiden terhadap pasien:");
+          setCurrentStep("dampakInsiden");
           break;
-          
-        case 'frekuensiKejadian':
+
+        case "dampakInsiden":
+          updatedData.dampakInsiden = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          addMessage(
+            "bot",
+            "Seberapa sering kejadian yang sama terjadi di unit tempat anda bekerja?"
+          );
+          setCurrentStep("frekuensiKejadian");
+          break;
+
+        case "frekuensiKejadian":
           updatedData.frekuensiKejadian = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
-          
+
           // Generate and show summary
           const summary = generateReportSummary(updatedData);
-          addMessage('bot', summary);
+          addMessage("bot", summary);
           setTimeout(() => {
-            addMessage('bot', 'Apakah laporan sudah sesuai?');
-            setCurrentStep('konfirmasi');
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
           }, 2000);
           break;
-          
-        case 'konfirmasi':
-           if (response.toLowerCase().includes('sesuai') || response.toLowerCase().includes('ya')) {
-             addMessage('bot', 'Terima kasih, laporan berhasil dikirimkan dan tersimpan. Jaga kesehatan dan tetap semangat!');
-             setCurrentStep('end');
-           } else {
-             addMessage('bot', 'Baik, mari kita perbaiki laporan. Pertanyaan nomor berapa yang ingin Anda ubah?\n\n1. Nama pasien\n2. No.RM\n3. Umur\n4. Jenis Kelamin\n5. Tgl masuk RS\n6. Unit yang melaporkan\n7. Tgl/jam kejadian\n8. Judul Insiden\n9. Kronologi kejadian\n10. Tindakan segera\n11. Tindakan diberikan oleh\n12. Frekuensi kejadian\n\nSilakan ketik nomor (1-12):');
-             setCurrentStep('pilihRevisi');
-           }
-           break;
-          
-        case 'pilihRevisi':
-           const nomorPertanyaan = parseInt(response.trim());
-           if (nomorPertanyaan >= 1 && nomorPertanyaan <= 12) {
-             switch (nomorPertanyaan) {
-               case 1:
-                 addMessage('bot', 'Nama pasien yang benar?');
-                 setCurrentStep('namaPasien');
-                 break;
-               case 2:
-                 addMessage('bot', 'No.RM yang benar?');
-                 setCurrentStep('noRM');
-                 break;
-               case 3:
-                 addMessage('bot', 'Umur yang benar?');
-                 setCurrentStep('umur');
-                 break;
-               case 4:
-                 addMessage('bot', 'Jenis Kelamin yang benar?');
-                 setCurrentStep('jenisKelamin');
-                 break;
-               case 5:
-                 addMessage('bot', 'Tgl masuk RS yang benar?');
-                 setCurrentStep('tglMasukRS');
-                 break;
-               case 6:
-                 addMessage('bot', 'Unit yang melaporkan yang benar?');
-                 setCurrentStep('unitPelapor');
-                 break;
-               case 7:
-                 addMessage('bot', 'Tgl/bulan/tahun/jam terjadinya insiden yang benar?');
-                 setCurrentStep('tglKejadian');
-                 break;
-               case 8:
-                 addMessage('bot', 'Judul Insiden yang benar?');
-                 setCurrentStep('judulInsiden');
-                 break;
-               case 9:
-                 addMessage('bot', 'Kronologi kejadian yang benar?');
-                 setCurrentStep('kronologi');
-                 break;
-               case 10:
-                 addMessage('bot', 'Tindakan yang dilakukan segera setelah kejadian & apa hasilnya yang benar?');
-                 setCurrentStep('tindakanSegera');
-                 break;
-               case 11:
-                 addMessage('bot', 'Tindakan diberikan oleh siapa yang benar?');
-                 setCurrentStep('tindakanOleh');
-                 break;
-               case 12:
-                 addMessage('bot', 'Seberapa sering kejadian yang sama terjadi di unit tempat anda bekerja yang benar?');
-                 setCurrentStep('frekuensiKejadian');
-                 break;
-             }
-           } else {
-             addMessage('bot', 'Mohon masukkan nomor yang valid (1-12). Pertanyaan nomor berapa yang ingin Anda ubah?');
-           }
-           break;
-          
+
+        case "konfirmasi":
+          if (
+            response.toLowerCase().includes("sesuai") &&
+            !response.toLowerCase().includes("belum") &&
+            !response.toLowerCase().includes("tidak")
+          ) {
+            addMessage(
+              "bot",
+              "Terima kasih, laporan berhasil dikirimkan dan tersimpan. Jaga kesehatan dan tetap semangat!"
+            );
+            setCurrentStep("end");
+          } else if (
+            response.toLowerCase().includes("belum") ||
+            response.toLowerCase().includes("tidak") ||
+            response.toLowerCase().includes("ubah")
+          ) {
+            addMessage("bot", "Bagian mana yang mau diubah?");
+            setCurrentStep("pilihKategori");
+          } else {
+            addMessage("bot", "Mohon pilih 'Sesuai' atau 'Belum sesuai'.");
+          }
+          break;
+
+        case "pilihKategori":
+          if (
+            response === "1" ||
+            response.toLowerCase().includes("data pasien")
+          ) {
+            addMessage("bot", "Bagian mana yang mau diubah?");
+            setCurrentStep("pilihDataPasien");
+          } else if (
+            response === "2" ||
+            response.toLowerCase().includes("rincian kejadian")
+          ) {
+            addMessage("bot", "Bagian mana yang mau diubah?");
+            setCurrentStep("pilihRincianKejadian");
+          } else {
+            addMessage("bot", "Mohon pilih salah satu opsi yang tersedia.");
+          }
+          break;
+
+        case "pilihDataPasien":
+          const nomorDataPasien = parseInt(response.trim());
+          if (nomorDataPasien >= 1 && nomorDataPasien <= 5) {
+            switch (nomorDataPasien) {
+              case 1:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editNamaPasien");
+                break;
+              case 2:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editNoRM");
+                break;
+              case 3:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editUmur");
+                break;
+              case 4:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editJenisKelamin");
+                break;
+              case 5:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editTglMasukRS");
+                break;
+            }
+          } else {
+            addMessage("bot", "Mohon masukkan nomor yang valid (1-5).");
+          }
+          break;
+
+        case "pilihRincianKejadian":
+          const nomorRincian = parseInt(response.trim());
+          if (nomorRincian >= 1 && nomorRincian <= 8) {
+            switch (nomorRincian) {
+              case 1:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editUnitPelapor");
+                break;
+              case 2:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editTglKejadian");
+                break;
+              case 3:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editJudulInsiden");
+                break;
+              case 4:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editKronologi");
+                break;
+              case 5:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editTindakanSegera");
+                break;
+              case 6:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editTindakanOleh");
+                break;
+              case 7:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editDampakInsiden");
+                break;
+              case 8:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editFrekuensiKejadian");
+                break;
+            }
+          } else {
+            addMessage("bot", "Mohon masukkan nomor yang valid (1-8).");
+          }
+          break;
+
+        // Edit cases for Data Pasien
+        case "editNamaPasien":
+          updatedData.namaPasien = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditNama = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditNama);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editNoRM":
+          updatedData.noRM = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditNoRM = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditNoRM);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editUmur":
+          updatedData.umur = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditUmur = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditUmur);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editJenisKelamin":
+          // Tidak langsung memproses response, karena akan menggunakan sistem tombol opsi
+          // Response akan diproses melalui tombol pilihan di UI
+          break;
+
+        case "editTglMasukRS":
+          // Tidak langsung memproses response, karena akan menggunakan sistem kalender
+          // Response akan diproses melalui tombol konfirmasi di UI
+          break;
+
+        // Edit cases for Rincian Kejadian
+        case "editUnitPelapor":
+          updatedData.unitPelapor = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditUnit = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditUnit);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editTglKejadian":
+          // Tidak langsung memproses response, karena akan menggunakan sistem kalender dan jam
+          // Response akan diproses melalui tombol konfirmasi di UI
+          break;
+
+        case "editJudulInsiden":
+          updatedData.judulInsiden = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditJudul = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditJudul);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editKronologi":
+          updatedData.kronologi = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditKronologi = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditKronologi);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editTindakanSegera":
+          updatedData.tindakanSegera = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditTindakanSegera =
+            generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditTindakanSegera);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editTindakanOleh":
+          updatedData.tindakanOleh = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditTindakanOleh =
+            generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditTindakanOleh);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editDampakInsiden":
+          // Tidak langsung memproses response, karena akan menggunakan sistem tombol opsi
+          // Response akan diproses melalui tombol pilihan di UI
+          break;
+
+        case "editFrekuensiKejadian":
+          // Response akan diproses melalui tombol opsi pilihan di UI
+          break;
+
         default:
           break;
       }
+      setIsProcessingResponse(false);
     }, 1000);
   };
 
-
   const handleQuickResponse = (response: string) => {
-    addMessage('user', response);
+    if (isProcessingResponse) return; // Prevent multiple submissions during processing
+    addMessage("user", response);
     processUserResponse(response);
   };
 
   const startVoiceRecognition = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (isListening) {
+      // Stop recording if currently listening
+      setIsListening(false);
+      return;
+    }
+
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
-      
-      recognition.lang = 'id-ID';
+
+      recognition.lang = "id-ID";
       recognition.continuous = false;
       recognition.interimResults = false;
-      
+
       recognition.onstart = () => {
         setIsListening(true);
       };
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
+        // Only populate input field, don't auto-send
         setInputValue(transcript);
         setIsListening(false);
-        // Auto-send setelah speech recognition selesai
-        setTimeout(() => {
-          if (transcript.trim()) {
-            addMessage('user', transcript);
-            processUserResponse(transcript);
-            setInputValue('');
-          }
-        }, 500);
       };
-      
+
       recognition.onerror = () => {
         setIsListening(false);
       };
-      
+
       recognition.onend = () => {
         setIsListening(false);
       };
-      
+
       recognition.start();
     } else {
-      alert('Browser Anda tidak mendukung speech recognition');
+      alert("Browser Anda tidak mendukung speech recognition");
     }
   };
 
   const renderQuickButtons = () => {
-    if (currentStep === 'greeting') {
+    if (currentStep === "greeting") {
       return (
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => handleQuickResponse('Ya')}
-            className="bg-[#0B7A95] text-white px-4 py-2 rounded-full text-sm hover:bg-[#0a6b85] transition-colors"
+            onClick={() => handleQuickResponse("Ya")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
           >
             Ya
           </button>
           <button
-            onClick={() => handleQuickResponse('Tidak')}
-            className="bg-gray-500 text-white px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors"
+            onClick={() => handleQuickResponse("Tidak")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-gray-500 text-white hover:bg-gray-600"
+            }`}
           >
             Tidak
           </button>
         </div>
       );
     }
-    
-    if (currentStep === 'jenisKelamin') {
+
+    if (currentStep === "tglMasukRS") {
+      return (
+        <div className="mb-4">
+          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Pilih Tanggal Masuk RS:
+            </label>
+            <input
+              type="date"
+              value={selectedDate}
+              disabled={isProcessingResponse}
+              onChange={(e) => {
+                setSelectedDate(e.target.value);
+              }}
+              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                isProcessingResponse ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+            />
+            {selectedDate && (
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    if (!isProcessingResponse) {
+                      const formattedDate = new Date(
+                        selectedDate
+                      ).toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      });
+                      handleQuickResponse(formattedDate);
+                      setSelectedDate("");
+                    }
+                  }}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                  }`}
+                >
+                  Konfirmasi Tanggal
+                </button>
+                <button
+                  onClick={() => setSelectedDate("")}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-gray-500 text-white hover:bg-gray-600"
+                  }`}
+                >
+                  Batal
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (currentStep === "jenisKelamin") {
       return (
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => handleQuickResponse('Laki-laki')}
-            className="bg-[#0B7A95] text-white px-4 py-2 rounded-full text-sm hover:bg-[#0a6b85] transition-colors"
+            onClick={() => handleQuickResponse("Laki-laki")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
           >
             Laki-laki
           </button>
           <button
-            onClick={() => handleQuickResponse('Perempuan')}
-            className="bg-[#0B7A95] text-white px-4 py-2 rounded-full text-sm hover:bg-[#0a6b85] transition-colors"
+            onClick={() => handleQuickResponse("Perempuan")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
           >
             Perempuan
           </button>
         </div>
       );
     }
-    
-    if (currentStep === 'konfirmasi') {
+
+    if (currentStep === "editJenisKelamin") {
       return (
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => handleQuickResponse('Sesuai')}
-            className="bg-[#0B7A95] text-white px-4 py-2 rounded-full text-sm hover:bg-[#0a6b85] transition-colors"
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.jenisKelamin = "Laki-laki";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditJenisKelamin =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditJenisKelamin);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Laki-laki
+          </button>
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.jenisKelamin = "Perempuan";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditJenisKelamin =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditJenisKelamin);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Perempuan
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "konfirmasi") {
+      return (
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => handleQuickResponse("Sesuai")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
           >
             Sesuai
           </button>
           <button
-            onClick={() => handleQuickResponse('Belum sesuai')}
-            className="bg-gray-500 text-white px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors"
+            onClick={() => handleQuickResponse("Belum sesuai")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-gray-500 text-white hover:bg-gray-600"
+            }`}
           >
             Belum sesuai
           </button>
         </div>
       );
     }
-    
+
+    if (currentStep === "pilihKategori") {
+      return (
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => handleQuickResponse("1")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            1. Data Pasien
+          </button>
+          <button
+            onClick={() => handleQuickResponse("2")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            2. Rincian Kejadian
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "pilihDataPasien") {
+      return (
+        <div className="flex flex-col items-start gap-2 mb-4">
+          <button
+            onClick={() => handleQuickResponse("1")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            1. Nama Pasien
+          </button>
+          <button
+            onClick={() => handleQuickResponse("2")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            2. No. RM
+          </button>
+          <button
+            onClick={() => handleQuickResponse("3")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            3. Umur
+          </button>
+          <button
+            onClick={() => handleQuickResponse("4")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            4. Jenis Kelamin
+          </button>
+          <button
+            onClick={() => handleQuickResponse("5")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            5. Tanggal Masuk RS
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "pilihRincianKejadian") {
+      return (
+        <div className="flex flex-col items-start gap-2 mb-4">
+          <button
+            onClick={() => handleQuickResponse("1")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            1. Unit Pelapor
+          </button>
+          <button
+            onClick={() => handleQuickResponse("2")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            2. Tanggal/Jam Kejadian
+          </button>
+          <button
+            onClick={() => handleQuickResponse("3")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            3. Judul Insiden
+          </button>
+          <button
+            onClick={() => handleQuickResponse("4")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            4. Kronologi
+          </button>
+          <button
+            onClick={() => handleQuickResponse("5")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            5. Tindakan Segera
+          </button>
+          <button
+            onClick={() => handleQuickResponse("6")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            6. Tindakan Oleh
+          </button>
+          <button
+            onClick={() => handleQuickResponse("7")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            7. Dampak Insiden
+          </button>
+          <button
+            onClick={() => handleQuickResponse("8")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            8. Frekuensi Kejadian
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "tglKejadian") {
+      return (
+        <div className="mb-4">
+          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Pilih Tanggal/Jam Kejadian Insiden:
+            </label>
+            <input
+              type="datetime-local"
+              value={selectedIncidentDate}
+              disabled={isProcessingResponse}
+              onChange={(e) => {
+                setSelectedIncidentDate(e.target.value);
+              }}
+              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                isProcessingResponse ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+            />
+            {selectedIncidentDate && (
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    if (!isProcessingResponse) {
+                      const selectedDateTime = new Date(selectedIncidentDate);
+                      const formattedDateTime =
+                        selectedDateTime.toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        }) +
+                        " " +
+                        selectedDateTime.toLocaleTimeString("id-ID", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        });
+                      handleQuickResponse(formattedDateTime);
+                      setSelectedIncidentDate("");
+                    }
+                  }}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                  }`}
+                >
+                  Konfirmasi Tanggal & Jam
+                </button>
+                <button
+                  onClick={() => setSelectedIncidentDate("")}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-gray-500 text-white hover:bg-gray-600"
+                  }`}
+                >
+                  Batal
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (currentStep === "editTglMasukRS") {
+      return (
+        <div className="mb-4">
+          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Pilih Tanggal Masuk RS Baru:
+            </label>
+            <input
+              type="date"
+              value={selectedDate}
+              disabled={isProcessingResponse}
+              onChange={(e) => {
+                setSelectedDate(e.target.value);
+              }}
+              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                isProcessingResponse ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+            />
+            {selectedDate && (
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    if (!isProcessingResponse) {
+                      const selectedDateObj = new Date(selectedDate);
+                      const formattedDate = selectedDateObj.toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        }
+                      );
+
+                      // Update data
+                      const updatedData = { ...reportData };
+                      updatedData.tglMasukRS = formattedDate;
+                      setReportData(updatedData);
+                      saveToLocalStorage(updatedData);
+
+                      // Generate summary and return to confirmation
+                      const summaryAfterEditTglMasuk =
+                        generateReportSummary(updatedData);
+                      addMessage("bot", summaryAfterEditTglMasuk);
+                      setTimeout(() => {
+                        addMessage("bot", "Apakah laporan sudah sesuai?");
+                        setCurrentStep("konfirmasi");
+                      }, 2000);
+
+                      setSelectedDate("");
+                    }
+                  }}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                  }`}
+                >
+                  Konfirmasi Tanggal
+                </button>
+                <button
+                  onClick={() => setSelectedDate("")}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-gray-500 text-white hover:bg-gray-600"
+                  }`}
+                >
+                  Batal
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (currentStep === "editTglKejadian") {
+      return (
+        <div className="mb-4">
+          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Pilih Tanggal/Jam Kejadian Baru:
+            </label>
+            <input
+              type="datetime-local"
+              value={selectedIncidentDate}
+              disabled={isProcessingResponse}
+              onChange={(e) => {
+                setSelectedIncidentDate(e.target.value);
+              }}
+              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                isProcessingResponse ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+            />
+            {selectedIncidentDate && (
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    if (!isProcessingResponse) {
+                      const selectedDateTime = new Date(selectedIncidentDate);
+                      const formattedDateTime =
+                        selectedDateTime.toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        }) +
+                        " " +
+                        selectedDateTime.toLocaleTimeString("id-ID", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        });
+
+                      // Update data
+                      const updatedData = { ...reportData };
+                      updatedData.tglKejadian = formattedDateTime;
+                      setReportData(updatedData);
+                      saveToLocalStorage(updatedData);
+
+                      // Generate summary and return to confirmation
+                      const summaryAfterEditTglKejadian =
+                        generateReportSummary(updatedData);
+                      addMessage("bot", summaryAfterEditTglKejadian);
+                      setTimeout(() => {
+                        addMessage("bot", "Apakah laporan sudah sesuai?");
+                        setCurrentStep("konfirmasi");
+                      }, 2000);
+
+                      setSelectedIncidentDate("");
+                    }
+                  }}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                  }`}
+                >
+                  Konfirmasi Tanggal & Jam
+                </button>
+                <button
+                  onClick={() => setSelectedIncidentDate("")}
+                  disabled={isProcessingResponse}
+                  className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                    isProcessingResponse
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      : "bg-gray-500 text-white hover:bg-gray-600"
+                  }`}
+                >
+                  Batal
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (currentStep === "editDampakInsiden") {
+      return (
+        <div className="flex flex-col gap-2 mb-4 items-start">
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.dampakInsiden = "Kematian";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditDampak =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditDampak);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Kematian
+          </button>
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.dampakInsiden = "Cidera irreversible/ cidera berat";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditDampak =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditDampak);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera irreversible/ cidera berat
+          </button>
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.dampakInsiden = "Cidera reversible/ cidera sedang";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditDampak =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditDampak);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera reversible/ cidera sedang
+          </button>
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.dampakInsiden = "Cidera ringan";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditDampak =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditDampak);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera ringan
+          </button>
+          <button
+            onClick={() => {
+              if (!isProcessingResponse) {
+                // Update data
+                const updatedData = { ...reportData };
+                updatedData.dampakInsiden = "Tidak ada cidera";
+                setReportData(updatedData);
+                saveToLocalStorage(updatedData);
+
+                // Generate summary and return to confirmation
+                const summaryAfterEditDampak =
+                  generateReportSummary(updatedData);
+                addMessage("bot", summaryAfterEditDampak);
+                setTimeout(() => {
+                  addMessage("bot", "Apakah laporan sudah sesuai?");
+                  setCurrentStep("konfirmasi");
+                }, 2000);
+              }
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Tidak ada cidera
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "dampakInsiden") {
+      return (
+        <div className="flex flex-col gap-2 mb-4 items-start">
+          <button
+            onClick={() => handleQuickResponse("Kematian")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Kematian
+          </button>
+          <button
+            onClick={() =>
+              handleQuickResponse("Cidera irreversible/ cidera berat")
+            }
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera irreversible/ cidera berat
+          </button>
+          <button
+            onClick={() =>
+              handleQuickResponse("Cidera reversible/ cidera sedang")
+            }
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera reversible/ cidera sedang
+          </button>
+          <button
+            onClick={() => handleQuickResponse("Cidera ringan")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Cidera ringan
+          </button>
+          <button
+            onClick={() => handleQuickResponse("Tidak ada cidera")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Tidak ada cidera
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "editFrekuensiKejadian") {
+      return (
+        <div className="flex flex-col gap-2 mb-4 items-start">
+          <button
+            onClick={() => {
+              const updatedData = { ...reportData };
+              updatedData.frekuensiKejadian = "5 tahun sekali";
+              setReportData(updatedData);
+              saveToLocalStorage(updatedData);
+              const summaryAfterEditFrekuensi =
+                generateReportSummary(updatedData);
+              addMessage("bot", summaryAfterEditFrekuensi);
+              setTimeout(() => {
+                addMessage("bot", "Apakah laporan sudah sesuai?");
+                setCurrentStep("konfirmasi");
+              }, 2000);
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            5 tahun sekali
+          </button>
+          <button
+            onClick={() => {
+              const updatedData = { ...reportData };
+              updatedData.frekuensiKejadian = "2–5 tahun sekali";
+              setReportData(updatedData);
+              saveToLocalStorage(updatedData);
+              const summaryAfterEditFrekuensi =
+                generateReportSummary(updatedData);
+              addMessage("bot", summaryAfterEditFrekuensi);
+              setTimeout(() => {
+                addMessage("bot", "Apakah laporan sudah sesuai?");
+                setCurrentStep("konfirmasi");
+              }, 2000);
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            2–5 tahun sekali
+          </button>
+          <button
+            onClick={() => {
+              const updatedData = { ...reportData };
+              updatedData.frekuensiKejadian = "1–2 tahun sekali";
+              setReportData(updatedData);
+              saveToLocalStorage(updatedData);
+              const summaryAfterEditFrekuensi =
+                generateReportSummary(updatedData);
+              addMessage("bot", summaryAfterEditFrekuensi);
+              setTimeout(() => {
+                addMessage("bot", "Apakah laporan sudah sesuai?");
+                setCurrentStep("konfirmasi");
+              }, 2000);
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            1–2 tahun sekali
+          </button>
+          <button
+            onClick={() => {
+              const updatedData = { ...reportData };
+              updatedData.frekuensiKejadian = "Beberapa kali per tahun";
+              setReportData(updatedData);
+              saveToLocalStorage(updatedData);
+              const summaryAfterEditFrekuensi =
+                generateReportSummary(updatedData);
+              addMessage("bot", summaryAfterEditFrekuensi);
+              setTimeout(() => {
+                addMessage("bot", "Apakah laporan sudah sesuai?");
+                setCurrentStep("konfirmasi");
+              }, 2000);
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Beberapa kali per tahun
+          </button>
+          <button
+            onClick={() => {
+              const updatedData = { ...reportData };
+              updatedData.frekuensiKejadian = "Setiap bulan/minggu";
+              setReportData(updatedData);
+              saveToLocalStorage(updatedData);
+              const summaryAfterEditFrekuensi =
+                generateReportSummary(updatedData);
+              addMessage("bot", summaryAfterEditFrekuensi);
+              setTimeout(() => {
+                addMessage("bot", "Apakah laporan sudah sesuai?");
+                setCurrentStep("konfirmasi");
+              }, 2000);
+            }}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Setiap bulan/minggu
+          </button>
+        </div>
+      );
+    }
+
+    if (currentStep === "frekuensiKejadian") {
+      return (
+        <div className="flex flex-col gap-2 mb-4 items-start">
+          <button
+            onClick={() => handleQuickResponse("5 tahun sekali")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            5 tahun sekali
+          </button>
+          <button
+            onClick={() => handleQuickResponse("2–5 tahun sekali")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            2–5 tahun sekali
+          </button>
+          <button
+            onClick={() => handleQuickResponse("1–2 tahun sekali")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            1–2 tahun sekali
+          </button>
+          <button
+            onClick={() => handleQuickResponse("Beberapa kali per tahun")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Beberapa kali per tahun
+          </button>
+          <button
+            onClick={() => handleQuickResponse("Setiap bulan/minggu")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors text-left w-auto ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            Setiap bulan/minggu
+          </button>
+        </div>
+      );
+    }
+
     return null;
   };
 
@@ -419,40 +1590,56 @@ export default function TambahLaporanPage() {
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Riwayat */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-perawat'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/dashboard-perawat")}
+            >
               <i className="fas fa-clipboard-list text-lg mb-1"></i>
               <span className="text-xs">Riwayat</span>
             </button>
-            
+
             {/* Notifikasi */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-perawat'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/notifications-perawat")}
+            >
               <i className="fas fa-bell text-lg mb-1"></i>
               <span className="text-xs">Notifikasi</span>
             </button>
-            
+
             {/* Tutorial */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/video-tutorial-perawat")}
+            >
               <i className="fas fa-play-circle text-lg mb-1"></i>
               <span className="text-xs">Tutorial</span>
             </button>
-            
+
             {/* Profil */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-perawat'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/profile-perawat")}
+            >
               <i className="fas fa-user text-lg mb-1"></i>
               <span className="text-xs">Profil</span>
             </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
             onClick={toggleMobileMenu}
           >
-            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            <i
+              className={`fas ${
+                isMobileMenuOpen ? "fa-times" : "fa-bars"
+              } text-xl`}
+            ></i>
           </button>
         </div>
 
@@ -461,25 +1648,41 @@ export default function TambahLaporanPage() {
           <div className="md:hidden mt-4 pt-4 border-t border-white/20">
             <div className="flex flex-col space-y-3">
               {/* Riwayat */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/dashboard-perawat'}>
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                onClick={() => (window.location.href = "/dashboard-perawat")}
+              >
                 <i className="fas fa-clipboard-list text-lg mr-3"></i>
                 <span>Riwayat</span>
               </button>
-              
+
               {/* Notifikasi */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/notifications-perawat'}>
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                onClick={() =>
+                  (window.location.href = "/notifications-perawat")
+                }
+              >
                 <i className="fas fa-bell text-lg mr-3"></i>
                 <span>Notifikasi</span>
               </button>
-              
+
               {/* Tutorial */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/video-tutorial-perawat'}>
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                onClick={() =>
+                  (window.location.href = "/video-tutorial-perawat")
+                }
+              >
                 <i className="fas fa-play-circle text-lg mr-3"></i>
                 <span>Tutorial</span>
               </button>
-              
+
               {/* Profil */}
-              <button className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2" onClick={() => window.location.href = '/profile-perawat'}>
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                onClick={() => (window.location.href = "/profile-perawat")}
+              >
                 <i className="fas fa-user text-lg mr-3"></i>
                 <span>Profil</span>
               </button>
@@ -490,10 +1693,10 @@ export default function TambahLaporanPage() {
 
       {/* Main Chat Container */}
       <main className="flex-1 px-6 py-6">
-        <div 
+        <div
           className="bg-white rounded-lg p-6 h-full relative overflow-hidden"
           style={{
-            background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
+            background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
         >
           {/* Background pattern */}
@@ -504,89 +1707,151 @@ export default function TambahLaporanPage() {
             fill
             style={{ zIndex: 0 }}
           />
-          
+
           {/* Content Container */}
           <div className="relative z-10 h-full flex justify-center items-center">
             <div className="bg-white rounded-xl shadow-lg h-full flex flex-col max-w-2xl w-full">
-          {/* Chat Header */}
-          <div className="bg-[#0B7A95] text-white p-4 rounded-t-xl flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <i className="fas fa-robot text-[#0B7A95] text-lg"></i>
-            </div>
-            <div>
-              <h3 className="font-semibold">SafeNurse Assistant</h3>
-              <p className="text-sm opacity-90">Asisten Pelaporan Insiden</p>
-            </div>
-          </div>
-          
-          {/* Messages Container */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4" style={{ maxHeight: 'calc(100vh - 300px)' }}>
-            {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start items-start'}`}>
-                {message.sender === 'bot' && (
-                  <div className="w-8 h-8 bg-[#0B7A95] rounded-full flex items-center justify-center mr-2 mt-1 flex-shrink-0">
-                    <i className="fas fa-robot text-white text-sm"></i>
-                  </div>
-                )}
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                  message.sender === 'user' 
-                    ? 'bg-[#0B7A95] text-white' 
-                    : 'bg-gray-100 text-gray-800'
-                }`}>
-                  <p className="text-sm">{message.text}</p>
-                  <p className={`text-xs mt-1 ${
-                    message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-                  }`}>
-                    {message.timestamp}
+              {/* Chat Header */}
+              <div className="bg-[#0B7A95] text-white p-4 rounded-t-xl flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                  <i className="fas fa-robot text-[#0B7A95] text-lg"></i>
+                </div>
+                <div>
+                  <h3 className="font-semibold">SafeNurse Assistant</h3>
+                  <p className="text-sm opacity-90">
+                    Asisten Pelaporan Insiden
                   </p>
                 </div>
               </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-          
-          {/* Quick Response Buttons */}
-          <div className="px-4">
-            {renderQuickButtons()}
-          </div>
-          
-          {/* Input Area */}
-          {currentStep !== 'end' && (
-            <div className="p-4 border-t border-gray-200">
-              <div className="flex items-center space-x-2">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                    placeholder="Ketik pesan Anda..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black"
-                  />
-                </div>
-                
-                <button
-                  onClick={startVoiceRecognition}
-                  className={`p-2 rounded-full transition-colors ${
-                    isListening 
-                      ? 'bg-red-500 text-white' 
-                      : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                  }`}
-                  title="Rekam Suara"
-                >
-                  <i className={`fas ${isListening ? 'fa-stop' : 'fa-microphone'}`}></i>
-                </button>
-                
-                <button
-                  onClick={handleSendMessage}
-                  className="bg-[#0B7A95] text-white p-2 rounded-full hover:bg-[#0a6b85] transition-colors"
-                  title="Kirim Pesan"
-                >
-                  <i className="fas fa-paper-plane"></i>
-                </button>
+
+              {/* Messages Container */}
+              <div
+                className="flex-1 p-4 overflow-y-auto space-y-4"
+                style={{ maxHeight: "calc(100vh - 300px)" }}
+              >
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${
+                      message.sender === "user"
+                        ? "justify-end"
+                        : "justify-start items-start"
+                    }`}
+                  >
+                    {message.sender === "bot" && (
+                      <div className="w-8 h-8 bg-[#0B7A95] rounded-full flex items-center justify-center mr-2 mt-1 flex-shrink-0">
+                        <i className="fas fa-robot text-white text-sm"></i>
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        message.sender === "user"
+                          ? "bg-[#0B7A95] text-white"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      <p className="text-sm whitespace-pre-line">
+                        {message.text}
+                      </p>
+                      <p
+                        className={`text-xs mt-1 ${
+                          message.sender === "user"
+                            ? "text-blue-100"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {message.timestamp}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
-            </div>
-          )}
+
+              {/* Quick Response Buttons */}
+              <div className="px-4">{renderQuickButtons()}</div>
+
+              {/* Input Area */}
+              {currentStep !== "end" && 
+               currentStep !== "jenisKelamin" && 
+               currentStep !== "dampakInsiden" && 
+               currentStep !== "frekuensiKejadian" && 
+               currentStep !== "tglMasukRS" && 
+               currentStep !== "tglKejadian" &&
+               currentStep !== "editJenisKelamin" &&
+               currentStep !== "editDampakInsiden" &&
+               currentStep !== "editFrekuensiKejadian" &&
+               currentStep !== "editTglMasukRS" &&
+               currentStep !== "editTglKejadian" && (
+                <div className="p-4 border-t border-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyPress={(e) =>
+                          e.key === "Enter" && handleSendMessage()
+                        }
+                        placeholder="Ketik pesan Anda..."
+                        disabled={isProcessingResponse}
+                        className={`w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                          isProcessingResponse
+                            ? "bg-gray-100 cursor-not-allowed"
+                            : ""
+                        }`}
+                      />
+                    </div>
+
+                    <button
+                      onClick={startVoiceRecognition}
+                      className={`p-2 rounded-full transition-all duration-200 ${
+                        isListening
+                          ? "bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50"
+                          : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:shadow-md"
+                      }`}
+                      title={
+                        isListening
+                          ? "Klik untuk berhenti merekam"
+                          : "Rekam Suara"
+                      }
+                    >
+                      <i
+                        className={`fas ${
+                          isListening ? "fa-stop" : "fa-microphone"
+                        } ${isListening ? "animate-pulse" : ""}`}
+                      ></i>
+                    </button>
+
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={isProcessingResponse}
+                      className={`p-2 rounded-full transition-colors ${
+                        isProcessingResponse
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                      }`}
+                      title="Kirim Pesan"
+                    >
+                      <i className="fas fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Back to Dashboard Button - Only show when conversation ends */}
+              {currentStep === "end" && (
+                <div className="p-4 border-t border-gray-200">
+                  <button
+                    onClick={() =>
+                      (window.location.href = "/dashboard-perawat")
+                    }
+                    className="w-full px-4 py-3 bg-[#0B7A95] text-white rounded-lg hover:bg-[#0a6b85] transition-colors font-medium"
+                  >
+                    Kembali ke Dashboard
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
