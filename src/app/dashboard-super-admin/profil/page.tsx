@@ -69,7 +69,79 @@ export default function ProfilSuperAdmin() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounceGentle {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out;
+        }
+
+        .animate-slide-up {
+          animation: slideUp 0.6s ease-out;
+        }
+
+        .animate-slide-up-delay-1 {
+          animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        .animate-fade-in-delay-1 {
+          animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .animate-fade-in-delay-2 {
+          animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        .animate-bounce-gentle {
+          animation: bounceGentle 2s infinite;
+        }
+
+        .hover\\:shadow-3xl:hover {
+          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        @media (max-width: 768px) {
+          .animate-slide-up,
+          .animate-slide-up-delay-1,
+          .animate-fade-in,
+          .animate-fade-in-delay-1,
+          .animate-fade-in-delay-2 {
+            animation-duration: 0.4s;
+          }
+        }
+      `}</style>
+      <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
       <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
         <div className="flex justify-between items-center">
@@ -151,9 +223,9 @@ export default function ProfilSuperAdmin() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 animate-fade-in">
         <div 
-          className="bg-white rounded-lg p-6 h-full relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full relative overflow-hidden animate-slide-up"
           style={{
             background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
           }}
@@ -161,7 +233,7 @@ export default function ProfilSuperAdmin() {
           {/* Background pattern */}
           <Image
             alt="Background medical pattern"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none animate-bounce-gentle"
             src="/bgperawat.png"
             fill
             style={{ zIndex: 0 }}
@@ -174,10 +246,10 @@ export default function ProfilSuperAdmin() {
               <div className="max-w-4xl w-full space-y-6">
                 
                 {/* Top Section - Profile Info and General Information */}
-                <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex flex-col lg:flex-row gap-6 animate-slide-up-delay-1">
                   
                   {/* Left Box - Profile Picture, Name, Email */}
-                  <div className="bg-white/95 rounded-2xl p-6 shadow-2xl flex flex-col items-center">
+                  <div className="bg-white/95 rounded-2xl p-6 shadow-2xl flex flex-col items-center transform hover:scale-105 transition-all duration-300 hover:shadow-3xl">
                     <div className="w-24 h-24 bg-[#4A9B8E] rounded-full flex items-center justify-center mb-4">
                       <i className="fas fa-user-shield text-3xl text-white"></i>
                     </div>
@@ -186,7 +258,7 @@ export default function ProfilSuperAdmin() {
                   </div>
                   
                   {/* Right Box - General Information */}
-                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl">
+                  <div className="flex-1 bg-white/95 rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition-all duration-300 hover:shadow-3xl">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">General Information</h3>
                     <div className="flex items-center justify-center h-32">
                       <p className="text-gray-500 text-center italic">No general information available</p>
@@ -195,7 +267,7 @@ export default function ProfilSuperAdmin() {
                 </div>
                 
                 {/* Bottom Box - Security */}
-                <div className="bg-white/95 rounded-2xl p-6 shadow-2xl">
+                <div className="bg-white/95 rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition-all duration-300 hover:shadow-3xl animate-fade-in-delay-1">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Security</h3>
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -210,7 +282,7 @@ export default function ProfilSuperAdmin() {
                     </div>
                     <button 
                       onClick={handleChangeAccount}
-                      className="bg-[#6B8CAE] text-white px-6 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium"
+                      className="bg-[#6B8CAE] text-white px-6 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium transform hover:scale-105 transition-all duration-300"
                     >
                       Change Account
                     </button>
@@ -218,10 +290,10 @@ export default function ProfilSuperAdmin() {
                 </div>
                 
                 {/* Logout Button */}
-                <div className="flex justify-center">
+                <div className="flex justify-center animate-fade-in-delay-2">
                   <button 
                     onClick={handleLogout}
-                    className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium"
+                    className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium transform hover:scale-105 transition-all duration-300"
                   >
                     Logout
                   </button>
@@ -347,6 +419,7 @@ export default function ProfilSuperAdmin() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

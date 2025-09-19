@@ -81,7 +81,74 @@ export default function ProfileChiefNursingPage() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        
+        @keyframes bounceGentle {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-5px);
+          }
+          60% {
+            transform: translateY(-3px);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out;
+        }
+        
+        .animate-slide-up {
+          animation: slideUp 0.8s ease-out;
+        }
+        
+        .animate-slide-up-delay-1 {
+          animation: slideUp 0.8s ease-out 0.2s both;
+        }
+        
+        .animate-fade-in-delay-1 {
+          animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+        
+        .animate-fade-in-delay-2 {
+          animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+        
+        .animate-bounce-gentle {
+          animation: bounceGentle 2s infinite;
+        }
+        
+        .hover\\:shadow-3xl:hover {
+          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        @media (max-width: 768px) {
+          .animate-slide-up,
+          .animate-slide-up-delay-1,
+          .animate-fade-in-delay-1,
+          .animate-fade-in-delay-2 {
+            animation-duration: 0.6s;
+          }
+        }
+      `}</style>
+      <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
       <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
         <div className="flex justify-between items-center">
@@ -191,9 +258,9 @@ export default function ProfileChiefNursingPage() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-4 md:px-6 py-4 md:py-6">
+      <main className="flex-1 px-4 md:px-6 py-4 md:py-6 animate-fade-in">
         <div
-          className="bg-white rounded-lg p-4 md:p-6 h-full relative overflow-hidden"
+          className="bg-white rounded-lg p-4 md:p-6 h-full relative overflow-hidden animate-slide-up"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -213,9 +280,9 @@ export default function ProfileChiefNursingPage() {
             <div className="flex justify-center items-center min-h-full">
               <div className="max-w-4xl w-full space-y-6">
                 {/* Top Section - Profile Info and General Information */}
-                <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+                <div className="flex flex-col lg:flex-row gap-4 md:gap-6 animate-slide-up-delay-1">
                   {/* Left Box - Profile Picture, Name, Email */}
-                  <div className="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl flex flex-col items-center">
+                  <div className="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl flex flex-col items-center transform hover:scale-105 transition-all duration-300 hover:shadow-3xl animate-bounce-gentle">
                     <div className="w-20 md:w-24 h-20 md:h-24 bg-[#4A9B8E] rounded-full flex items-center justify-center mb-3 md:mb-4">
                       <i className="fas fa-user text-2xl md:text-3xl text-white"></i>
                     </div>
@@ -228,7 +295,7 @@ export default function ProfileChiefNursingPage() {
                   </div>
 
                   {/* Right Box - General Information */}
-                  <div className="flex-1 bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl relative">
+                  <div className="flex-1 bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl relative transform hover:scale-105 transition-all duration-300 hover:shadow-3xl animate-slide-up-delay-1">
                     <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">
                       General Information
                     </h3>
@@ -262,7 +329,7 @@ export default function ProfileChiefNursingPage() {
                     <div className="mt-4 md:mt-6 flex justify-end">
                       <button
                         onClick={handleChangeProfile}
-                        className="bg-[#6B8CAE] text-white px-3 md:px-4 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-xs md:text-sm"
+                        className="bg-[#6B8CAE] text-white px-3 md:px-4 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-xs md:text-sm transform hover:scale-105 transition-all duration-300"
                       >
                         Change Profile
                       </button>
@@ -271,7 +338,7 @@ export default function ProfileChiefNursingPage() {
                 </div>
 
                 {/* Bottom Box - Security */}
-                <div className="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl">
+                <div className="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl transform hover:scale-105 transition-all duration-300 hover:shadow-3xl animate-fade-in-delay-1">
                   <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-3 md:mb-4">
                     Security
                   </h3>
@@ -296,7 +363,7 @@ export default function ProfileChiefNursingPage() {
                     </div>
                     <button
                       onClick={handleChangeAccount}
-                      className="bg-[#6B8CAE] text-white px-3 md:px-6 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-xs md:text-base w-full sm:w-auto"
+                      className="bg-[#6B8CAE] text-white px-3 md:px-6 py-2 rounded-lg hover:bg-[#5A7A9A] transition-colors font-medium text-xs md:text-base w-full sm:w-auto transform hover:scale-105 transition-all duration-300"
                     >
                       Change Account
                     </button>
@@ -304,10 +371,10 @@ export default function ProfileChiefNursingPage() {
                 </div>
 
                 {/* Logout Button */}
-                <div className="flex justify-center">
+                <div className="flex justify-center animate-fade-in-delay-2">
                   <button
                     onClick={handleLogout}
-                    className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium"
+                    className="bg-[#2C3E50] text-white px-8 py-3 rounded-lg hover:bg-[#34495E] transition-colors font-medium transform hover:scale-105 transition-all duration-300"
                   >
                     Logout
                   </button>
@@ -547,6 +614,7 @@ export default function ProfileChiefNursingPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
