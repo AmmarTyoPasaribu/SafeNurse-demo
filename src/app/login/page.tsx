@@ -6,6 +6,7 @@ import Image from 'next/image';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,11 +103,14 @@ export default function LoginPage() {
                         className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
                         id="password"
                         placeholder="***************"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
-                      <i className="fas fa-lock text-[#0E364A] text-lg"></i>
+                      <i 
+                        className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-[#0E364A] text-lg cursor-pointer`}
+                        onClick={() => setShowPassword(!showPassword)}
+                      ></i>
                     </div>
                   </div>
                   <div className="text-[#0E364A] text-lg underline text-right cursor-pointer">

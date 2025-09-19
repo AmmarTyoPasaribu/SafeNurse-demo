@@ -6,28 +6,32 @@ interface Report {
   id: number;
   title: string;
   status: string;
-  detailNamaPasien: string;
-  usia: string;
-  nomorRekamMedis: string;
-  ruangPerawatan: string;
-  keluhanUtama: string;
-  gejalaTambahan: string;
-  riwayatPenyakit: string;
-  riwayatAlergi: string;
-  polaTidurMakan: string;
-  aktivitasHarian: string;
-  faktorRisiko: string;
-  kesimpulanSementara: string;
-  kategori: string;
+  kodeLaporan: string;
+  namaPerawatYangMenangani: string;
+  namaRuanganPerawatYangMenangani: string;
+  namaPasien: string;
+  noRm: string;
+  umur: string;
+  jenisKelamin: string;
+  tanggalMasukRs: string;
+  unitYangMelaporkan: string;
+  lokasiKejadian: string;
+  tanggalInsiden: string;
+  judulInsiden: string;
+  kronologi: string;
+  tindakanAwal: string;
+  tindakanOleh: string;
+  dampak: string;
+  probablitas: string;
   grading: string;
-  rencanaTindakanAwal: string;
-  perawatYangMelapor: string;
-  tanggalWaktu: string;
+  kategori: string;
+  rekomendasiTindakan: string;
+  tanggalWaktuPelaporan: string;
 }
 
 export default function LaporanMasukVerifikator() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -35,91 +39,92 @@ export default function LaporanMasukVerifikator() {
   const [reports] = useState<Report[]>([
     {
       id: 1,
-      title: "Laporan Pasien A",
-      status: "Baru",
-      detailNamaPasien: "Siti Aminah",
-      usia: "45 Tahun",
-      nomorRekamMedis: "RM-2024-001",
-      ruangPerawatan: "ICU Lantai 3",
-      keluhanUtama: "Sesak napas dan demam tinggi",
-      gejalaTambahan: "Batuk kering, lemas, mual",
-      riwayatPenyakit: "Hipertensi, Diabetes Mellitus",
-      riwayatAlergi: "Tidak ada alergi yang diketahui",
-      polaTidurMakan: "Sulit tidur, nafsu makan menurun",
-      aktivitasHarian: "Terbatas karena kondisi",
-      faktorRisiko: "Usia lanjut, komorbid",
-      kesimpulanSementara: "Suspek pneumonia dengan komplikasi",
-      kategori: "Prioritas Tinggi",
-      grading: "Grade 3",
-      rencanaTindakanAwal: "Observasi ketat, terapi oksigen",
-      perawatYangMelapor: "Ns. Budi Santoso, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 14:30 WIB",
+      title: "Laporan Insiden Keselamatan Pasien",
+      status: "Menunggu Verifikasi",
+      kodeLaporan: "IKP-2024-001",
+      namaPerawatYangMenangani: "Ns. Sarah Wijaya, S.Kep",
+      namaRuanganPerawatYangMenangani: "Ruang ICU Lantai 3",
+      namaPasien: "Budi Santoso",
+      noRm: "RM-123456",
+      umur: "45 tahun",
+      jenisKelamin: "Laki-laki",
+      tanggalMasukRs: "15 Januari 2024",
+      unitYangMelaporkan: "Unit Perawatan Intensif",
+      lokasiKejadian: "Ruang ICU Bed 3",
+      tanggalInsiden: "16 Januari 2024, 14:30 WIB",
+      judulInsiden: "Pasien Jatuh dari Tempat Tidur",
+      kronologi:
+        "Pasien mencoba turun dari tempat tidur tanpa bantuan perawat saat akan ke kamar mandi. Pasien terjatuh dan mengeluh nyeri pada pinggul kanan.",
+      tindakanAwal:
+        "Pasien segera dibantu naik ke tempat tidur, dilakukan pemeriksaan fisik dan vital sign. Dokter jaga dipanggil untuk evaluasi lebih lanjut.",
+      tindakanOleh: "Ns. Sarah Wijaya dan Dr. Ahmad Fauzi",
+      dampak:
+        "Pasien mengalami nyeri ringan pada pinggul kanan, tidak ada fraktur berdasarkan pemeriksaan awal",
+      probablitas: "Sedang",
+      grading: "Kuning",
+      kategori: "KTD (Kejadian Tidak Diharapkan)",
+      rekomendasiTindakan:
+        "Pemasangan bed rail, edukasi pasien tentang keselamatan, dan pengawasan ketat saat mobilisasi",
+      tanggalWaktuPelaporan: "16 Januari 2024, 15:00 WIB",
     },
     {
       id: 2,
-      title: "Laporan Pasien B",
-      status: "Baru",
-      detailNamaPasien: "Ahmad Rahman",
-      usia: "32 Tahun",
-      nomorRekamMedis: "RM-2024-002",
-      ruangPerawatan: "Ruang Bedah",
-      keluhanUtama: "Nyeri perut kanan bawah",
-      gejalaTambahan: "Mual, muntah, demam",
-      riwayatPenyakit: "Tidak ada",
-      riwayatAlergi: "Alergi penisilin",
-      polaTidurMakan: "Normal",
-      aktivitasHarian: "Terbatas karena nyeri",
-      faktorRisiko: "Tidak ada",
-      kesimpulanSementara: "Suspek appendisitis akut",
-      kategori: "Prioritas Sedang",
-      grading: "Grade 2",
-      rencanaTindakanAwal: "Persiapan operasi",
-      perawatYangMelapor: "Ns. Sari Dewi, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 16:15 WIB",
+      title: "Laporan Medication Error",
+      status: "Terverifikasi",
+      kodeLaporan: "IKP-2024-002",
+      namaPerawatYangMenangani: "Ns. Maya Sari, S.Kep",
+      namaRuanganPerawatYangMenangani: "Ruang Penyakit Dalam",
+      namaPasien: "Siti Rahayu",
+      noRm: "RM-789012",
+      umur: "62 tahun",
+      jenisKelamin: "Perempuan",
+      tanggalMasukRs: "10 Januari 2024",
+      unitYangMelaporkan: "Ruang Penyakit Dalam",
+      lokasiKejadian: "Ruang Penyakit Dalam Bed 12",
+      tanggalInsiden: "17 Januari 2024, 08:00 WIB",
+      judulInsiden: "Kesalahan Dosis Obat",
+      kronologi:
+        "Perawat memberikan dosis insulin yang salah (10 unit seharusnya 5 unit) karena kesalahan membaca instruksi dokter.",
+      tindakanAwal:
+        "Segera dilakukan monitoring gula darah ketat, dokter diberitahu, dan diberikan snack untuk mencegah hipoglikemia",
+      tindakanOleh: "Ns. Maya Sari dan Dr. Linda Kusuma",
+      dampak:
+        "Pasien mengalami gula darah rendah ringan (70 mg/dL), tidak ada komplikasi serius",
+      probablitas: "Rendah",
+      grading: "Hijau",
+      kategori: "KNC (Kejadian Nyaris Cedera)",
+      rekomendasiTindakan:
+        "Double check sistem untuk pemberian obat, pelatihan ulang prosedur pemberian insulin",
+      tanggalWaktuPelaporan: "17 Januari 2024, 08:30 WIB",
     },
     {
       id: 3,
-      title: "Laporan Pasien C",
-      status: "Baru",
-      detailNamaPasien: "Maria Gonzales",
-      usia: "28 Tahun",
-      nomorRekamMedis: "RM-2024-003",
-      ruangPerawatan: "Ruang Bersalin",
-      keluhanUtama: "Kontraksi persalinan",
-      gejalaTambahan: "Nyeri punggung",
-      riwayatPenyakit: "Tidak ada",
-      riwayatAlergi: "Tidak ada",
-      polaTidurMakan: "Terganggu karena kontraksi",
-      aktivitasHarian: "Terbatas",
-      faktorRisiko: "Primigravida",
-      kesimpulanSementara: "Persalinan normal",
-      kategori: "Prioritas Normal",
-      grading: "Grade 1",
-      rencanaTindakanAwal: "Monitoring persalinan",
-      perawatYangMelapor: "Ns. Linda Sari, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 18:00 WIB",
-    },
-    {
-      id: 4,
-      title: "Laporan Pasien D",
-      status: "Baru",
-      detailNamaPasien: "Budi Hartono",
-      usia: "65 Tahun",
-      nomorRekamMedis: "RM-2024-004",
-      ruangPerawatan: "Ruang Jantung",
-      keluhanUtama: "Nyeri dada dan sesak",
-      gejalaTambahan: "Keringat dingin, lemas",
-      riwayatPenyakit: "Penyakit jantung koroner",
-      riwayatAlergi: "Tidak ada",
-      polaTidurMakan: "Terganggu",
-      aktivitasHarian: "Bed rest total",
-      faktorRisiko: "Usia lanjut, riwayat PJK",
-      kesimpulanSementara: "Suspek infark miokard",
-      kategori: "Prioritas Tinggi",
-      grading: "Grade 4",
-      rencanaTindakanAwal: "Monitoring EKG, terapi",
-      perawatYangMelapor: "Ns. Andi Wijaya, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 20:30 WIB",
+      title: "Laporan Infeksi Nosokomial",
+      status: "Menunggu Verifikasi",
+      kodeLaporan: "IKP-2024-003",
+      namaPerawatYangMenangani: "Ns. Rina Putri, S.Kep",
+      namaRuanganPerawatYangMenangani: "Ruang Bedah",
+      namaPasien: "Ahmad Fauzi",
+      noRm: "RM-345678",
+      umur: "38 tahun",
+      jenisKelamin: "Laki-laki",
+      tanggalMasukRs: "12 Januari 2024",
+      unitYangMelaporkan: "Ruang Bedah",
+      lokasiKejadian: "Ruang Bedah Bed 8",
+      tanggalInsiden: "18 Januari 2024, 10:15 WIB",
+      judulInsiden: "Infeksi Luka Operasi",
+      kronologi:
+        "Pasien post operasi appendektomi hari ke-3 menunjukkan tanda-tanda infeksi pada luka operasi dengan kemerahan, bengkak, dan keluar pus.",
+      tindakanAwal:
+        "Dilakukan kultur pus, pemberian antibiotik empiris, dan perawatan luka dengan teknik steril",
+      tindakanOleh: "Ns. Rina Putri dan Dr. Bambang Sutrisno",
+      dampak: "Pasien mengalami demam dan perpanjangan masa rawat inap",
+      probablitas: "Tinggi",
+      grading: "Merah",
+      kategori: "KTD (Kejadian Tidak Diharapkan)",
+      rekomendasiTindakan:
+        "Review prosedur sterilisasi, pelatihan teknik aseptik, dan monitoring ketat post operasi",
+      tanggalWaktuPelaporan: "18 Januari 2024, 11:00 WIB",
     },
   ]);
 
@@ -175,11 +180,6 @@ export default function LaporanMasukVerifikator() {
       tindakanAwal: tindakanAwal,
     });
     handleCloseRevisiModal();
-    handleCloseModal();
-  };
-
-  const handleTolak = () => {
-    console.log("Tolak laporan:", selectedReport?.id, "Catatan:", catatan);
     handleCloseModal();
   };
 
@@ -243,11 +243,15 @@ export default function LaporanMasukVerifikator() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
             onClick={toggleMobileMenu}
           >
-            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            <i
+              className={`fas ${
+                isMobileMenuOpen ? "fa-times" : "fa-bars"
+              } text-xl`}
+            ></i>
           </button>
         </div>
 
@@ -258,7 +262,9 @@ export default function LaporanMasukVerifikator() {
               {/* Dashboard */}
               <button
                 className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
-                onClick={() => (window.location.href = "/dashboard-verifikator")}
+                onClick={() =>
+                  (window.location.href = "/dashboard-verifikator")
+                }
               >
                 <i className="fas fa-chart-bar text-lg mr-3"></i>
                 <span>Dashboard</span>
@@ -337,26 +343,39 @@ export default function LaporanMasukVerifikator() {
               {reports.map((report) => (
                 <div
                   key={report.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 flex items-center justify-between hover:bg-white/95 transition-colors cursor-pointer"
+                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 hover:bg-white/95 transition-colors cursor-pointer"
                   onClick={() => handleReportClick(report)}
                 >
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-[#0B7A95] p-3 rounded-lg">
-                      <i className="fas fa-envelope text-white text-lg"></i>
+                     <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-[#0B7A95] p-3 rounded-lg">
+                        <i className="fas fa-envelope text-white text-lg"></i>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          Laporan dari Perawat {report.namaPerawatYangMenangani}
+                        </h3>
+                        
+                        <p className="text-xs text-gray-500 mt-1">
+                          Judul Insiden : {report.judulInsiden}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Tanggal Laporan : {report.tanggalWaktuPelaporan}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800 text-lg">
-                        {report.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        Status: {report.status}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="bg-[#0B7A95] text-white px-3 py-1 rounded-full text-sm font-medium">
-                      Lihat Detail
-                    </span>
+                    {/* <div className="flex flex-col items-end space-y-2">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        report.grading === 'Biru' ? 'bg-blue-100 text-blue-800' :
+                        report.grading === 'Hijau' ? 'bg-green-100 text-green-800' :
+                        report.grading === 'Kuning' ? 'bg-yellow-100 text-yellow-800' :
+                        report.grading === 'Merah' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {report.grading}
+                      </span>
+                      <span className="text-xs text-gray-500">{report.kategori}</span>
+                    </div> */}
                   </div>
                 </div>
               ))}
@@ -387,133 +406,183 @@ export default function LaporanMasukVerifikator() {
 
             {/* Content Modal */}
             <div className="p-6 space-y-4">
-              {/* Detail Nama Pasien */}
+              {/* Kode Laporan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Detail Nama Pasien :
+                  Kode laporan :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.detailNamaPasien}
+                  {selectedReport.kodeLaporan}
                 </p>
               </div>
 
-              {/* Usia */}
+              {/* Nama Perawat Yang Menangani */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Usia :
+                  Nama perawat yang menangani :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.usia}
+                  {selectedReport.namaPerawatYangMenangani}
                 </p>
               </div>
 
-              {/* Nomor Rekam Medis */}
+              {/* Nama Ruangan Perawat Yang Menangani */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Nomor Rekam Medis :
+                  Nama ruangan perawat yang menangani :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.nomorRekamMedis}
+                  {selectedReport.namaRuanganPerawatYangMenangani}
                 </p>
               </div>
 
-              {/* Ruang Perawatan */}
+              {/* Nama Pasien */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Ruang Perawatan :
+                  Nama pasien :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.ruangPerawatan}
+                  {selectedReport.namaPasien}
                 </p>
               </div>
 
-              {/* Keluhan Utama */}
+              {/* No RM */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Keluhan Utama :
+                  No RM :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.keluhanUtama}
+                  {selectedReport.noRm}
                 </p>
               </div>
 
-              {/* Gejala Tambahan */}
+              {/* Umur */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Gejala Tambahan :
+                  Umur :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.gejalaTambahan}
+                  {selectedReport.umur}
                 </p>
               </div>
 
-              {/* Riwayat Penyakit */}
+              {/* Jenis Kelamin */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Riwayat Penyakit :
+                  Jenis kelamin :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.riwayatPenyakit}
+                  {selectedReport.jenisKelamin}
                 </p>
               </div>
 
-              {/* Riwayat Alergi */}
+              {/* Tanggal Masuk RS */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Riwayat Alergi :
+                  Tanggal masuk RS :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.riwayatAlergi}
+                  {selectedReport.tanggalMasukRs}
                 </p>
               </div>
 
-              {/* Pola Tidur & Makan */}
+              {/* Unit Yang Melaporkan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Pola Tidur & Makan :
+                  Unit yang melaporkan :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.polaTidurMakan}
+                  {selectedReport.unitYangMelaporkan}
                 </p>
               </div>
 
-              {/* Aktivitas Harian */}
+              {/* Lokasi Kejadian */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Aktivitas Harian :
+                  Lokasi kejadian :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.aktivitasHarian}
+                  {selectedReport.lokasiKejadian}
                 </p>
               </div>
 
-              {/* Faktor Risiko */}
+              {/* Tanggal Insiden */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Faktor Risiko :
+                  Tanggal insiden :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.faktorRisiko}
+                  {selectedReport.tanggalInsiden}
                 </p>
               </div>
 
-              {/* Kesimpulan Sementara */}
+              {/* Judul Insiden */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Kesimpulan Sementara :
+                  Judul insiden :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.kesimpulanSementara}
+                  {selectedReport.judulInsiden}
                 </p>
               </div>
 
-              {/* Kategori */}
+              {/* Kronologi */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Kategori :
+                  Kronologi :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.kategori}
+                  {selectedReport.kronologi}
+                </p>
+              </div>
+
+              {/* Tindakan Awal */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tindakan awal :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport.tindakanAwal}
+                </p>
+              </div>
+
+              {/* Tindakan Oleh */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tindakan oleh :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport.tindakanOleh}
+                </p>
+              </div>
+
+              {/* Dampak */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Dampak :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport.dampak}
+                </p>
+              </div>
+
+              {/* Probablitas */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Probablitas :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport.probablitas}
+                </p>
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Status :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport.status}
                 </p>
               </div>
 
@@ -527,33 +596,33 @@ export default function LaporanMasukVerifikator() {
                 </p>
               </div>
 
-              {/* Rencana Tindakan Awal */}
+              {/* Kategori */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Rencana Tindakan Awal :
+                  Kategori :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.rencanaTindakanAwal}
+                  {selectedReport.kategori}
                 </p>
               </div>
 
-              {/* Perawat yang Melapor */}
+              {/* Rekomendasi Tindakan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Perawat yang Melapor :
+                  Rekomendasi tindakan :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.perawatYangMelapor}
+                  {selectedReport.rekomendasiTindakan}
                 </p>
               </div>
 
-              {/* Tanggal & Waktu */}
+              {/* Tanggal Waktu Pelaporan */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
-                  Tanggal & Waktu :
+                  Tanggal waktu pelaporan :
                 </label>
                 <p className="text-gray-800 bg-white/50 p-2 rounded">
-                  {selectedReport.tanggalWaktu}
+                  {selectedReport.tanggalWaktuPelaporan}
                 </p>
               </div>
 
@@ -562,7 +631,7 @@ export default function LaporanMasukVerifikator() {
                 <h3 className="text-[#2C3E50] font-bold mb-3 text-base">
                   Validasi Kepala Ruangan
                 </h3>
-                
+
                 {/* Kategori */}
                 <div className="mb-3">
                   <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
@@ -609,7 +678,7 @@ export default function LaporanMasukVerifikator() {
                 <h3 className="text-[#2C3E50] font-bold mb-3 text-base">
                   Validasi Chief Nursing
                 </h3>
-                
+
                 {/* Kategori */}
                 <div className="mb-3">
                   <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
@@ -665,12 +734,7 @@ export default function LaporanMasukVerifikator() {
                 >
                   Revisi
                 </button>
-                <button
-                  onClick={handleTolak}
-                  className="bg-[#dc3545] text-white px-6 py-2 rounded-lg hover:bg-[#c82333] transition-colors font-medium text-sm"
-                >
-                  Tolak
-                </button>
+
                 <button
                   onClick={() => setShowRiwayatModal(true)}
                   className="bg-[#6B8CAE] text-white px-6 py-2 rounded-lg hover:bg-[#5a7a9a] transition-colors font-medium text-sm"
@@ -697,7 +761,7 @@ export default function LaporanMasukVerifikator() {
               <div className="flex justify-center pt-4">
                 <button
                   onClick={() => {
-                    console.log('Kirim catatan:', catatan);
+                    console.log("Kirim catatan:", catatan);
                     // Add your send note logic here
                   }}
                   className="bg-[#0B7A95] text-white px-8 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
@@ -811,7 +875,7 @@ export default function LaporanMasukVerifikator() {
               {/* Tombol Kirim Revisi */}
               <div className="flex justify-center mb-6">
                 <button
-                  onClick={() => console.log('Kirim Revisi:', tindakanAwal)}
+                  onClick={() => console.log("Kirim Revisi:", tindakanAwal)}
                   className="bg-[#0B7A95] text-white px-6 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
                   disabled={!tindakanAwal.trim()}
                 >
@@ -858,7 +922,9 @@ export default function LaporanMasukVerifikator() {
                 <div className="bg-white p-2 rounded-lg">
                   <i className="fas fa-history text-[#6B8CAE] text-lg"></i>
                 </div>
-                <h2 className="text-white font-bold text-lg">Riwayat Laporan</h2>
+                <h2 className="text-white font-bold text-lg">
+                  Riwayat Laporan
+                </h2>
               </div>
               <button
                 onClick={() => setShowRiwayatModal(false)}
@@ -872,27 +938,45 @@ export default function LaporanMasukVerifikator() {
             <div className="p-6 space-y-6">
               {/* Tabel Riwayat Catatan */}
               <div>
-                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">Riwayat Catatan</h3>
+                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
+                  Riwayat Catatan
+                </h3>
                 <div className="bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Tanggal</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Catatan</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Tanggal
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Catatan
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-15 10:30</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Pasien menunjukkan perbaikan kondisi</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-15 10:30
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Pasien menunjukkan perbaikan kondisi
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-14 14:20</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Perlu monitoring lebih intensif</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-14 14:20
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Perlu monitoring lebih intensif
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-13 09:15</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Catatan awal laporan</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-13 09:15
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Catatan awal laporan
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -901,45 +985,87 @@ export default function LaporanMasukVerifikator() {
 
               {/* Tabel Riwayat Tindakan */}
               <div>
-                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">Riwayat Tindakan</h3>
+                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
+                  Riwayat Tindakan
+                </h3>
                 <div className="bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Tanggal</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Aksi</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Kategori</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Grading</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Rekomendasi Tindakan</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Tanggal
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Aksi
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Kategori
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Grading
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Rekomendasi Tindakan
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-15 10:30</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Validasi</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-15 10:30
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori A</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 2</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Lanjutkan perawatan standar</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                            Validasi
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori A
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 2
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Lanjutkan perawatan standar
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-14 14:20</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Revisi</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-14 14:20
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori B</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 1</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Perlu evaluasi ulang</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                            Revisi
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori B
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 1
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Perlu evaluasi ulang
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-13 09:15</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Submit</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-13 09:15
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori A</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 1</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Tindakan awal sesuai protokol</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                            Submit
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori A
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 1
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Tindakan awal sesuai protokol
+                        </td>
                       </tr>
                     </tbody>
                   </table>

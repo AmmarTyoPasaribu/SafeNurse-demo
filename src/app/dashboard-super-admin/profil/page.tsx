@@ -28,6 +28,10 @@ export default function ProfilSuperAdmin() {
     confirmPassword: ''
   });
 
+  // Password visibility states
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const handleChangeAccount = () => {
     setEditForm({
       email: userData.email,
@@ -264,27 +268,45 @@ export default function ProfilSuperAdmin() {
                {/* Password Field */}
                <div>
                  <label className="block text-[#2C3E50] font-medium mb-2">Password :</label>
-                 <input
-                   type="password"
-                   value={editForm.password}
-                   onChange={(e) => handleInputChange('password', e.target.value)}
-                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
-                   placeholder="Masukkan password baru"
-                   required
-                 />
+                 <div className="relative">
+                   <input
+                     type={showPassword ? "text" : "password"}
+                     value={editForm.password}
+                     onChange={(e) => handleInputChange('password', e.target.value)}
+                     className="w-full px-4 py-3 pr-12 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                     placeholder="Masukkan password baru"
+                     required
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowPassword(!showPassword)}
+                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                   >
+                     <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                   </button>
+                 </div>
                </div>
                
                {/* Confirm Password Field */}
                <div>
                  <label className="block text-[#2C3E50] font-medium mb-2">Konfirmasi Password :</label>
-                 <input
-                   type="password"
-                   value={editForm.confirmPassword}
-                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
-                   placeholder="Konfirmasi password baru"
-                   required
-                 />
+                 <div className="relative">
+                   <input
+                     type={showConfirmPassword ? "text" : "password"}
+                     value={editForm.confirmPassword}
+                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                     className="w-full px-4 py-3 pr-12 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
+                     placeholder="Konfirmasi password baru"
+                     required
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                   >
+                     <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                   </button>
+                 </div>
                </div>
               
               {/* Submit Button */}

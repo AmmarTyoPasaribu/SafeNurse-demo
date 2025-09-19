@@ -6,11 +6,14 @@ import Image from 'next/image';
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('perawat@gmail.com');
   const [password, setPassword] = useState('***************');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle reset password logic here
-    console.log('Reset password for:', { email, password });
+    console.log('Reset password for:', { email, password, confirmPassword });
     // Redirect to login page after successful reset
     window.location.href = '/login';
   };
@@ -70,7 +73,7 @@ export default function ResetPasswordPage() {
                     </label>
                     <div className="flex items-center border-b border-[#0E364A]">
                       <input
-                        className="bg-transparent text-[#a0cbd9] placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
                         id="email"
                         placeholder="perawat@gmail.com"
                         type="email"
@@ -89,14 +92,39 @@ export default function ResetPasswordPage() {
                     </label>
                     <div className="flex items-center border-b border-[#0E364A]">
                       <input
-                        className="bg-transparent text-[#a0cbd9] placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
                         id="password"
                         placeholder="***************"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
-                      <i className="fas fa-lock text-[#0E364A] text-lg"></i>
+                      <i 
+                        className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-[#0E364A] text-lg cursor-pointer`}
+                        onClick={() => setShowPassword(!showPassword)}
+                      ></i>
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      className="block text-white font-semibold text-lg mb-1"
+                      htmlFor="confirmPassword"
+                    >
+                      Confirm Password
+                    </label>
+                    <div className="flex items-center border-b border-[#0E364A]">
+                      <input
+                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1"
+                        id="confirmPassword"
+                        placeholder="***************"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
+                      <i 
+                        className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'} text-[#0E364A] text-lg cursor-pointer`}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      ></i>
                     </div>
                   </div>
                   <div className="text-[#0E364A] text-lg underline text-right cursor-pointer">

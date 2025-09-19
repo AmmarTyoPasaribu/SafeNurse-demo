@@ -20,6 +20,7 @@ interface ReportData {
   jenisKelamin: string;
   tglMasukRS: string;
   unitPelapor: string;
+  lokasiInsiden: string;
   tglKejadian: string;
   judulInsiden: string;
   kronologi: string;
@@ -51,6 +52,7 @@ export default function TambahLaporanPage() {
     jenisKelamin: "",
     tglMasukRS: "",
     unitPelapor: "",
+    lokasiInsiden: "",
     tglKejadian: "",
     judulInsiden: "",
     kronologi: "",
@@ -115,13 +117,14 @@ export default function TambahLaporanPage() {
       `5. Tanggal Masuk RS : ${data.tglMasukRS}\n\n` +
       `**Rincian Kejadian**\n` +
       `1. Unit Pelapor : ${data.unitPelapor}\n` +
-      `2. Tanggal/Jam Kejadian : ${data.tglKejadian}\n` +
-      `3. Judul Insiden : ${data.judulInsiden}\n` +
-      `4. Kronologi : ${data.kronologi}\n` +
-      `5. Tindakan Segera : ${data.tindakanSegera}\n` +
-      `6. Tindakan Oleh : ${data.tindakanOleh}\n` +
-      `7. Dampak Insiden : ${data.dampakInsiden}\n` +
-      `8. Frekuensi Kejadian : ${data.frekuensiKejadian}`
+      `2. Lokasi Insiden : ${data.lokasiInsiden}\n` +
+      `3. Tanggal/Jam Kejadian : ${data.tglKejadian}\n` +
+      `4. Judul Insiden : ${data.judulInsiden}\n` +
+      `5. Kronologi : ${data.kronologi}\n` +
+      `6. Tindakan Segera : ${data.tindakanSegera}\n` +
+      `7. Tindakan Oleh : ${data.tindakanOleh}\n` +
+      `8. Dampak Insiden : ${data.dampakInsiden}\n` +
+      `9. Frekuensi Kejadian : ${data.frekuensiKejadian}`
     );
   };
 
@@ -189,6 +192,14 @@ export default function TambahLaporanPage() {
 
         case "unitPelapor":
           updatedData.unitPelapor = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          addMessage("bot", "Lokasi insiden?");
+          setCurrentStep("lokasiInsiden");
+          break;
+
+        case "lokasiInsiden":
+          updatedData.lokasiInsiden = response;
           setReportData(updatedData);
           saveToLocalStorage(updatedData);
           addMessage("bot", "Tgl/bulan/tahun/jam terjadinya insiden?");
@@ -339,7 +350,7 @@ export default function TambahLaporanPage() {
 
         case "pilihRincianKejadian":
           const nomorRincian = parseInt(response.trim());
-          if (nomorRincian >= 1 && nomorRincian <= 8) {
+          if (nomorRincian >= 1 && nomorRincian <= 9) {
             switch (nomorRincian) {
               case 1:
                 addMessage("bot", "Berikan jawaban barunya:");
@@ -347,35 +358,39 @@ export default function TambahLaporanPage() {
                 break;
               case 2:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editTglKejadian");
+                setCurrentStep("editLokasiInsiden");
                 break;
               case 3:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editJudulInsiden");
+                setCurrentStep("editTglKejadian");
                 break;
               case 4:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editKronologi");
+                setCurrentStep("editJudulInsiden");
                 break;
               case 5:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editTindakanSegera");
+                setCurrentStep("editKronologi");
                 break;
               case 6:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editTindakanOleh");
+                setCurrentStep("editTindakanSegera");
                 break;
               case 7:
                 addMessage("bot", "Berikan jawaban barunya:");
-                setCurrentStep("editDampakInsiden");
+                setCurrentStep("editTindakanOleh");
                 break;
               case 8:
+                addMessage("bot", "Berikan jawaban barunya:");
+                setCurrentStep("editDampakInsiden");
+                break;
+              case 9:
                 addMessage("bot", "Berikan jawaban barunya:");
                 setCurrentStep("editFrekuensiKejadian");
                 break;
             }
           } else {
-            addMessage("bot", "Mohon masukkan nomor yang valid (1-8).");
+            addMessage("bot", "Mohon masukkan nomor yang valid (1-9).");
           }
           break;
 
@@ -433,6 +448,18 @@ export default function TambahLaporanPage() {
           saveToLocalStorage(updatedData);
           const summaryAfterEditUnit = generateReportSummary(updatedData);
           addMessage("bot", summaryAfterEditUnit);
+          setTimeout(() => {
+            addMessage("bot", "Apakah laporan sudah sesuai?");
+            setCurrentStep("konfirmasi");
+          }, 2000);
+          break;
+
+        case "editLokasiInsiden":
+          updatedData.lokasiInsiden = response;
+          setReportData(updatedData);
+          saveToLocalStorage(updatedData);
+          const summaryAfterEditLokasi = generateReportSummary(updatedData);
+          addMessage("bot", summaryAfterEditLokasi);
           setTimeout(() => {
             addMessage("bot", "Apakah laporan sudah sesuai?");
             setCurrentStep("konfirmasi");
@@ -884,7 +911,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            2. Tanggal/Jam Kejadian
+            2. Lokasi Kejadian
           </button>
           <button
             onClick={() => handleQuickResponse("3")}
@@ -895,7 +922,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            3. Judul Insiden
+            3. Tanggal/Jam Kejadian
           </button>
           <button
             onClick={() => handleQuickResponse("4")}
@@ -906,7 +933,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            4. Kronologi
+            4. Judul Insiden
           </button>
           <button
             onClick={() => handleQuickResponse("5")}
@@ -917,7 +944,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            5. Tindakan Segera
+            5. Kronologi
           </button>
           <button
             onClick={() => handleQuickResponse("6")}
@@ -928,7 +955,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            6. Tindakan Oleh
+            6. Tindakan Segera
           </button>
           <button
             onClick={() => handleQuickResponse("7")}
@@ -939,7 +966,7 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            7. Dampak Insiden
+            7. Tindakan Oleh
           </button>
           <button
             onClick={() => handleQuickResponse("8")}
@@ -950,7 +977,18 @@ export default function TambahLaporanPage() {
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
             }`}
           >
-            8. Frekuensi Kejadian
+            8. Dampak Insiden
+          </button>
+          <button
+            onClick={() => handleQuickResponse("9")}
+            disabled={isProcessingResponse}
+            className={`px-4 py-2 rounded-full text-sm transition-colors inline-block ${
+              isProcessingResponse
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+            }`}
+          >
+            9. Frekuensi Kejadian
           </button>
         </div>
       );
@@ -1772,72 +1810,72 @@ export default function TambahLaporanPage() {
               <div className="px-4">{renderQuickButtons()}</div>
 
               {/* Input Area */}
-              {currentStep !== "end" && 
-               currentStep !== "jenisKelamin" && 
-               currentStep !== "dampakInsiden" && 
-               currentStep !== "frekuensiKejadian" && 
-               currentStep !== "tglMasukRS" && 
-               currentStep !== "tglKejadian" &&
-               currentStep !== "editJenisKelamin" &&
-               currentStep !== "editDampakInsiden" &&
-               currentStep !== "editFrekuensiKejadian" &&
-               currentStep !== "editTglMasukRS" &&
-               currentStep !== "editTglKejadian" && (
-                <div className="p-4 border-t border-gray-200">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex-1 relative">
-                      <input
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyPress={(e) =>
-                          e.key === "Enter" && handleSendMessage()
-                        }
-                        placeholder="Ketik pesan Anda..."
-                        disabled={isProcessingResponse}
-                        className={`w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
-                          isProcessingResponse
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : ""
+              {currentStep !== "end" &&
+                currentStep !== "jenisKelamin" &&
+                currentStep !== "dampakInsiden" &&
+                currentStep !== "frekuensiKejadian" &&
+                currentStep !== "tglMasukRS" &&
+                currentStep !== "tglKejadian" &&
+                currentStep !== "editJenisKelamin" &&
+                currentStep !== "editDampakInsiden" &&
+                currentStep !== "editFrekuensiKejadian" &&
+                currentStep !== "editTglMasukRS" &&
+                currentStep !== "editTglKejadian" && (
+                  <div className="p-4 border-t border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex-1 relative">
+                        <input
+                          type="text"
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && handleSendMessage()
+                          }
+                          placeholder="Ketik pesan Anda..."
+                          disabled={isProcessingResponse}
+                          className={`w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                            isProcessingResponse
+                              ? "bg-gray-100 cursor-not-allowed"
+                              : ""
+                          }`}
+                        />
+                      </div>
+
+                      <button
+                        onClick={startVoiceRecognition}
+                        className={`p-2 rounded-full transition-all duration-200 ${
+                          isListening
+                            ? "bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50"
+                            : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:shadow-md"
                         }`}
-                      />
+                        title={
+                          isListening
+                            ? "Klik untuk berhenti merekam"
+                            : "Rekam Suara"
+                        }
+                      >
+                        <i
+                          className={`fas ${
+                            isListening ? "fa-stop" : "fa-microphone"
+                          } ${isListening ? "animate-pulse" : ""}`}
+                        ></i>
+                      </button>
+
+                      <button
+                        onClick={handleSendMessage}
+                        disabled={isProcessingResponse}
+                        className={`p-2 rounded-full transition-colors ${
+                          isProcessingResponse
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                        }`}
+                        title="Kirim Pesan"
+                      >
+                        <i className="fas fa-paper-plane"></i>
+                      </button>
                     </div>
-
-                    <button
-                      onClick={startVoiceRecognition}
-                      className={`p-2 rounded-full transition-all duration-200 ${
-                        isListening
-                          ? "bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50"
-                          : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:shadow-md"
-                      }`}
-                      title={
-                        isListening
-                          ? "Klik untuk berhenti merekam"
-                          : "Rekam Suara"
-                      }
-                    >
-                      <i
-                        className={`fas ${
-                          isListening ? "fa-stop" : "fa-microphone"
-                        } ${isListening ? "animate-pulse" : ""}`}
-                      ></i>
-                    </button>
-
-                    <button
-                      onClick={handleSendMessage}
-                      disabled={isProcessingResponse}
-                      className={`p-2 rounded-full transition-colors ${
-                        isProcessingResponse
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
-                      }`}
-                      title="Kirim Pesan"
-                    >
-                      <i className="fas fa-paper-plane"></i>
-                    </button>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Back to Dashboard Button - Only show when conversation ends */}
               {currentStep === "end" && (

@@ -1,33 +1,38 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface Report {
   id: number;
   title: string;
   status: string;
-  detailNamaPasien: string;
-  usia: string;
-  nomorRekamMedis: string;
-  ruangPerawatan: string;
-  keluhanUtama: string;
-  gejalaTambahan: string;
-  riwayatPenyakit: string;
-  riwayatAlergi: string;
-  polaTidurMakan: string;
-  aktivitasHarian: string;
-  faktorRisiko: string;
-  kesimpulanSementara: string;
-  kategori: string;
+  kodeLaporan: string;
+  namaPerawatYangMenangani: string;
+  namaRuanganPerawatYangMenangani: string;
+  namaPasien: string;
+  noRm: string;
+  umur: string;
+  jenisKelamin: string;
+  tanggalMasukRs: string;
+  unitYangMelaporkan: string;
+  lokasiKejadian: string;
+  tanggalInsiden: string;
+  judulInsiden: string;
+  kronologi: string;
+  tindakanAwal: string;
+  tindakanOleh: string;
+  dampak: string;
+  probablitas: string;
+
   grading: string;
-  rencanaTindakanAwal: string;
-  perawatYangMelapor: string;
-  tanggalWaktu: string;
+  kategori: string;
+  rekomendasiTindakan: string;
+  tanggalWaktuPelaporan: string;
 }
 
 export default function LaporanMasukChiefNursingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -35,150 +40,127 @@ export default function LaporanMasukChiefNursingPage() {
   const [reports] = useState([
     {
       id: 1,
-      title: "Laporan Pasien A",
-      status: "Baru",
-      detailNamaPasien: "Siti Aminah",
-      usia: "45 Tahun",
-      nomorRekamMedis: "RM-2024-001",
-      ruangPerawatan: "ICU Lantai 3",
-      keluhanUtama: "Sesak napas dan demam tinggi",
-      gejalaTambahan: "Batuk kering, lemas, mual",
-      riwayatPenyakit: "Hipertensi, Diabetes Mellitus",
-      riwayatAlergi: "Tidak ada alergi yang diketahui",
-      polaTidurMakan: "Sulit tidur, nafsu makan menurun",
-      aktivitasHarian: "Terbatas karena kondisi",
-      faktorRisiko: "Usia lanjut, komorbid",
-      kesimpulanSementara: "Suspek pneumonia dengan komplikasi",
-      kategori: "Prioritas Tinggi",
-      grading: "Grade 3",
-      rencanaTindakanAwal: "Observasi ketat, terapi oksigen",
-      perawatYangMelapor: "Ns. Budi Santoso, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 14:30 WIB"
+      title: "Laporan Insiden Keselamatan Pasien",
+      status: "Menunggu Validasi",
+      kodeLaporan: "IKP-2024-001",
+      namaPerawatYangMenangani: "Ns. Sarah Wijaya, S.Kep",
+      namaRuanganPerawatYangMenangani: "Ruang ICU Lantai 3",
+      namaPasien: "Budi Santoso",
+      noRm: "RM-123456",
+      umur: "45 tahun",
+      jenisKelamin: "Laki-laki",
+      tanggalMasukRs: "15 Januari 2024",
+      unitYangMelaporkan: "Unit Perawatan Intensif",
+      lokasiKejadian: "Ruang ICU Bed 3",
+      tanggalInsiden: "16 Januari 2024, 14:30 WIB",
+      judulInsiden: "Pasien Jatuh dari Tempat Tidur",
+      kronologi:
+        "Pasien mencoba turun dari tempat tidur tanpa bantuan perawat saat akan ke kamar mandi. Pasien terjatuh dan mengeluh nyeri pada pinggul kanan.",
+      tindakanAwal:
+        "Pasien segera dibantu naik ke tempat tidur, dilakukan pemeriksaan fisik dan vital sign. Dokter jaga dipanggil untuk evaluasi lebih lanjut.",
+      tindakanOleh: "Ns. Sarah Wijaya dan Dr. Ahmad Fauzi",
+      dampak:
+        "Pasien mengalami nyeri ringan pada pinggul kanan, tidak ada fraktur berdasarkan pemeriksaan awal",
+      probablitas: "Sedang",
+
+      grading: "Kuning",
+      kategori: "KTD (Kejadian Tidak Diharapkan)",
+      rekomendasiTindakan:
+        "Pemasangan bed rail, edukasi pasien tentang keselamatan, dan pengawasan ketat saat mobilisasi",
+      tanggalWaktuPelaporan: "16 Januari 2024, 15:00 WIB",
     },
     {
       id: 2,
-      title: "Laporan Pasien B",
-      status: "Baru",
-      detailNamaPasien: "Ahmad Rahman",
-      usia: "32 Tahun",
-      nomorRekamMedis: "RM-2024-002",
-      ruangPerawatan: "Ruang Bedah",
-      keluhanUtama: "Nyeri perut kanan bawah",
-      gejalaTambahan: "Mual, muntah, demam",
-      riwayatPenyakit: "Tidak ada",
-      riwayatAlergi: "Alergi penisilin",
-      polaTidurMakan: "Normal",
-      aktivitasHarian: "Terbatas karena nyeri",
-      faktorRisiko: "Tidak ada",
-      kesimpulanSementara: "Suspek appendisitis akut",
-      kategori: "Prioritas Sedang",
-      grading: "Grade 2",
-      rencanaTindakanAwal: "Persiapan operasi",
-      perawatYangMelapor: "Ns. Sari Dewi, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 16:15 WIB"
+      title: "Laporan Medication Error",
+      status: "Sudah Divalidasi",
+      kodeLaporan: "IKP-2024-002",
+      namaPerawatYangMenangani: "Ns. Maya Sari, S.Kep",
+      namaRuanganPerawatYangMenangani: "Ruang Penyakit Dalam",
+      namaPasien: "Siti Rahayu",
+      noRm: "RM-789012",
+      umur: "62 tahun",
+      jenisKelamin: "Perempuan",
+      tanggalMasukRs: "10 Januari 2024",
+      unitYangMelaporkan: "Ruang Penyakit Dalam",
+      lokasiKejadian: "Ruang Penyakit Dalam Bed 12",
+      tanggalInsiden: "17 Januari 2024, 08:00 WIB",
+      judulInsiden: "Kesalahan Dosis Obat",
+      kronologi:
+        "Perawat memberikan dosis insulin yang salah (10 unit seharusnya 5 unit) karena kesalahan membaca instruksi dokter.",
+      tindakanAwal:
+        "Segera dilakukan monitoring gula darah ketat, dokter diberitahu, dan diberikan snack untuk mencegah hipoglikemia",
+      tindakanOleh: "Ns. Maya Sari dan Dr. Linda Kusuma",
+      dampak:
+        "Pasien mengalami gula darah rendah ringan (70 mg/dL), tidak ada komplikasi serius",
+      probablitas: "Rendah",
+
+      grading: "Hijau",
+      kategori: "KNC (Kejadian Nyaris Cedera)",
+      rekomendasiTindakan:
+        "Double check sistem untuk pemberian obat, pelatihan ulang prosedur pemberian insulin",
+      tanggalWaktuPelaporan: "17 Januari 2024, 08:30 WIB",
     },
-    {
-      id: 3,
-      title: "Laporan Pasien C",
-      status: "Baru",
-      detailNamaPasien: "Maria Gonzales",
-      usia: "28 Tahun",
-      nomorRekamMedis: "RM-2024-003",
-      ruangPerawatan: "Ruang Bersalin",
-      keluhanUtama: "Kontraksi persalinan",
-      gejalaTambahan: "Nyeri punggung",
-      riwayatPenyakit: "Tidak ada",
-      riwayatAlergi: "Tidak ada",
-      polaTidurMakan: "Terganggu karena kontraksi",
-      aktivitasHarian: "Terbatas",
-      faktorRisiko: "Primigravida",
-      kesimpulanSementara: "Persalinan normal",
-      kategori: "Prioritas Normal",
-      grading: "Grade 1",
-      rencanaTindakanAwal: "Monitoring persalinan",
-      perawatYangMelapor: "Ns. Linda Sari, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 18:00 WIB"
-    },
-    {
-      id: 4,
-      title: "Laporan Pasien D",
-      status: "Baru",
-      detailNamaPasien: "Budi Hartono",
-      usia: "65 Tahun",
-      nomorRekamMedis: "RM-2024-004",
-      ruangPerawatan: "Ruang Jantung",
-      keluhanUtama: "Nyeri dada dan sesak",
-      gejalaTambahan: "Keringat dingin, lemas",
-      riwayatPenyakit: "Penyakit jantung koroner",
-      riwayatAlergi: "Tidak ada",
-      polaTidurMakan: "Terganggu",
-      aktivitasHarian: "Bed rest total",
-      faktorRisiko: "Usia lanjut, riwayat PJK",
-      kesimpulanSementara: "Suspek infark miokard",
-      kategori: "Prioritas Tinggi",
-      grading: "Grade 4",
-      rencanaTindakanAwal: "Monitoring EKG, terapi",
-      perawatYangMelapor: "Ns. Andi Wijaya, S.Kep",
-      tanggalWaktu: "15 Januari 2024, 20:30 WIB"
-    }
   ]);
 
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [catatan, setCatatan] = useState('');
+  const [catatan, setCatatan] = useState("");
   const [showRevisiModal, setShowRevisiModal] = useState(false);
   const [showRiwayatModal, setShowRiwayatModal] = useState(false);
-  const [selectedKategori, setSelectedKategori] = useState('');
-  const [selectedGrading, setSelectedGrading] = useState('');
-  const [catatanRevisi, setCatatanRevisi] = useState('');
-  const [tindakanAwal, setTindakanAwal] = useState('');
+  const [selectedKategori, setSelectedKategori] = useState("");
+  const [selectedGrading, setSelectedGrading] = useState("");
+  const [catatanRevisi, setCatatanRevisi] = useState("");
+  const [tindakanAwal, setTindakanAwal] = useState("");
 
   const handleReportClick = (report: Report) => {
     setSelectedReport(report);
-    setCatatan('');
+    setCatatan("");
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedReport(null);
-    setCatatan('');
+    setCatatan("");
   };
 
   const handleValidasi = () => {
-    console.log('Validasi laporan:', selectedReport?.id);
+    console.log("Validasi laporan:", selectedReport?.id);
     handleCloseModal();
   };
 
   const handleRevisi = () => {
     setShowRevisiModal(true);
-    setSelectedKategori('');
-    setSelectedGrading('');
-    setCatatanRevisi('');
-    setTindakanAwal('');
+    setSelectedKategori("");
+    setSelectedGrading("");
+    setCatatanRevisi("");
+    setTindakanAwal("");
   };
 
   const handleCloseRevisiModal = () => {
     setShowRevisiModal(false);
-    setSelectedKategori('');
-    setSelectedGrading('');
-    setCatatanRevisi('');
-    setTindakanAwal('');
+    setSelectedKategori("");
+    setSelectedGrading("");
+    setCatatanRevisi("");
+    setTindakanAwal("");
   };
 
   const handleKirimRevisi = () => {
-    console.log('Kirim revisi:', {
-      reportId: selectedReport && typeof selectedReport === 'object' && 'id' in selectedReport ? (selectedReport as {id: unknown}).id : null,
+    console.log("Kirim revisi:", {
+      reportId:
+        selectedReport &&
+        typeof selectedReport === "object" &&
+        "id" in selectedReport
+          ? (selectedReport as { id: unknown }).id
+          : null,
       kategori: selectedKategori,
       grading: selectedGrading,
       catatan: catatanRevisi,
-      tindakanAwal: tindakanAwal
+      tindakanAwal: tindakanAwal,
     });
     handleCloseRevisiModal();
     handleCloseModal();
   };
-
-
 
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
@@ -189,40 +171,55 @@ export default function LaporanMasukChiefNursingPage() {
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Riwayat */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/dashboard-chiefnursing'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/dashboard-chiefnursing")}
+            >
               <i className="fas fa-clipboard-list text-lg mb-1"></i>
               <span className="text-xs">Riwayat</span>
             </button>
-            
+
             {/* Notifikasi */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/notifications-chiefnursing'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() =>
+                (window.location.href = "/notifications-chiefnursing")
+              }
+            >
               <i className="fas fa-bell text-lg mb-1"></i>
               <span className="text-xs">Notifikasi</span>
             </button>
-            
+
             {/* Laporan Masuk - Active */}
             <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
               <i className="fas fa-envelope text-lg mb-1"></i>
               <span className="text-xs">Laporan Masuk</span>
             </button>
-            
+
             {/* Manage Profil */}
-            <button className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors" onClick={() => window.location.href = '/profile-chiefnursing'}>
+            <button
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              onClick={() => (window.location.href = "/profile-chiefnursing")}
+            >
               <i className="fas fa-user text-lg mb-1"></i>
               <span className="text-xs">Profil</span>
             </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
             onClick={toggleMobileMenu}
           >
-            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+            <i
+              className={`fas ${
+                isMobileMenuOpen ? "fa-times" : "fa-bars"
+              } text-xl`}
+            ></i>
           </button>
         </div>
 
@@ -233,31 +230,35 @@ export default function LaporanMasukChiefNursingPage() {
               {/* Riwayat */}
               <button
                 className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
-                onClick={() => window.location.href = '/dashboard-chiefnursing'}
+                onClick={() =>
+                  (window.location.href = "/dashboard-chiefnursing")
+                }
               >
                 <i className="fas fa-history text-lg mr-3"></i>
                 <span>Riwayat</span>
               </button>
-              
+
               {/* Notifikasi */}
               <button
                 className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
-                onClick={() => window.location.href = '/notifications-chiefnursing'}
+                onClick={() =>
+                  (window.location.href = "/notifications-chiefnursing")
+                }
               >
                 <i className="fas fa-bell text-lg mr-3"></i>
                 <span>Notifikasi</span>
               </button>
-              
+
               {/* Laporan Masuk - Active */}
               <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
                 <i className="fas fa-envelope text-lg mr-3"></i>
                 <span>Laporan Masuk</span>
               </button>
-              
+
               {/* Manage Profil */}
               <button
                 className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
-                onClick={() => window.location.href = '/profile-chiefnursing'}
+                onClick={() => (window.location.href = "/profile-chiefnursing")}
               >
                 <i className="fas fa-user text-lg mr-3"></i>
                 <span>Profil</span>
@@ -270,50 +271,69 @@ export default function LaporanMasukChiefNursingPage() {
       {/* Main Content */}
       <main className="flex-1 px-6 py-6">
         {/* Background Pattern */}
-        <div 
+        <div
           className="relative rounded-xl p-8 h-full"
           style={{
-            background: 'linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)'
+            background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
         >
-          <div 
+          <div
             className="absolute inset-0 opacity-20 pointer-events-none rounded-xl"
             style={{
               backgroundImage: `url('/bgperawat.png')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
           ></div>
-          
+
           {/* Content Container */}
           <div className="relative z-10">
             {/* Page Title */}
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-2">Daftar Laporan Masuk</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Daftar Laporan Masuk
+              </h2>
             </div>
 
             {/* Reports List */}
             <div className="space-y-4">
               {reports.map((report) => (
-                <div 
+                <div
                   key={report.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 flex items-center justify-between hover:bg-white/95 transition-colors cursor-pointer"
+                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 hover:bg-white/95 transition-colors cursor-pointer"
                   onClick={() => handleReportClick(report)}
                 >
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-[#0B7A95] p-3 rounded-lg">
-                      <i className="fas fa-envelope text-white text-lg"></i>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-[#0B7A95] p-3 rounded-lg">
+                        <i className="fas fa-envelope text-white text-lg"></i>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          Laporan dari Perawat {report.namaPerawatYangMenangani}
+                        </h3>
+                        
+                        <p className="text-xs text-gray-500 mt-1">
+                          Judul Insiden : {report.judulInsiden}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Tanggal Laporan : {report.tanggalWaktuPelaporan}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">{report.title}</h3>
-                      <p className="text-sm text-gray-600">Status : {report.status}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                      <i className="fas fa-ellipsis-h text-xl"></i>
-                    </button>
+                    {/* <div className="flex flex-col items-end space-y-2">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        report.grading === 'Biru' ? 'bg-blue-100 text-blue-800' :
+                        report.grading === 'Hijau' ? 'bg-green-100 text-green-800' :
+                        report.grading === 'Kuning' ? 'bg-yellow-100 text-yellow-800' :
+                        report.grading === 'Merah' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {report.grading}
+                      </span>
+                      <span className="text-xs text-gray-500">{report.kategori}</span>
+                    </div> */}
                   </div>
                 </div>
               ))}
@@ -334,7 +354,7 @@ export default function LaporanMasukChiefNursingPage() {
                 </div>
                 <h2 className="text-white font-bold text-lg">Detail Laporan</h2>
               </div>
-              <button 
+              <button
                 onClick={handleCloseModal}
                 className="text-white hover:text-gray-200 transition-colors"
               >
@@ -344,106 +364,224 @@ export default function LaporanMasukChiefNursingPage() {
 
             {/* Content Modal */}
             <div className="p-6 space-y-4">
-              {/* Detail Nama Pasien */}
+              {/* Kode Laporan */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Detail Nama Pasien :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.detailNamaPasien}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Kode Laporan :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.kodeLaporan}
+                </p>
               </div>
 
-              {/* Usia */}
+              {/* Nama Perawat Yang Menangani */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Usia :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.usia}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Nama Perawat Yang Menangani :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.namaPerawatYangMenangani}
+                </p>
               </div>
 
-              {/* Nomor Rekam Medis */}
+              {/* Nama Ruangan Perawat Yang Menangani */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Nomor Rekam Medis :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.nomorRekamMedis}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Nama Ruangan Perawat Yang Menangani :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.namaRuanganPerawatYangMenangani}
+                </p>
               </div>
 
-              {/* Ruang Perawatan */}
+              {/* Nama Pasien */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Ruang Perawatan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.ruangPerawatan}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Nama Pasien :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.namaPasien}
+                </p>
               </div>
 
-              {/* Keluhan Utama */}
+              {/* No RM */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Keluhan Utama :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.keluhanUtama}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  No RM :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.noRm}
+                </p>
               </div>
 
-              {/* Gejala Tambahan */}
+              {/* Umur */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Gejala Tambahan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.gejalaTambahan}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Umur :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.umur}
+                </p>
               </div>
 
-              {/* Riwayat Penyakit */}
+              {/* Jenis Kelamin */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Riwayat Penyakit :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.riwayatPenyakit}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Jenis Kelamin :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.jenisKelamin}
+                </p>
               </div>
 
-              {/* Riwayat Alergi */}
+              {/* Tanggal Masuk RS */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Riwayat Alergi :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.riwayatAlergi}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tanggal Masuk RS :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.tanggalMasukRs}
+                </p>
               </div>
 
-              {/* Pola Tidur & Makan */}
+              {/* Unit Yang Melaporkan */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Pola Tidur & Makan :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.polaTidurMakan}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Unit Yang Melaporkan :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.unitYangMelaporkan}
+                </p>
               </div>
 
-              {/* Aktivitas Harian */}
+              {/* Lokasi Kejadian */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Aktivitas Harian :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.aktivitasHarian}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Lokasi Kejadian :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.lokasiKejadian}
+                </p>
               </div>
 
-              {/* Faktor Risiko */}
+              {/* Tanggal Insiden */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Faktor Risiko :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.faktorRisiko}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tanggal Insiden :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.tanggalInsiden}
+                </p>
               </div>
 
-              {/* Kesimpulan Sementara */}
+              {/* Judul Insiden */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Kesimpulan Sementara :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.kesimpulanSementara}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Judul Insiden :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.judulInsiden}
+                </p>
               </div>
 
-              {/* Kategori */}
+              {/* Kronologi */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Kategori :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.kategori}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Kronologi :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.kronologi}
+                </p>
+              </div>
+
+              {/* Tindakan Awal */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tindakan Awal :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.tindakanAwal}
+                </p>
+              </div>
+
+              {/* Tindakan Oleh */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tindakan Oleh :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.tindakanOleh}
+                </p>
+              </div>
+
+              {/* Dampak */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Dampak :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.dampak}
+                </p>
+              </div>
+
+              {/* Probablitas */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Probablitas :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.probablitas}
+                </p>
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Status :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.status}
+                </p>
               </div>
 
               {/* Grading */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Grading :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.grading}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Grading :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.grading}
+                </p>
               </div>
 
-              {/* Rencana Tindakan Awal */}
+              {/* Kategori */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Rencana Tindakan Awal :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.rencanaTindakanAwal}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Kategori :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.kategori}
+                </p>
               </div>
 
-              {/* Perawat yang Melapor */}
+              {/* Rekomendasi Tindakan */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Perawat yang Melapor :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.perawatYangMelapor}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Rekomendasi Tindakan :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.rekomendasiTindakan}
+                </p>
               </div>
 
-              {/* Tanggal & Waktu */}
+              {/* Tanggal Waktu Pelaporan */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">Tanggal & Waktu :</label>
-                <p className="text-gray-800 bg-white/50 p-2 rounded">{selectedReport?.tanggalWaktu}</p>
+                <label className="block text-[#2C3E50] font-medium mb-1 text-sm">
+                  Tanggal Waktu Pelaporan :
+                </label>
+                <p className="text-gray-800 bg-white/50 p-2 rounded">
+                  {selectedReport?.tanggalWaktuPelaporan}
+                </p>
               </div>
 
               {/* Action Buttons - Moved above Catatan */}
@@ -470,7 +608,9 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Catatan */}
               <div>
-                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">Catatan :</label>
+                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">
+                  Catatan :
+                </label>
                 <textarea
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
@@ -484,7 +624,7 @@ export default function LaporanMasukChiefNursingPage() {
               <div className="flex justify-center pt-4">
                 <button
                   onClick={() => {
-                    console.log('Kirim catatan:', catatan);
+                    console.log("Kirim catatan:", catatan);
                     // Add your send note logic here
                   }}
                   className="bg-[#0B7A95] text-white px-8 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
@@ -506,11 +646,23 @@ export default function LaporanMasukChiefNursingPage() {
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-[#6B8CAE] rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    <svg
+                      className="w-4 h-4 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
                     </svg>
                   </div>
-                  <h2 className="text-lg font-semibold text-[#2C3E50]">Revisi Laporan</h2>
+                  <h2 className="text-lg font-semibold text-[#2C3E50]">
+                    Revisi Laporan
+                  </h2>
                 </div>
                 <button
                   onClick={handleCloseRevisiModal}
@@ -522,16 +674,18 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Kategori */}
               <div className="mb-6">
-                <label className="block text-[#2C3E50] font-medium mb-3 text-sm">Kategori :</label>
+                <label className="block text-[#2C3E50] font-medium mb-3 text-sm">
+                  Kategori :
+                </label>
                 <div className="flex flex-wrap gap-2">
-                  {['KTD', 'KPC', 'KNC', 'KTC', 'Sentinel'].map((kategori) => (
+                  {["KTD", "KPC", "KNC", "KTC", "Sentinel"].map((kategori) => (
                     <button
                       key={kategori}
                       onClick={() => setSelectedKategori(kategori)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                         selectedKategori === kategori
-                          ? 'bg-[#2C3E50] text-white'
-                          : 'bg-white/70 text-[#2C3E50] hover:bg-white/90'
+                          ? "bg-[#2C3E50] text-white"
+                          : "bg-white/70 text-[#2C3E50] hover:bg-white/90"
                       }`}
                     >
                       {kategori}
@@ -542,13 +696,15 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Grading */}
               <div className="mb-6">
-                <label className="block text-[#2C3E50] font-medium mb-3 text-sm">Grading :</label>
+                <label className="block text-[#2C3E50] font-medium mb-3 text-sm">
+                  Grading :
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    { name: 'Merah', color: 'bg-red-500' },
-                    { name: 'Kuning', color: 'bg-yellow-500' },
-                    { name: 'Hijau', color: 'bg-green-500' },
-                    { name: 'Biru', color: 'bg-blue-500' }
+                    { name: "Merah", color: "bg-red-500" },
+                    { name: "Kuning", color: "bg-yellow-500" },
+                    { name: "Hijau", color: "bg-green-500" },
+                    { name: "Biru", color: "bg-blue-500" },
                   ].map((grading) => (
                     <button
                       key={grading.name}
@@ -567,7 +723,9 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Tindakan Awal */}
               <div className="mb-6">
-                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">Tindakan awal :</label>
+                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">
+                  Tindakan awal :
+                </label>
                 <textarea
                   value={tindakanAwal}
                   onChange={(e) => setTindakanAwal(e.target.value)}
@@ -580,7 +738,7 @@ export default function LaporanMasukChiefNursingPage() {
               {/* Tombol Kirim Revisi */}
               <div className="flex justify-center mb-6">
                 <button
-                  onClick={() => console.log('Kirim Revisi:', tindakanAwal)}
+                  onClick={() => console.log("Kirim Revisi:", tindakanAwal)}
                   className="bg-[#0B7A95] text-white px-6 py-2 rounded-lg hover:bg-[#0a6b85] transition-colors font-medium text-sm"
                   disabled={!tindakanAwal.trim()}
                 >
@@ -590,7 +748,9 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Catatan */}
               <div className="mb-6">
-                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">Catatan :</label>
+                <label className="block text-[#2C3E50] font-medium mb-2 text-sm">
+                  Catatan :
+                </label>
                 <textarea
                   value={catatanRevisi}
                   onChange={(e) => setCatatanRevisi(e.target.value)}
@@ -625,7 +785,9 @@ export default function LaporanMasukChiefNursingPage() {
                 <div className="bg-white p-2 rounded-lg">
                   <i className="fas fa-history text-[#6B8CAE] text-lg"></i>
                 </div>
-                <h2 className="text-white font-bold text-lg">Riwayat Laporan</h2>
+                <h2 className="text-white font-bold text-lg">
+                  Riwayat Laporan
+                </h2>
               </div>
               <button
                 onClick={() => setShowRiwayatModal(false)}
@@ -639,27 +801,45 @@ export default function LaporanMasukChiefNursingPage() {
             <div className="p-6 space-y-6">
               {/* Tabel Riwayat Catatan */}
               <div>
-                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">Riwayat Catatan</h3>
+                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
+                  Riwayat Catatan
+                </h3>
                 <div className="bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Tanggal</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Catatan</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Tanggal
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Catatan
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-15 10:30</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Pasien menunjukkan perbaikan kondisi</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-15 10:30
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Pasien menunjukkan perbaikan kondisi
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-14 14:20</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Perlu monitoring lebih intensif</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-14 14:20
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Perlu monitoring lebih intensif
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-13 09:15</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Catatan awal laporan</td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-13 09:15
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Catatan awal laporan
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -668,45 +848,87 @@ export default function LaporanMasukChiefNursingPage() {
 
               {/* Tabel Riwayat Tindakan */}
               <div>
-                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">Riwayat Tindakan</h3>
+                <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
+                  Riwayat Tindakan
+                </h3>
                 <div className="bg-white/50 rounded-lg overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-[#6B8CAE] text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Tanggal</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Aksi</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Kategori</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Grading</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium">Rekomendasi Tindakan</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Tanggal
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Aksi
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Kategori
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Grading
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">
+                          Rekomendasi Tindakan
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-15 10:30</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Validasi</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-15 10:30
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori A</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 2</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Lanjutkan perawatan standar</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                            Validasi
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori A
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 2
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Lanjutkan perawatan standar
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-14 14:20</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Revisi</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-14 14:20
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori B</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 1</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Perlu evaluasi ulang</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                            Revisi
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori B
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 1
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Perlu evaluasi ulang
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-800">2024-01-13 09:15</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Submit</span>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          2024-01-13 09:15
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Kategori A</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Grade 1</td>
-                        <td className="px-4 py-3 text-sm text-gray-800">Tindakan awal sesuai protokol</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                            Submit
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Kategori A
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Grade 1
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-800">
+                          Tindakan awal sesuai protokol
+                        </td>
                       </tr>
                     </tbody>
                   </table>
