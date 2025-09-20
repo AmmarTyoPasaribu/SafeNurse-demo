@@ -2,25 +2,58 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
 
 export default function ResetPasswordPage() {
-  const [email, setEmail] = useState('perawat@gmail.com');
-  const [password, setPassword] = useState('***************');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token"); // ambil token dari URL
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle reset password logic here
-    console.log('Reset password for:', { email, password, confirmPassword });
-    // Redirect to login page after successful reset
-    window.location.href = '/login';
+
+    if (password !== confirmPassword) {
+      alert("Password dan konfirmasi password tidak sama!");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/forgot_password/reset_password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+            newPassword: password,
+          }),
+        }
+      );
+
+      const data = await res.json();
+      console.log("Reset password response:", data);
+
+      if (!res.ok) {
+        alert(data.message || "Reset password gagal!");
+        return;
+      }
+
+      alert("Password berhasil direset! Silakan login kembali.");
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Error reset password:", err);
+      alert("Terjadi kesalahan. Coba lagi nanti.");
+    }
   };
 
   return (
@@ -69,25 +102,6 @@ export default function ResetPasswordPage() {
                   Reset <span className="text-[#09839C]">Password</span>
                 </h2>
                 <form className={`space-y-6 transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} onSubmit={handleSubmit}>
-                  <div>
-                    <label
-                      className="block text-white font-semibold text-lg mb-1"
-                      htmlFor="email"
-                    >
-                      Email
-                    </label>
-                    <div className="flex items-center border-b border-[#0E364A]">
-                      <input
-                        className="bg-transparent text-black placeholder-[#a0cbd9] text-sm font-normal focus:outline-none w-full py-1 focus:scale-105 transition-transform duration-300"
-                        id="email"
-                        placeholder="perawat@gmail.com"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <i className="fas fa-envelope text-[#0E364A] text-lg hover:scale-110 transition-transform duration-200"></i>
-                    </div>
-                  </div>
                   <div>
                     <label
                       className="block text-white font-semibold text-lg mb-1"

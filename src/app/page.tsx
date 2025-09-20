@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function HomePage() {
+
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
