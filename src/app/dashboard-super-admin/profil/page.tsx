@@ -304,7 +304,7 @@ export default function ProfilSuperAdmin() {
         }
       `}</style>
       <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
-        <style jsx>{styles}</style>
+        
 
         {/* Header/Navbar */}
         <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 animate-fadeInUp animate-delay-100">
