@@ -84,23 +84,31 @@ export default function ProfileKepalaRuanganPage() {
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       <style jsx>{`
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
-        
+
         @keyframes slideUp {
-          from { 
+          from {
             opacity: 0;
             transform: translateY(30px);
           }
-          to { 
+          to {
             opacity: 1;
             transform: translateY(0);
           }
         }
-        
+
         @keyframes bounceGentle {
-          0%, 20%, 50%, 80%, 100% {
+          0%,
+          20%,
+          50%,
+          80%,
+          100% {
             transform: translateY(0);
           }
           40% {
@@ -110,63 +118,63 @@ export default function ProfileKepalaRuanganPage() {
             transform: translateY(-3px);
           }
         }
-        
+
         .animate-fade-in {
           animation: fadeIn 0.8s ease-out;
         }
-        
+
         .animate-slide-up {
           animation: slideUp 0.6s ease-out;
         }
-        
+
         .animate-slide-up-delay-1 {
           animation: slideUp 0.6s ease-out 0.1s both;
         }
-        
+
         .animate-slide-up-delay-2 {
           animation: slideUp 0.6s ease-out 0.2s both;
         }
-        
+
         .animate-slide-up-delay-3 {
           animation: slideUp 0.6s ease-out 0.3s both;
         }
-        
+
         .animate-slide-up-delay-4 {
           animation: slideUp 0.6s ease-out 0.4s both;
         }
-        
+
         .animate-fade-in-delay-1 {
           animation: fadeIn 0.8s ease-out 0.2s both;
         }
-        
+
         .animate-fade-in-delay-2 {
           animation: fadeIn 0.8s ease-out 0.4s both;
         }
-        
+
         .animate-fade-in-delay-3 {
           animation: fadeIn 0.8s ease-out 0.6s both;
         }
-        
+
         .animate-fade-in-delay-4 {
           animation: fadeIn 0.8s ease-out 0.8s both;
         }
-        
+
         .animate-fade-in-delay-5 {
-          animation: fadeIn 0.8s ease-out 1.0s both;
+          animation: fadeIn 0.8s ease-out 1s both;
         }
-        
+
         .animate-fade-in-delay-6 {
           animation: fadeIn 0.8s ease-out 1.2s both;
         }
-        
+
         .animate-bounce-gentle {
           animation: bounceGentle 2s infinite;
         }
-        
+
         .hover\\:shadow-3xl:hover {
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        
+
         @media (max-width: 768px) {
           .animate-slide-up,
           .animate-slide-up-delay-1,
@@ -175,7 +183,7 @@ export default function ProfileKepalaRuanganPage() {
           .animate-slide-up-delay-4 {
             animation-duration: 0.4s;
           }
-          
+
           .animate-fade-in,
           .animate-fade-in-delay-1,
           .animate-fade-in-delay-2,

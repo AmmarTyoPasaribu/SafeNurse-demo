@@ -184,9 +184,77 @@ export default function LaporanMasukVerifikator() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
-      {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-4 sm:px-6 py-3 mx-4 sm:mx-6 mt-4 sm:mt-6">
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        
+        @keyframes bounceGentle {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out;
+        }
+        
+        .animate-slide-up {
+          animation: slideUp 0.6s ease-out;
+        }
+        
+        .animate-slide-up-delay-1 {
+          animation: slideUp 0.8s ease-out 0.2s both;
+        }
+        
+        .animate-fade-in-delay-1 {
+          animation: fadeIn 1s ease-out 0.4s both;
+        }
+        
+        .animate-fade-in-delay-2 {
+          animation: fadeIn 1.2s ease-out 0.6s both;
+        }
+        
+        .animate-bounce-gentle {
+          animation: bounceGentle 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+          .animate-slide-up,
+          .animate-slide-up-delay-1 {
+            animation-duration: 0.5s;
+          }
+          
+          .animate-fade-in,
+          .animate-fade-in-delay-1,
+          .animate-fade-in-delay-2 {
+            animation-duration: 0.6s;
+          }
+        }
+      `}</style>
+      
+      <div className="bg-[#d9f0f6] min-h-screen flex flex-col animate-fade-in">
+        {/* Header/Navbar */}
+        <header className="bg-[#B9D9DD] rounded-xl px-4 sm:px-6 py-3 mx-4 sm:mx-6 mt-4 sm:mt-6 animate-slide-up">
         <div className="flex justify-between items-center">
           <h1 className="text-white text-lg sm:text-xl font-bold">
             Safe
@@ -312,15 +380,15 @@ export default function LaporanMasukVerifikator() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-4 sm:px-6 py-4 sm:py-6">
+      <main className="flex-1 px-4 sm:px-6 py-4 sm:py-6 animate-slide-up-delay-1">
         <div
-          className="relative rounded-xl p-4 sm:p-8 h-full"
+          className="relative rounded-xl p-4 sm:p-8 h-full transform hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
         >
           <div
-            className="absolute inset-0 opacity-20 pointer-events-none rounded-xl"
+            className="absolute inset-0 opacity-20 pointer-events-none rounded-xl animate-bounce-gentle"
             style={{
               backgroundImage: `url('/bgperawat.png')`,
               backgroundSize: "cover",
@@ -332,19 +400,24 @@ export default function LaporanMasukVerifikator() {
           {/* Content Container */}
           <div className="relative z-10">
             {/* Page Title */}
-            <div className="mb-6 sm:mb-8">
+            <div className="mb-6 sm:mb-8 animate-fade-in-delay-1">
               <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                 Daftar Laporan Masuk
               </h2>
             </div>
 
             {/* Reports List */}
-            <div className="space-y-3 sm:space-y-4">
-              {reports.map((report) => (
+            <div className="space-y-3 sm:space-y-4 animate-fade-in-delay-2">
+              {reports.map((report, index) => (
                 <div
                   key={report.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-4 sm:p-6 hover:bg-white/95 transition-colors cursor-pointer"
+                  className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-4 sm:p-6 hover:bg-white/95 transition-colors cursor-pointer transform hover:scale-105"
                   onClick={() => handleReportClick(report)}
+                  style={{
+                    animationDelay: `${0.8 + index * 0.1}s`,
+                    animationFillMode: 'both',
+                    animation: 'fadeIn 0.6s ease-out'
+                  }}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3 sm:space-x-4">
@@ -1291,6 +1364,7 @@ export default function LaporanMasukVerifikator() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

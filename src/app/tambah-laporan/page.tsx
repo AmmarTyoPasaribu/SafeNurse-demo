@@ -592,7 +592,7 @@ export default function TambahLaporanPage() {
           <button
             onClick={() => handleQuickResponse("Ya")}
             disabled={isProcessingResponse}
-            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
               isProcessingResponse
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                 : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
@@ -603,7 +603,7 @@ export default function TambahLaporanPage() {
           <button
             onClick={() => handleQuickResponse("Tidak")}
             disabled={isProcessingResponse}
-            className={`px-4 py-2 rounded-full text-sm transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
               isProcessingResponse
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                 : "bg-gray-500 text-white hover:bg-gray-600"
@@ -617,8 +617,8 @@ export default function TambahLaporanPage() {
 
     if (currentStep === "tglMasukRS") {
       return (
-        <div className="mb-4">
-          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+        <div className="mb-4 animate-fadeInUp">
+          <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm transform hover:shadow-md transition-all duration-200">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Pilih Tanggal Masuk RS:
             </label>
@@ -629,12 +629,12 @@ export default function TambahLaporanPage() {
               onChange={(e) => {
                 setSelectedDate(e.target.value);
               }}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black transform focus:scale-105 transition-all duration-200 ${
                 isProcessingResponse ? "bg-gray-100 cursor-not-allowed" : ""
               }`}
             />
             {selectedDate && (
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex gap-2 animate-slideInUp">
                 <button
                   onClick={() => {
                     if (!isProcessingResponse) {
@@ -1620,59 +1620,199 @@ export default function TambahLaporanPage() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+    <>
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes slideInFromBottom {
+          from {
+            opacity: 0;
+            transform: translateY(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-fadeInDown {
+          animation: fadeInDown 0.6s ease-out forwards;
+        }
+
+        .animate-fadeInLeft {
+          animation: fadeInLeft 0.6s ease-out forwards;
+        }
+
+        .animate-fadeInRight {
+          animation: fadeInRight 0.6s ease-out forwards;
+        }
+
+        .animate-scaleIn {
+          animation: scaleIn 0.5s ease-out forwards;
+        }
+
+        .animate-slideInFromBottom {
+          animation: slideInFromBottom 0.7s ease-out forwards;
+        }
+
+        .animate-pulse-gentle {
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .animate-delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .animate-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animate-delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .animate-delay-400 {
+          animation-delay: 0.4s;
+        }
+
+        .animate-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
+
+      <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold">
-            Safe
-            <span className="font-bold text-[#0B7A95]">Nurse</span>
-          </h1>
+        <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 animate-fadeInDown">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-4 animate-fadeInLeft animate-delay-100">
+              {/* Back Button */}
+              <button
+                className="flex items-center text-red-800 hover:text-red-800 transition-colors bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg transform hover:scale-105 transition-all duration-200"
+                onClick={() => (window.location.href = "/dashboard-perawat")}
+                title="Kembali ke Dashboard"
+              >
+                <i className="fas fa-arrow-left text-lg mr-2 text-red-800"></i>
+                <span className="hidden sm:inline text-sm font-medium">
+                  Batal
+                </span>
+              </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+              <h1 className="text-white text-xl font-bold">
+                Safe
+                <span className="font-bold text-[#0B7A95]">Nurse</span>
+              </h1>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6 animate-fadeInRight animate-delay-200">
             {/* Riwayat */}
-            <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-              onClick={() => (window.location.href = "/dashboard-perawat")}
-            >
-              <i className="fas fa-clipboard-list text-lg mb-1"></i>
-              <span className="text-xs">Riwayat</span>
-            </button>
+              <button
+                className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110"
+                onClick={() => (window.location.href = "/dashboard-perawat")}
+              >
+                <i className="fas fa-clipboard-list text-lg mb-1"></i>
+                <span className="text-xs">Riwayat</span>
+              </button>
 
-            {/* Notifikasi */}
-            <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-              onClick={() => (window.location.href = "/notifications-perawat")}
-            >
-              <i className="fas fa-bell text-lg mb-1"></i>
-              <span className="text-xs">Notifikasi</span>
-            </button>
+              {/* Notifikasi */}
+              <button
+                className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110"
+                onClick={() => (window.location.href = "/notifications-perawat")}
+              >
+                <i className="fas fa-bell text-lg mb-1"></i>
+                <span className="text-xs">Notifikasi</span>
+              </button>
 
-            {/* Tutorial */}
-            <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-              onClick={() => (window.location.href = "/video-tutorial-perawat")}
-            >
-              <i className="fas fa-play-circle text-lg mb-1"></i>
-              <span className="text-xs">Tutorial</span>
-            </button>
+              {/* Tutorial */}
+              <button
+                className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110"
+                onClick={() => (window.location.href = "/video-tutorial-perawat")}
+              >
+                <i className="fas fa-play-circle text-lg mb-1"></i>
+                <span className="text-xs">Tutorial</span>
+              </button>
 
-            {/* Profil */}
-            <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
-              onClick={() => (window.location.href = "/profile-perawat")}
-            >
-              <i className="fas fa-user text-lg mb-1"></i>
-              <span className="text-xs">Profil</span>
-            </button>
-          </div>
+              {/* Profil */}
+              <button
+                className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110"
+                onClick={() => (window.location.href = "/profile-perawat")}
+              >
+                <i className="fas fa-user text-lg mb-1"></i>
+                <span className="text-xs">Profil</span>
+              </button>
+            </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
-            onClick={toggleMobileMenu}
-          >
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110 animate-fadeInRight animate-delay-300"
+              onClick={toggleMobileMenu}
+            >
             <i
               className={`fas ${
                 isMobileMenuOpen ? "fa-times" : "fa-bars"
@@ -1685,9 +1825,18 @@ export default function TambahLaporanPage() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-white/20">
             <div className="flex flex-col space-y-3">
-              {/* Riwayat */}
+              {/* Back to Dashboard - Mobile */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                className="flex items-center text-red-600 hover:text-red-700 transition-colors py-2 bg-white/10 hover:bg-white/20 px-3 rounded-lg"
+                onClick={() => (window.location.href = "/dashboard-perawat")}
+              >
+                <i className="fas fa-arrow-left text-lg mr-3 text-red-600"></i>
+                <span>Kembali ke Dashboard</span>
+              </button>
+
+              {/* Mobile Navigation Menu */}
+              <button
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 py-2"
                 onClick={() => (window.location.href = "/dashboard-perawat")}
               >
                 <i className="fas fa-clipboard-list text-lg mr-3"></i>
@@ -1696,7 +1845,7 @@ export default function TambahLaporanPage() {
 
               {/* Notifikasi */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 py-2"
                 onClick={() =>
                   (window.location.href = "/notifications-perawat")
                 }
@@ -1707,7 +1856,7 @@ export default function TambahLaporanPage() {
 
               {/* Tutorial */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 py-2"
                 onClick={() =>
                   (window.location.href = "/video-tutorial-perawat")
                 }
@@ -1718,7 +1867,7 @@ export default function TambahLaporanPage() {
 
               {/* Profil */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 py-2"
                 onClick={() => (window.location.href = "/profile-perawat")}
               >
                 <i className="fas fa-user text-lg mr-3"></i>
@@ -1730,9 +1879,9 @@ export default function TambahLaporanPage() {
       </header>
 
       {/* Main Chat Container */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 animate-fadeInUp animate-delay-400">
         <div
-          className="bg-white rounded-lg p-6 h-full relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full relative overflow-hidden animate-slideInUp animate-delay-500"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -1748,10 +1897,10 @@ export default function TambahLaporanPage() {
 
           {/* Content Container */}
           <div className="relative z-10 h-full flex justify-center items-center">
-            <div className="bg-white rounded-xl shadow-lg h-full flex flex-col max-w-2xl w-full">
+            <div className="bg-white rounded-xl shadow-lg h-full flex flex-col max-w-2xl w-full animate-scaleIn animate-delay-600">
               {/* Chat Header */}
-              <div className="bg-[#0B7A95] text-white p-4 rounded-t-xl flex items-center space-x-3">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <div className="bg-[#0B7A95] text-white p-4 rounded-t-xl flex items-center space-x-3 animate-fadeInDown animate-delay-700">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center animate-pulse">
                   <i className="fas fa-robot text-[#0B7A95] text-lg"></i>
                 </div>
                 <div>
@@ -1764,7 +1913,7 @@ export default function TambahLaporanPage() {
 
               {/* Messages Container */}
               <div
-                className="flex-1 p-4 overflow-y-auto space-y-4"
+                className="flex-1 p-4 overflow-y-auto space-y-4 animate-fadeIn animate-delay-800"
                 style={{ maxHeight: "calc(100vh - 300px)" }}
               >
                 {messages.map((message) => (
@@ -1774,7 +1923,7 @@ export default function TambahLaporanPage() {
                       message.sender === "user"
                         ? "justify-end"
                         : "justify-start items-start"
-                    }`}
+                    } animate-slideInUp`}
                   >
                     {message.sender === "bot" && (
                       <div className="w-8 h-8 bg-[#0B7A95] rounded-full flex items-center justify-center mr-2 mt-1 flex-shrink-0">
@@ -1782,7 +1931,7 @@ export default function TambahLaporanPage() {
                       </div>
                     )}
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg transform hover:scale-105 transition-all duration-200 ${
                         message.sender === "user"
                           ? "bg-[#0B7A95] text-white"
                           : "bg-gray-100 text-gray-800"
@@ -1807,7 +1956,7 @@ export default function TambahLaporanPage() {
               </div>
 
               {/* Quick Response Buttons */}
-              <div className="px-4">{renderQuickButtons()}</div>
+              <div className="px-4 animate-fadeInUp animate-delay-900">{renderQuickButtons()}</div>
 
               {/* Input Area */}
               {currentStep !== "end" &&
@@ -1821,7 +1970,7 @@ export default function TambahLaporanPage() {
                 currentStep !== "editFrekuensiKejadian" &&
                 currentStep !== "editTglMasukRS" &&
                 currentStep !== "editTglKejadian" && (
-                  <div className="p-4 border-t border-gray-200">
+                  <div className="p-4 border-t border-gray-200 animate-slideInUp animate-delay-1000">
                     <div className="flex items-center space-x-2">
                       <div className="flex-1 relative">
                         <input
@@ -1833,7 +1982,7 @@ export default function TambahLaporanPage() {
                           }
                           placeholder="Ketik pesan Anda..."
                           disabled={isProcessingResponse}
-                          className={`w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black ${
+                          className={`w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0B7A95] focus:border-transparent text-black transform focus:scale-105 transition-all duration-200 ${
                             isProcessingResponse
                               ? "bg-gray-100 cursor-not-allowed"
                               : ""
@@ -1843,7 +1992,7 @@ export default function TambahLaporanPage() {
 
                       <button
                         onClick={startVoiceRecognition}
-                        className={`p-2 rounded-full transition-all duration-200 ${
+                        className={`p-2 rounded-full transition-all duration-200 transform hover:scale-110 ${
                           isListening
                             ? "bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/50"
                             : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:shadow-md"
@@ -1864,10 +2013,10 @@ export default function TambahLaporanPage() {
                       <button
                         onClick={handleSendMessage}
                         disabled={isProcessingResponse}
-                        className={`p-2 rounded-full transition-colors ${
+                        className={`p-2 rounded-full transition-all duration-200 transform hover:scale-110 ${
                           isProcessingResponse
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-[#0B7A95] text-white hover:bg-[#0a6b85]"
+                            : "bg-[#0B7A95] text-white hover:bg-[#0a6b85] hover:shadow-lg"
                         }`}
                         title="Kirim Pesan"
                       >
@@ -1895,5 +2044,6 @@ export default function TambahLaporanPage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

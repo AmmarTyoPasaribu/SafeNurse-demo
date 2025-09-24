@@ -3,6 +3,111 @@
 import { useState } from "react";
 import Image from "next/image";
 
+// CSS Keyframes untuk animasi
+const styles = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-slideInLeft {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  .animate-bounceIn {
+    animation: bounceIn 0.8s ease-out forwards;
+  }
+
+  .animate-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 0.5s;
+  }
+`;
+
 interface Report {
   id: number;
   tanggal: string;
@@ -45,10 +150,10 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden animate-scaleIn">
       {/* Main Card Content */}
       <div
-        className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="p-4 cursor-pointer hover:bg-gray-50 transition-all duration-200"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex justify-between items-start mb-3">
@@ -71,7 +176,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
             <i
               className={`fas fa-chevron-${
                 isExpanded ? "up" : "down"
-              } text-gray-400 text-xs`}
+              } text-gray-400 text-xs transition-all duration-200 transform hover:scale-110`}
             ></i>
           </div>
         </div>
@@ -82,7 +187,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
               e.stopPropagation();
               onDetailClick(report);
             }}
-            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
           >
             Detail
           </button>
@@ -91,7 +196,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
 
       {/* Expanded Details */}
       {isExpanded && (
-        <div className="border-t border-gray-200 p-4 bg-gray-50">
+        <div className="border-t border-gray-200 p-4 bg-gray-50 animate-fadeInUp">
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Grading:</span>
@@ -421,9 +526,11 @@ export default function DashboardChiefNursing() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
-      {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+    <>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+      <div className="bg-[#d9f0f6] min-h-screen flex flex-col animate-fadeInUp">
+        {/* Header/Navbar */}
+        <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 animate-slideInLeft">
         <div className="flex justify-between items-center">
           <h1 className="text-white text-xl font-bold">
             Safe
@@ -434,7 +541,7 @@ export default function DashboardChiefNursing() {
           <div className="hidden md:flex items-center space-x-6">
             {/* Dashboard */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() => (window.location.href = "/dashboard-verifikator")}
             >
               <i className="fas fa-chart-bar text-lg mb-1"></i>
@@ -442,14 +549,14 @@ export default function DashboardChiefNursing() {
             </button>
 
             {/* Riwayat Laporan - Active */}
-            <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
+            <button className="flex flex-col items-center text-[#0B7A95] transition-all duration-200 transform hover:scale-105">
               <i className="fas fa-clipboard-list text-lg mb-1"></i>
               <span className="text-xs">Riwayat</span>
             </button>
 
             {/* Notifikasi */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() =>
                 (window.location.href = "/notifications-verifikator")
               }
@@ -460,7 +567,7 @@ export default function DashboardChiefNursing() {
 
             {/* Laporan Masuk */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() =>
                 (window.location.href = "/laporan-masuk-verifikator")
               }
@@ -471,7 +578,7 @@ export default function DashboardChiefNursing() {
 
             {/* Manage Profil */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() => (window.location.href = "/profile-verifikator")}
             >
               <i className="fas fa-user-cog text-lg mb-1"></i>
@@ -481,7 +588,7 @@ export default function DashboardChiefNursing() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            className="md:hidden text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-110"
             onClick={toggleMobileMenu}
           >
             <i
@@ -494,11 +601,11 @@ export default function DashboardChiefNursing() {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20 animate-fadeInUp">
             <div className="flex flex-col space-y-3">
               {/* Dashboard */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 p-2 rounded transform hover:scale-105"
                 onClick={() =>
                   (window.location.href = "/dashboard-verifikator")
                 }
@@ -508,14 +615,14 @@ export default function DashboardChiefNursing() {
               </button>
 
               {/* Riwayat Laporan - Active */}
-              <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
+              <button className="flex items-center text-[#0B7A95] transition-all duration-200 p-2 rounded transform hover:scale-105">
                 <i className="fas fa-clipboard-list text-lg mr-3"></i>
                 <span>Riwayat</span>
               </button>
 
               {/* Notifikasi */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 p-2 rounded transform hover:scale-105"
                 onClick={() =>
                   (window.location.href = "/notifications-verifikator")
                 }
@@ -526,7 +633,7 @@ export default function DashboardChiefNursing() {
 
               {/* Laporan Masuk */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 p-2 rounded transform hover:scale-105"
                 onClick={() =>
                   (window.location.href = "/laporan-masuk-verifikator")
                 }
@@ -537,7 +644,7 @@ export default function DashboardChiefNursing() {
 
               {/* Manage Profil */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 p-2 rounded transform hover:scale-105"
                 onClick={() => (window.location.href = "/profile-verifikator")}
               >
                 <i className="fas fa-user-cog text-lg mr-3"></i>
@@ -549,9 +656,9 @@ export default function DashboardChiefNursing() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 animate-slideInRight">
         <div
-          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden animate-scaleIn"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -568,10 +675,10 @@ export default function DashboardChiefNursing() {
           {/* Content */}
           <div className="relative z-10">
             {/* Header section with date picker */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 animate-fadeInUp animate-delay-200">
               <div className="flex items-center space-x-4">
                 <button
-                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition"
+                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition-all duration-200 transform hover:scale-105"
                   onClick={() => console.log("Pilih Bulan clicked")}
                 >
                   Pilih Bulan
@@ -580,7 +687,7 @@ export default function DashboardChiefNursing() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black"
+                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black transition-all duration-200 hover:shadow-md"
                   style={{
                     colorScheme: "light",
                   }}
@@ -589,9 +696,9 @@ export default function DashboardChiefNursing() {
             </div>
 
             {/* Desktop Table - Hidden on Mobile */}
-            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg">
+            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg animate-fadeInUp animate-delay-300">
               {/* Table Header */}
-              <div className="bg-[#0B7A95] text-white">
+              <div className="bg-[#0B7A95] text-white animate-slideInLeft animate-delay-400">
                 <div className="grid grid-cols-9 gap-2 px-4 py-3 text-sm font-medium">
                   <div className="text-center">Tanggal Laporan</div>
                   <div className="text-center">Kategori Insiden</div>
@@ -612,7 +719,8 @@ export default function DashboardChiefNursing() {
                     key={report.id}
                     className={`grid grid-cols-9 gap-2 px-4 py-3 text-sm ${
                       index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-blue-50 transition-colors`}
+                    } hover:bg-blue-50 transition-all duration-200 animate-fadeInUp`}
+                    style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                   >
                     <div className="bg-[#0E364A] text-white px-3 py-1 rounded text-center text-xs font-medium">
                       {report.tanggal}
@@ -641,7 +749,7 @@ export default function DashboardChiefNursing() {
                     <div className="text-center">
                       <button
                         onClick={() => handleDetailClick(report)}
-                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs font-medium hover:bg-[#0a6b85] transition-colors"
+                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs font-medium hover:bg-[#0a6b85] transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
                       >
                         Detail
                       </button>
@@ -652,13 +760,18 @@ export default function DashboardChiefNursing() {
             </div>
 
             {/* Mobile Card Layout - Visible on Mobile */}
-            <div className="lg:hidden space-y-4">
-              {reports.map((report) => (
-                <MobileReportCard
+            <div className="lg:hidden space-y-4 animate-fadeInUp animate-delay-300">
+              {reports.map((report, index) => (
+                <div
                   key={report.id}
-                  report={report}
-                  onDetailClick={handleDetailClick}
-                />
+                  className="animate-scaleIn"
+                  style={{ animationDelay: `${0.4 + index * 0.1}s` }}
+                >
+                  <MobileReportCard
+                    report={report}
+                    onDetailClick={handleDetailClick}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -667,8 +780,8 @@ export default function DashboardChiefNursing() {
 
       {/* Modal Detail Laporan */}
       {showDetailModal && selectedReport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#A8C8D8] rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
+          <div className="bg-[#A8C8D8] rounded-lg max-w-md w-full max-h-[85vh] overflow-y-auto relative my-8">
             {/* Header Modal */}
             <div className="bg-[#6B8CAE] rounded-t-lg p-4 flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -959,8 +1072,8 @@ export default function DashboardChiefNursing() {
 
       {/* Modal Revisi */}
       {showRevisiModal && selectedReport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#A8C8E1] rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
+          <div className="bg-[#A8C8E1] rounded-lg w-full max-w-md max-h-[85vh] overflow-y-auto my-8">
             <div className="p-6">
               {/* Header */}
               <div className="flex justify-between items-center mb-6">
@@ -1097,8 +1210,8 @@ export default function DashboardChiefNursing() {
 
       {/* Modal Riwayat */}
       {showRiwayatModal && selectedReport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#A8C8D8] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
+          <div className="bg-[#A8C8D8] rounded-2xl max-w-4xl w-full max-h-[85vh] overflow-y-auto relative my-8">
             {/* Header Modal */}
             <div className="bg-[#6B8CAE] rounded-t-2xl p-4 flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -1124,7 +1237,7 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Catatan
                 </h3>
-                
+
                 {/* Desktop Table */}
                 <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
@@ -1171,34 +1284,58 @@ export default function DashboardChiefNursing() {
                 <div className="md:hidden space-y-3">
                   <div className="bg-white/50 rounded-lg p-4 border-t-4 border-[#6B8CAE]">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                      <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Tanggal
+                      </span>
+                      <span className="text-sm text-gray-800">
+                        2024-01-15 10:30
+                      </span>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                      <p className="text-sm text-gray-800 mt-1">Pasien menunjukkan perbaikan kondisi</p>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Catatan
+                      </span>
+                      <p className="text-sm text-gray-800 mt-1">
+                        Pasien menunjukkan perbaikan kondisi
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4 border-t-4 border-[#6B8CAE]">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                      <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Tanggal
+                      </span>
+                      <span className="text-sm text-gray-800">
+                        2024-01-14 14:20
+                      </span>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                      <p className="text-sm text-gray-800 mt-1">Perlu monitoring lebih intensif</p>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Catatan
+                      </span>
+                      <p className="text-sm text-gray-800 mt-1">
+                        Perlu monitoring lebih intensif
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4 border-t-4 border-[#6B8CAE]">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                      <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Tanggal
+                      </span>
+                      <span className="text-sm text-gray-800">
+                        2024-01-13 09:15
+                      </span>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                      <p className="text-sm text-gray-800 mt-1">Catatan awal laporan</p>
+                      <span className="text-xs text-gray-600 font-medium">
+                        Catatan
+                      </span>
+                      <p className="text-sm text-gray-800 mt-1">
+                        Catatan awal laporan
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1209,7 +1346,7 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Tindakan
                 </h3>
-                
+
                 {/* Desktop Table */}
                 <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
@@ -1299,12 +1436,18 @@ export default function DashboardChiefNursing() {
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-15 10:30
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                               Validasi
@@ -1312,30 +1455,46 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 2</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Lanjutkan perawatan standar</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Lanjutkan perawatan standar
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-14 14:20
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
                               Revisi
@@ -1343,30 +1502,46 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori B</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori B
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 1</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Perlu evaluasi ulang</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Perlu evaluasi ulang
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-13 09:15
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
                               Submit
@@ -1374,16 +1549,26 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 1</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Tindakan awal sesuai protokol</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Tindakan awal sesuai protokol
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -1395,5 +1580,6 @@ export default function DashboardChiefNursing() {
         </div>
       )}
     </div>
+    </>
   );
 }

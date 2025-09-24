@@ -60,7 +60,7 @@ export default function HomePage() {
                     src="https://storage.googleapis.com/a1aa/image/08e2ff8e-5068-4634-0e16-85a266224f0d.jpg" 
                     width={64}
                   />
-                  <p className="text-xs leading-tight text-black">
+                  <p className="text-xs leading-tight text-black mb-4">
                     memudahkan
                     <br/>
                     tenaga kesehatan
@@ -71,6 +71,14 @@ export default function HomePage() {
                       voice note
                     </span>
                   </p>
+                  
+                  {/* Video Tutorial Button */}
+                  <button
+                    className="w-full bg-[#0B7A95] text-white text-[10px] py-2 px-3 rounded-md hover:bg-[#095a6b] transition-all duration-300 font-medium hover:scale-105 mt-auto"
+                    onClick={() => window.location.href = '/video-tutorial'}
+                  >
+                    Video Tutorial
+                  </button>
                 </div>
                 <div className="bg-[#A1D9E5] rounded-lg p-6 w-44 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
                   <Image 
@@ -83,11 +91,11 @@ export default function HomePage() {
                   <p className="text-[9px] leading-tight text-black">
                     otomatis dibuatkan
                     <br/>
-                    laporan oleh 
+                    laporan oleh{" "}
                     <span className="font-bold">
                       chatbot
                     </span>
-                     dan
+                    {" "}dan
                     <br/>
                     dikirim ke validator secara
                     <br/>

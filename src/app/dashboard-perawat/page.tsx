@@ -45,7 +45,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden transform hover:scale-105 transition-all duration-300 hover:shadow-xl animate-slide-up">
       {/* Main Card Content */}
       <div
         className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -82,7 +82,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
               e.stopPropagation();
               onDetailClick(report);
             }}
-            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors transform hover:scale-105"
           >
             Detail
           </button>
@@ -91,39 +91,15 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
 
       {/* Expanded Details */}
       {isExpanded && (
-        <div className="border-t border-gray-200 p-4 bg-gray-50">
+        <div className="border-t border-gray-200 p-4 bg-gray-50 animate-fade-in">
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Grading:</span>
               <span className="text-gray-800">{report.grading}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Kode Laporan:</span>
+              <span className="font-medium text-gray-600">Kode:</span>
               <span className="text-gray-800">{report.kode}</span>
-            </div>
-            <div className="mt-3">
-              <span className="font-medium text-gray-600 block mb-1">
-                Catatan Kepala Ruangan:
-              </span>
-              <p className="text-gray-800 text-xs leading-relaxed">
-                {report.catatanKepalaRuangan}
-              </p>
-            </div>
-            <div className="mt-3">
-              <span className="font-medium text-gray-600 block mb-1">
-                Catatan Chief Nursing:
-              </span>
-              <p className="text-gray-800 text-xs leading-relaxed">
-                {report.catatanChiefnursing}
-              </p>
-            </div>
-            <div className="mt-3">
-              <span className="font-medium text-gray-600 block mb-1">
-                Catatan Verifikator:
-              </span>
-              <p className="text-gray-800 text-xs leading-relaxed">
-                {report.catatanVerifikator}
-              </p>
             </div>
           </div>
         </div>
@@ -166,8 +142,8 @@ export default function DashboardPerawatPage() {
       tindakanOleh: "Perawat jaga dan dokter spesialis",
       dampak: "Tidak ada dampak serius pada pasien",
       probablitas: "Rendah",
-      rekomendasiTindakan: "Peningkatan protokol double check",
-      tanggalWaktuPelaporan: "2025-01-01 09:00",
+      rekomendasiTindakan: "Peningkatan protokol double check obat",
+      tanggalWaktuPelaporan: "2025-01-01 08:30 WIB",
     },
     {
       id: 2,
@@ -367,9 +343,120 @@ export default function DashboardPerawatPage() {
   };
 
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[#d9f0f6] flex flex-col animate-fade-in">
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up-delay-1 {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          20% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up-delay-2 {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          40% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounce-gentle {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        @keyframes fade-in-delay-1 {
+          0% {
+            opacity: 0;
+          }
+          30% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out;
+        }
+
+        .animate-slide-up-delay-1 {
+          animation: slide-up-delay-1 1s ease-out;
+        }
+
+        .animate-slide-up-delay-2 {
+          animation: slide-up-delay-2 1.2s ease-out;
+        }
+
+        .animate-bounce-gentle {
+          animation: bounce-gentle 3s ease-in-out infinite;
+        }
+
+        .animate-fade-in-delay-1 {
+          animation: fade-in-delay-1 1.2s ease-out;
+        }
+
+        @media (max-width: 640px) {
+          .animate-slide-up {
+            animation: slide-up 0.4s ease-out;
+          }
+          
+          .animate-slide-up-delay-1 {
+            animation: slide-up-delay-1 0.8s ease-out;
+          }
+          
+          .animate-slide-up-delay-2 {
+            animation: slide-up-delay-2 1s ease-out;
+          }
+        }
+      `}</style>
+
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6">
+      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6 animate-slide-up">
         <div className="flex justify-between items-center px-6 py-3">
           <h1 className="text-white text-xl font-bold">
             Safe
@@ -440,7 +527,7 @@ export default function DashboardPerawatPage() {
 
             {/* Notifikasi */}
             <button
-              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2 transform hover:scale-105"
               onClick={() => (window.location.href = "/notifications-perawat")}
             >
               <i className="fas fa-bell text-lg mr-3"></i>
@@ -449,7 +536,7 @@ export default function DashboardPerawatPage() {
 
             {/* Video Tutorial */}
             <button
-              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2 transform hover:scale-105"
               onClick={() => (window.location.href = "/video-tutorial-perawat")}
             >
               <i className="fas fa-play-circle text-lg mr-3"></i>
@@ -458,7 +545,7 @@ export default function DashboardPerawatPage() {
 
             {/* Manage Profil */}
             <button
-              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2"
+              className="flex items-center text-white hover:text-[#0B7A95] transition-colors py-2 transform hover:scale-105"
               onClick={() => (window.location.href = "/profile-perawat")}
             >
               <i className="fas fa-user-cog text-lg mr-3"></i>
@@ -469,9 +556,9 @@ export default function DashboardPerawatPage() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 animate-slide-up-delay-1">
         <div
-          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden transform hover:scale-[1.01] transition-all duration-300 hover:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -479,7 +566,7 @@ export default function DashboardPerawatPage() {
           {/* Background pattern */}
           <Image
             alt="Background medical pattern"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none animate-bounce-gentle"
             src="/bgperawat.png"
             fill
             style={{ zIndex: 0 }}
@@ -488,10 +575,10 @@ export default function DashboardPerawatPage() {
           {/* Content */}
           <div className="relative z-10">
             {/* Header section with date picker and add button */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 animate-fade-in-delay-1">
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <button
-                  className="bg-[#0E364A] text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition w-full sm:w-auto"
+                  className="bg-[#0E364A] text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition w-full sm:w-auto transform hover:scale-105 animate-bounce-gentle"
                   onClick={() => console.log("Pilih Bulan clicked")}
                 >
                   Pilih Bulan
@@ -500,7 +587,7 @@ export default function DashboardPerawatPage() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] w-full sm:w-auto text-black"
+                  className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] w-full sm:w-auto text-black transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
                   style={{
                     colorScheme: "light",
                   }}
@@ -508,7 +595,7 @@ export default function DashboardPerawatPage() {
               </div>
 
               <button
-                className="bg-[#0B7A95] text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition flex items-center justify-center space-x-2 w-full sm:w-auto max-w-xs sm:max-w-none"
+                className="bg-[#0B7A95] text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium hover:brightness-110 transition flex items-center justify-center space-x-2 w-full sm:w-auto max-w-xs sm:max-w-none transform hover:scale-105 hover:shadow-lg animate-bounce-gentle"
                 onClick={handleAddReport}
               >
                 <i className="fas fa-plus"></i>
@@ -517,7 +604,7 @@ export default function DashboardPerawatPage() {
             </div>
 
             {/* Desktop Table - Hidden on Mobile */}
-            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg">
+            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg animate-slide-up-delay-2 transform hover:shadow-xl transition-all duration-300">
               {/* Table Header */}
               <div className="bg-[#0B7A95] text-white">
                 <div className="grid grid-cols-9 gap-2 px-4 py-3 text-sm font-medium">
@@ -540,7 +627,10 @@ export default function DashboardPerawatPage() {
                     key={report.id}
                     className={`grid grid-cols-9 gap-2 px-4 py-3 text-sm ${
                       index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-blue-50 transition-colors`}
+                    } hover:bg-blue-50 transition-all duration-300 transform hover:scale-[1.02]`}
+                    style={{
+                      animationDelay: `${index * 0.1}s`,
+                    }}
                   >
                     <div className="bg-[#0E364A] text-white px-3 py-1 rounded text-center text-xs font-medium">
                       {report.tanggal}
@@ -563,13 +653,11 @@ export default function DashboardPerawatPage() {
                     <div className="text-gray-600 text-center">
                       {report.catatanVerifikator}
                     </div>
-                    <div className="text-gray-600 text-center">
-                      {report.kode}
-                    </div>
+                    <div className="text-gray-600 text-center">{report.kode}</div>
                     <div className="text-center">
                       <button
                         onClick={() => handleDetailClick(report)}
-                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors transform hover:scale-105"
                       >
                         Detail
                       </button>
@@ -580,13 +668,19 @@ export default function DashboardPerawatPage() {
             </div>
 
             {/* Mobile Card Layout - Visible on Mobile */}
-            <div className="lg:hidden space-y-4">
-              {reports.map((report) => (
-                <MobileReportCard
+            <div className="lg:hidden space-y-4 animate-slide-up-delay-2">
+              {reports.map((report, index) => (
+                <div
                   key={report.id}
-                  report={report}
-                  onDetailClick={handleDetailClick}
-                />
+                  style={{
+                    animationDelay: `${index * 0.15}s`,
+                  }}
+                >
+                  <MobileReportCard
+                    report={report}
+                    onDetailClick={handleDetailClick}
+                  />
+                </div>
               ))}
             </div>
           </div>

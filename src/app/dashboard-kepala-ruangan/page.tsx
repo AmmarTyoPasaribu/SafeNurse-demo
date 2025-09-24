@@ -44,7 +44,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden transform hover:scale-[1.02] transition-all duration-200 hover:shadow-xl">
       {/* Main Card Content */}
       <div className="p-4">
         <div className="flex justify-between items-start mb-3">
@@ -68,7 +68,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
             </span>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-all duration-200 transform hover:scale-110"
             >
               <i
                 className={`fas fa-chevron-${
@@ -82,7 +82,7 @@ function MobileReportCard({ report, onDetailClick }: MobileReportCardProps) {
         <div className="flex justify-between items-center">
           <button
             onClick={() => onDetailClick(report)}
-            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-colors"
+            className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs hover:bg-[#0a6b85] transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
           >
             Detail
           </button>
@@ -424,9 +424,128 @@ export default function DashboardChiefNursing() {
     handleCloseModal();
   };
   return (
-    <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[#d9f0f6] flex flex-col animate-fade-in">
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up-delay-1 {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          20% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-up-delay-2 {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          40% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounce-gentle {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        @keyframes fade-in-delay-1 {
+          0% {
+            opacity: 0;
+          }
+          30% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out;
+        }
+
+        .animate-slide-up-delay-1 {
+          animation: slide-up-delay-1 1s ease-out;
+        }
+
+        .animate-slide-up-delay-2 {
+          animation: slide-up-delay-2 1.2s ease-out;
+        }
+
+        .animate-bounce-gentle {
+          animation: bounce-gentle 3s ease-in-out infinite;
+        }
+
+        .animate-fade-in-delay-1 {
+          animation: fade-in-delay-1 1.2s ease-out;
+        }
+
+        .animate-slide-up-delay-3 {
+          animation: slide-up 0.6s ease-out 0.6s both;
+        }
+
+        @media (max-width: 640px) {
+          .animate-slide-up {
+            animation: slide-up 0.4s ease-out;
+          }
+          
+          .animate-slide-up-delay-1 {
+            animation: slide-up-delay-1 0.8s ease-out;
+          }
+          
+          .animate-slide-up-delay-2 {
+            animation: slide-up-delay-2 1s ease-out;
+          }
+          
+          .animate-slide-up-delay-3 {
+            animation: slide-up 0.4s ease-out 0.3s both;
+          }
+        }
+      `}</style>
+
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6">
+      <header className="bg-[#B9D9DD] rounded-xl mx-6 mt-6 animate-slide-up">
         <div className="flex justify-between items-center px-6 py-3">
           <h1 className="text-white text-xl font-bold">
             Safe
@@ -443,7 +562,7 @@ export default function DashboardChiefNursing() {
 
             {/* Notifikasi */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors transform hover:scale-105"
               onClick={() =>
                 (window.location.href = "/notifications-kepala-ruangan")
               }
@@ -454,7 +573,7 @@ export default function DashboardChiefNursing() {
 
             {/* Laporan Masuk */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors transform hover:scale-105"
               onClick={() =>
                 (window.location.href = "/laporan-masuk-kepala-ruangan")
               }
@@ -465,7 +584,7 @@ export default function DashboardChiefNursing() {
 
             {/* Manage Profil */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors transform hover:scale-105"
               onClick={() => (window.location.href = "/profile-kepala-ruangan")}
             >
               <i className="fas fa-user text-lg mb-1"></i>
@@ -534,9 +653,9 @@ export default function DashboardChiefNursing() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 animate-slide-up-delay-1">
         <div
-          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden"
+          className="bg-white rounded-lg p-6 h-full min-h-screen relative overflow-hidden transform hover:scale-[1.01] transition-all duration-300 hover:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -553,10 +672,10 @@ export default function DashboardChiefNursing() {
           {/* Content */}
           <div className="relative z-10">
             {/* Header section with date picker */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 animate-slide-up-delay-2">
               <div className="flex items-center space-x-4">
                 <button
-                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition"
+                  className="bg-[#0E364A] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition transform hover:scale-105 animate-bounce-gentle"
                   onClick={() => console.log("Pilih Bulan clicked")}
                 >
                   Pilih Bulan
@@ -565,7 +684,7 @@ export default function DashboardChiefNursing() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black"
+                  className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B7A95] text-black transform hover:scale-105 transition-all duration-200 hover:shadow-lg"
                   style={{
                     colorScheme: "light",
                   }}
@@ -574,7 +693,7 @@ export default function DashboardChiefNursing() {
             </div>
 
             {/* Desktop Table - Hidden on Mobile */}
-            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg">
+            <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-lg animate-slide-up-delay-3 transform hover:shadow-2xl transition-all duration-300">
               {/* Table Header */}
               <div className="bg-[#0B7A95] text-white">
                 <div className="grid grid-cols-9 gap-2 px-4 py-3 text-sm font-medium">
@@ -597,7 +716,7 @@ export default function DashboardChiefNursing() {
                     key={report.id}
                     className={`grid grid-cols-9 gap-2 px-4 py-3 text-sm ${
                       index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-blue-50 transition-colors`}
+                    } hover:bg-blue-50 transition-all duration-200 transform hover:scale-[1.01] hover:shadow-md`}
                   >
                     <div className="bg-[#0E364A] text-white px-3 py-1 rounded text-center text-xs font-medium">
                       {report.tanggal}
@@ -626,7 +745,7 @@ export default function DashboardChiefNursing() {
                     <div className="text-center">
                       <button
                         onClick={() => handleDetailClick(report)}
-                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs font-medium hover:bg-[#0a6b85] transition-colors"
+                        className="bg-[#0B7A95] text-white px-3 py-1 rounded text-xs font-medium hover:bg-[#0a6b85] transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
                       >
                         Detail
                       </button>
@@ -637,13 +756,18 @@ export default function DashboardChiefNursing() {
             </div>
 
             {/* Mobile Card Layout - Visible on Mobile */}
-            <div className="lg:hidden space-y-4">
-              {reports.map((report) => (
-                <MobileReportCard
+            <div className="lg:hidden space-y-4 animate-slide-up-delay-3">
+              {reports.map((report, index) => (
+                <div
                   key={report.id}
-                  report={report}
-                  onDetailClick={handleDetailClick}
-                />
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <MobileReportCard
+                    report={report}
+                    onDetailClick={handleDetailClick}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -1115,7 +1239,7 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Catatan
                 </h3>
-                
+
                 {/* Desktop Table */}
                 <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
@@ -1163,38 +1287,62 @@ export default function DashboardChiefNursing() {
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-2">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-15 10:30
+                        </span>
                       </div>
                       <div className="border-t pt-2">
-                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                        <p className="text-sm text-gray-800 mt-1">Pasien menunjukkan perbaikan kondisi</p>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Pasien menunjukkan perbaikan kondisi
+                        </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-2">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-14 14:20
+                        </span>
                       </div>
                       <div className="border-t pt-2">
-                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                        <p className="text-sm text-gray-800 mt-1">Perlu monitoring lebih intensif</p>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Perlu monitoring lebih intensif
+                        </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-2">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-13 09:15
+                        </span>
                       </div>
                       <div className="border-t pt-2">
-                        <span className="text-xs text-gray-600 font-medium">Catatan</span>
-                        <p className="text-sm text-gray-800 mt-1">Catatan awal laporan</p>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Catatan
+                        </span>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Catatan awal laporan
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1206,7 +1354,7 @@ export default function DashboardChiefNursing() {
                 <h3 className="text-[#2C3E50] font-bold mb-4 text-lg">
                   Riwayat Tindakan
                 </h3>
-                
+
                 {/* Desktop Table */}
                 <div className="bg-white/50 rounded-lg overflow-hidden hidden md:block">
                   <table className="w-full">
@@ -1296,12 +1444,18 @@ export default function DashboardChiefNursing() {
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-15 10:30</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-15 10:30
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                               Validasi
@@ -1309,30 +1463,46 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 2</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Lanjutkan perawatan standar</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Lanjutkan perawatan standar
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-14 14:20</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-14 14:20
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
                               Revisi
@@ -1340,30 +1510,46 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori B</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori B
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 1</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Perlu evaluasi ulang</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Perlu evaluasi ulang
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="bg-white/50 rounded-lg p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="flex justify-between items-start">
-                        <span className="text-xs text-gray-600 font-medium">Tanggal</span>
-                        <span className="text-sm text-gray-800">2024-01-13 09:15</span>
+                        <span className="text-xs text-gray-600 font-medium">
+                          Tanggal
+                        </span>
+                        <span className="text-sm text-gray-800">
+                          2024-01-13 09:15
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Aksi</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Aksi
+                          </span>
                           <div className="mt-1">
                             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
                               Submit
@@ -1371,16 +1557,26 @@ export default function DashboardChiefNursing() {
                           </div>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Kategori</span>
-                          <p className="text-sm text-gray-800 mt-1">Kategori A</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Kategori
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Kategori A
+                          </p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Grading</span>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Grading
+                          </span>
                           <p className="text-sm text-gray-800 mt-1">Grade 1</p>
                         </div>
                         <div>
-                          <span className="text-xs text-gray-600 font-medium">Rekomendasi</span>
-                          <p className="text-sm text-gray-800 mt-1">Tindakan awal sesuai protokol</p>
+                          <span className="text-xs text-gray-600 font-medium">
+                            Rekomendasi
+                          </span>
+                          <p className="text-sm text-gray-800 mt-1">
+                            Tindakan awal sesuai protokol
+                          </p>
                         </div>
                       </div>
                     </div>

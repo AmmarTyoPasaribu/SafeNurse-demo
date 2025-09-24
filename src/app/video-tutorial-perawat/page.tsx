@@ -1,7 +1,160 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+
+const styles = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+  .animate-slideInLeft { animation: slideInLeft 0.6s ease-out forwards; }
+  .animate-slideInRight { animation: slideInRight 0.6s ease-out forwards; }
+  .animate-scaleIn { animation: scaleIn 0.6s ease-out forwards; }
+  .animate-bounceIn { animation: bounceIn 0.8s ease-out forwards; }
+
+  .animate-delay-100 { animation-delay: 0.1s; }
+  .animate-delay-200 { animation-delay: 0.2s; }
+  .animate-delay-300 { animation-delay: 0.3s; }
+  .animate-delay-400 { animation-delay: 0.4s; }
+  .animate-delay-500 { animation-delay: 0.5s; }
+  .animate-delay-600 { animation-delay: 0.6s; }
+  .animate-delay-700 { animation-delay: 0.7s; }
+  .animate-delay-800 { animation-delay: 0.8s; }
+  .animate-delay-900 { animation-delay: 0.9s; }
+  .animate-delay-1000 { animation-delay: 1s; }
+  .animate-delay-1100 { animation-delay: 1.1s; }
+  .animate-delay-1200 { animation-delay: 1.2s; }
+  .animate-delay-1300 { animation-delay: 1.3s; }
+  .animate-delay-1400 { animation-delay: 1.4s; }
+  .animate-delay-1500 { animation-delay: 1.5s; }
+
+  @media (max-width: 768px) {
+    .animate-fadeInUp { animation: mobileSlideUp 0.5s ease-out forwards; }
+    .animate-slideInLeft { animation: mobileSlideInLeft 0.5s ease-out forwards; }
+    .animate-slideInRight { animation: mobileSlideInRight 0.5s ease-out forwards; }
+    .animate-scaleIn { animation: mobileScaleIn 0.5s ease-out forwards; }
+    .animate-bounceIn { animation: mobileBounceIn 0.6s ease-out forwards; }
+  }
+
+  @keyframes mobileSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mobileSlideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes mobileSlideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes mobileScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes mobileBounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+`;
 
 export default function VideoTutorialPerawatPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -79,19 +232,21 @@ export default function VideoTutorialPerawatPage() {
 
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
+      <style jsx>{styles}</style>
+
       {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
+      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 animate-fadeInUp animate-delay-100">
         <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold">
+          <h1 className="text-white text-xl font-bold animate-slideInLeft animate-delay-200">
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6 animate-slideInRight animate-delay-300">
             {/* Riwayat Laporan */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() => (window.location.href = "/dashboard-perawat")}
             >
               <i className="fas fa-clipboard-list text-lg mb-1"></i>
@@ -100,7 +255,7 @@ export default function VideoTutorialPerawatPage() {
 
             {/* Notifikasi */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() => (window.location.href = "/notifications-perawat")}
             >
               <i className="fas fa-bell text-lg mb-1"></i>
@@ -108,14 +263,14 @@ export default function VideoTutorialPerawatPage() {
             </button>
 
             {/* Video Tutorial - Active */}
-            <button className="flex flex-col items-center text-[#0B7A95] transition-colors">
+            <button className="flex flex-col items-center text-[#0B7A95] transition-all duration-200 transform hover:scale-105">
               <i className="fas fa-play-circle text-lg mb-1"></i>
               <span className="text-xs">Tutorial</span>
             </button>
 
             {/* Manage Profil */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105"
               onClick={() => (window.location.href = "/profile-perawat")}
             >
               <i className="fas fa-user text-lg mb-1"></i>
@@ -125,7 +280,7 @@ export default function VideoTutorialPerawatPage() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
+            className="md:hidden text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 animate-slideInRight animate-delay-400"
             onClick={toggleMobileMenu}
           >
             <i
@@ -138,11 +293,11 @@ export default function VideoTutorialPerawatPage() {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20 animate-fadeInUp animate-delay-500">
             <div className="flex flex-col space-y-3">
               {/* Riwayat Laporan */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 p-2 rounded"
                 onClick={() => (window.location.href = "/dashboard-perawat")}
               >
                 <i className="fas fa-clipboard-list text-lg mr-3"></i>
@@ -168,7 +323,7 @@ export default function VideoTutorialPerawatPage() {
 
               {/* Manage Profil */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 p-2 rounded"
                 onClick={() => (window.location.href = "/profile-perawat")}
               >
                 <i className="fas fa-user text-lg mr-3"></i>
@@ -180,9 +335,9 @@ export default function VideoTutorialPerawatPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-4 md:px-6 py-4 md:py-6">
+      <main className="flex-1 px-4 md:px-6 py-4 md:py-6 animate-fadeInUp animate-delay-600">
         <div
-          className="bg-white rounded-lg p-4 md:p-8 h-full relative overflow-hidden"
+          className="bg-white rounded-lg p-4 md:p-8 h-full relative overflow-hidden animate-scaleIn animate-delay-700"
           style={{
             background: "linear-gradient(180deg, #b9dce3 0%, #0a7a9a 100%)",
           }}
@@ -190,7 +345,7 @@ export default function VideoTutorialPerawatPage() {
           {/* Background pattern */}
           <Image
             alt="Background medical pattern"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none animate-bounceIn animate-delay-800"
             src="/bgperawat.png"
             fill
             style={{ zIndex: 0 }}
@@ -199,7 +354,7 @@ export default function VideoTutorialPerawatPage() {
           {/* Content */}
           <div className="relative z-10">
             {/* Title Section */}
-            <div className="mb-6 md:mb-8">
+            <div className="mb-6 md:mb-8 animate-slideInLeft animate-delay-900">
               <h1 className="text-white text-2xl md:text-4xl font-bold mb-1 md:mb-2">
                 Video Edukasi
               </h1>
@@ -212,16 +367,18 @@ export default function VideoTutorialPerawatPage() {
             </div>
 
             {/* Video Grid - Responsive Layout */}
-            <div className="overflow-x-auto pb-4">
+            <div className="overflow-x-auto pb-4 animate-slideInRight animate-delay-1000">
               {/* Desktop: Horizontal Scrollable, Mobile: Grid Layout */}
               <div
                 className="hidden md:flex md:space-x-6"
                 style={{ width: "max-content" }}
               >
-                {videos.map((video) => (
+                {videos.map((video, index) => (
                   <div
                     key={video.id}
-                    className="flex-shrink-0 w-80 bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+                    className={`flex-shrink-0 w-80 bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-fadeInUp animate-delay-${
+                      1100 + index * 100
+                    }`}
                     onClick={() => handleVideoClick(video.url)}
                   >
                     {/* Video Thumbnail */}
@@ -261,10 +418,12 @@ export default function VideoTutorialPerawatPage() {
 
               {/* Mobile: Grid Layout */}
               <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {videos.map((video) => (
+                {videos.map((video, index) => (
                   <div
                     key={video.id}
-                    className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+                    className={`bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-fadeInUp animate-delay-${
+                      1100 + index * 100
+                    }`}
                     onClick={() => handleVideoClick(video.url)}
                   >
                     {/* Video Thumbnail */}
