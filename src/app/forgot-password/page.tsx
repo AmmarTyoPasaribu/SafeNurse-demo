@@ -4,45 +4,20 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('perawat@gmail.com');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API}/forgot_password`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }), // ambil dari state email
-      }
-    );
-
-    const data = await res.json();
-    console.log("Forgot password response:", data);
-
-    if (!res.ok) {
-      alert(data.message || "Gagal mengirim email reset password!");
-      return;
-    }
-
-    alert("Token reset password sudah dikirim ke email Anda!");
-    // kalau mau redirect ke halaman reset password:
-    window.location.href = "/reset-password";
-  } catch (err) {
-    console.error("Error forgot password:", err);
-    alert("Terjadi kesalahan. Coba lagi nanti.");
-  }
-};
-
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle forgot password logic here
+    console.log('Forgot password request for:', email);
+    // Redirect to reset password page
+    window.location.href = '/reset-password';
+  };
 
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
