@@ -47,9 +47,6 @@ export default function ProfileKepalaRuanganPage() {
     setShowEditModal(true);
   };
 
-  const handleChangeProfile = () => {
-    setShowChangeProfileModal(true);
-  };
 
   const handleCloseModal = () => {
     setShowEditModal(false);
