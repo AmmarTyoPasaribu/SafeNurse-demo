@@ -1,203 +1,72 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import Image from 'next/image';
 
-const styles = `
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes bounceIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.3);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-    70% {
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
-  .animate-slideInLeft { animation: slideInLeft 0.6s ease-out forwards; }
-  .animate-slideInRight { animation: slideInRight 0.6s ease-out forwards; }
-  .animate-scaleIn { animation: scaleIn 0.6s ease-out forwards; }
-  .animate-bounceIn { animation: bounceIn 0.8s ease-out forwards; }
-
-  .animate-delay-100 { animation-delay: 0.1s; }
-  .animate-delay-200 { animation-delay: 0.2s; }
-  .animate-delay-300 { animation-delay: 0.3s; }
-  .animate-delay-400 { animation-delay: 0.4s; }
-  .animate-delay-500 { animation-delay: 0.5s; }
-  .animate-delay-600 { animation-delay: 0.6s; }
-  .animate-delay-700 { animation-delay: 0.7s; }
-  .animate-delay-800 { animation-delay: 0.8s; }
-  .animate-delay-900 { animation-delay: 0.9s; }
-  .animate-delay-1000 { animation-delay: 1s; }
-  .animate-delay-1100 { animation-delay: 1.1s; }
-  .animate-delay-1200 { animation-delay: 1.2s; }
-  .animate-delay-1300 { animation-delay: 1.3s; }
-  .animate-delay-1400 { animation-delay: 1.4s; }
-  .animate-delay-1500 { animation-delay: 1.5s; }
-  .animate-delay-1600 { animation-delay: 1.6s; }
-  .animate-delay-1700 { animation-delay: 1.7s; }
-  .animate-delay-1800 { animation-delay: 1.8s; }
-  .animate-delay-1900 { animation-delay: 1.9s; }
-  .animate-delay-2000 { animation-delay: 2s; }
-  .animate-delay-2100 { animation-delay: 2.1s; }
-  .animate-delay-2200 { animation-delay: 2.2s; }
-  .animate-delay-2300 { animation-delay: 2.3s; }
-  .animate-delay-2400 { animation-delay: 2.4s; }
-  .animate-delay-2500 { animation-delay: 2.5s; }
-  .animate-delay-2600 { animation-delay: 2.6s; }
-  .animate-delay-2700 { animation-delay: 2.7s; }
-  .animate-delay-2800 { animation-delay: 2.8s; }
-  .animate-delay-2900 { animation-delay: 2.9s; }
-  .animate-delay-3000 { animation-delay: 3s; }
-
-  @media (max-width: 768px) {
-    .animate-fadeInUp { animation: mobileSlideUp 0.5s ease-out forwards; }
-    .animate-slideInLeft { animation: mobileSlideInLeft 0.5s ease-out forwards; }
-    .animate-slideInRight { animation: mobileSlideInRight 0.5s ease-out forwards; }
-    .animate-scaleIn { animation: mobileScaleIn 0.5s ease-out forwards; }
-    .animate-bounceIn { animation: mobileBounceIn 0.6s ease-out forwards; }
-  }
-
-  @keyframes mobileSlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes mobileSlideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes mobileSlideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes mobileScaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes mobileBounceIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    60% {
-      opacity: 1;
-      transform: scale(1.02);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-`;
+interface Ruangan {
+  id_ruangan: string;
+  nama_ruangan: string;
+}
 
 export default function RuanganSuperAdmin() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const [ruangan, setRuangan] = useState([
-    { id: 1, nama: "IGD" },
-    { id: 2, nama: "ICU" },
-    { id: 3, nama: "Rawat Inap A" },
-    { id: 4, nama: "Rawat Inap B" },
-    { id: 5, nama: "Kamar Operasi" },
-    { id: 6, nama: "Laboratorium" },
-  ]);
+  const [ruangan, setRuangan] = useState<{ id: number; nama: string }[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [roomToDelete, setRoomToDelete] = useState<{
     id: number;
     nama: string;
   } | null>(null);
-  const [newRoom, setNewRoom] = useState({
-    nama: "",
-  });
+  const [newRoom, setNewRoom] = useState({ nama: "" });
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Handle delete room
+  const token = Cookies.get("token");
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // 🔹 Fetch ruangan dari API
+  const fetchRuangan = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/ruangan`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error("Gagal mengambil data ruangan");
+
+      const resData = await res.json();
+      console.log("RAW DATA:", resData);
+
+      // mapping ke struktur { id, nama }
+      const mapped = resData.map((r: Ruangan) => ({
+        id: r.id_ruangan, // string
+        nama: r.nama_ruangan, // string
+      }));
+
+      setRuangan(mapped);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRuangan();
+  }, []);
+
+  // 🔹 Handle delete room
   const handleDeleteRoom = (room: { id: number; nama: string }) => {
     setRoomToDelete(room);
     setShowDeleteModal(true);
@@ -218,21 +87,79 @@ export default function RuanganSuperAdmin() {
 
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
-      <style jsx>{styles}</style>
+      {/* Loading Screen */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-[#d9f0f6] z-50 flex items-center justify-center">
+          <div className="text-center">
+            {/* Loading Spinner */}
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-[#B9D9DD] border-t-[#0B7A95] rounded-full animate-spin mx-auto mb-4"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-[#0B7A95] rounded-full animate-ping mx-auto"></div>
+            </div>
 
-      {/* Header/Navbar */}
-      <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6 animate-fadeInUp animate-delay-100">
+            {/* Loading Text */}
+            <div className="space-y-2">
+              <h3 className="text-[#0B7A95] text-lg font-semibold animate-pulse">
+                Memuat Data Ruangan...
+              </h3>
+              <p className="text-[#0B7A95]/70 text-sm">Mohon tunggu sebentar</p>
+            </div>
+
+            {/* Loading Dots Animation */}
+            <div className="flex justify-center space-x-1 mt-4">
+              <div
+                className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+                style={{ animationDelay: "0ms" }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+                style={{ animationDelay: "150ms" }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+                style={{ animationDelay: "300ms" }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content - Only show when not loading */}
+      {!isLoading && (
+        <>
+          {/* Header/Navbar */}
+          <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold animate-slideInLeft animate-delay-200">
+         <div className="flex items-center space-x-3">
+          {/* Logo SafeNurse */}
+          <Image
+            src="/logosafenurse.png"
+            alt="Logo SafeNurse"
+            width={40}
+            height={40}
+            className="object-contain"
+          />
+
+          {/* Logo Unhas */}
+          <Image
+            src="/logounhas.png"
+            alt="Logo Unhas"
+            width={40}
+            height={40}
+            className="object-contain"
+          />
+
+          <h1 className="text-white text-xl font-bold">
             Safe
             <span className="font-bold text-[#0B7A95]">Nurse</span>
           </h1>
+        </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6 animate-slideInRight animate-delay-300">
+          <div className="hidden md:flex items-center space-x-6">
             {/* User Management */}
             <button
-              className="flex flex-col items-center transition-all duration-200 text-white hover:text-[#0B7A95] transform hover:scale-105"
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
               onClick={() => router.push("/dashboard-superadmin")}
             >
               <i className="fas fa-users text-lg mb-1"></i>
@@ -240,14 +167,14 @@ export default function RuanganSuperAdmin() {
             </button>
 
             {/* Ruangan Management - Active */}
-            <button className="flex flex-col items-center transition-all duration-200 text-[#0B7A95] transform hover:scale-105">
+            <button className="flex flex-col items-center transition-colors text-[#0B7A95]">
               <i className="fas fa-hospital text-lg mb-1"></i>
               <span className="text-xs">Ruangan</span>
             </button>
 
             {/* Profil */}
             <button
-              className="flex flex-col items-center transition-all duration-200 text-white hover:text-[#0B7A95] transform hover:scale-105"
+              className="flex flex-col items-center transition-colors text-white hover:text-[#0B7A95]"
               onClick={() => router.push("/dashboard-super-admin/profil")}
             >
               <i className="fas fa-user text-lg mb-1"></i>
@@ -257,7 +184,7 @@ export default function RuanganSuperAdmin() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 animate-scaleIn animate-delay-400"
+            className="md:hidden text-white hover:text-[#0B7A95] transition-colors"
             onClick={toggleMobileMenu}
           >
             <i
@@ -270,11 +197,11 @@ export default function RuanganSuperAdmin() {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-white/20 animate-slideInLeft animate-delay-500">
+          <div className="md:hidden mt-4 pt-4 border-t border-white/20">
             <div className="flex flex-col space-y-3">
               {/* User Management */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
                 onClick={() => router.push("/dashboard-superadmin")}
               >
                 <i className="fas fa-users text-lg mr-3"></i>
@@ -282,14 +209,14 @@ export default function RuanganSuperAdmin() {
               </button>
 
               {/* Ruangan Management - Active */}
-              <button className="flex items-center text-[#0B7A95] transition-all duration-200 transform hover:scale-105 p-2 rounded">
+              <button className="flex items-center text-[#0B7A95] transition-colors p-2 rounded">
                 <i className="fas fa-hospital text-lg mr-3"></i>
                 <span>Ruangan Management</span>
               </button>
 
               {/* Profil */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-all duration-200 transform hover:scale-105 p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
                 onClick={() => router.push("/dashboard-super-admin/profil")}
               >
                 <i className="fas fa-user text-lg mr-3"></i>
@@ -322,7 +249,7 @@ export default function RuanganSuperAdmin() {
           {/* Content Container */}
           <div className="relative z-10">
             {/* Page Title */}
-            <div className="mb-8 animate-fadeInUp animate-delay-600">
+            <div className="mb-8">
               <h2 className="text-2xl font-bold text-white mb-2">
                 Manajemen Ruangan
               </h2>
@@ -332,11 +259,10 @@ export default function RuanganSuperAdmin() {
             </div>
 
             {/* Rooms Table */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 overflow-hidden animate-bounceIn animate-delay-700">
-              {/* Desktop Table - Hidden on Mobile */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 overflow-hidden">
+              {/* Desktop Table */}
               <div className="hidden md:block">
-                {/* Table Header */}
-                <div className="bg-[#0E364A] px-6 py-4 animate-slideInLeft animate-delay-800">
+                <div className="bg-[#0E364A] px-6 py-4">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="text-center">
                       <h3 className="text-white font-semibold text-lg">
@@ -349,41 +275,36 @@ export default function RuanganSuperAdmin() {
                   </div>
                 </div>
 
-                {/* Table Body */}
                 <div className="divide-y divide-gray-200">
                   {ruangan.map((room, index) => (
                     <div
                       key={room.id}
-                      className={`grid grid-cols-2 gap-6 px-6 py-4 hover:bg-gray-50 transition-all duration-200 animate-fadeInUp animate-delay-${
-                        900 + index * 100
-                      } ${index % 2 === 0 ? "bg-[#B9D9DD]" : "bg-white"}`}
+                      className={`grid grid-cols-2 gap-6 px-6 py-4 ${
+                        index % 2 === 0 ? "bg-[#B9D9DD]" : "bg-white"
+                      }`}
                     >
                       <div className="text-center text-gray-800 font-medium">
                         {room.nama}
                       </div>
                       <div className="text-center">
-                        <div className="flex justify-center space-x-2">
-                          <button
-                            onClick={() => handleDeleteRoom(room)}
-                            className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-all duration-200 transform hover:scale-105"
-                          >
-                            Hapus
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => handleDeleteRoom(room)}
+                          className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                        >
+                          Hapus
+                        </button>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Mobile Cards - Visible on Mobile */}
-              <div className="md:hidden space-y-4 p-4 animate-slideInRight animate-delay-900">
-                {ruangan.map((room, index) => (
+              {/* Mobile Cards */}
+              <div className="md:hidden space-y-4 p-4">
+                {ruangan.map((room) => (
                   <div
                     key={room.id}
-                    className={`bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] animate-fadeInUp animate-delay-${
-                      1000 + index * 100
-                    }`}
+                    className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm"
                   >
                     <div className="flex justify-between items-center">
                       <div>
@@ -394,7 +315,7 @@ export default function RuanganSuperAdmin() {
                       </div>
                       <button
                         onClick={() => handleDeleteRoom(room)}
-                        className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-all duration-200 transform hover:scale-105"
+                        className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
                       >
                         Hapus
                       </button>
@@ -449,20 +370,37 @@ export default function RuanganSuperAdmin() {
 
             <div className="mt-6 flex justify-center">
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (newRoom.nama) {
-                    const newId = Math.max(...ruangan.map((r) => r.id)) + 1;
-                    setRuangan([
-                      ...ruangan,
-                      {
-                        id: newId,
-                        nama: newRoom.nama,
-                      },
-                    ]);
-                    setShowCreateModal(false);
-                    setNewRoom({
-                      nama: "",
-                    });
+                    try {
+                      const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_BACKEND_API}/ruangan/register-ruangan`,
+                        {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({
+                            nama_ruangan: newRoom.nama,
+                          }),
+                        }
+                      );
+
+                      if (!res.ok) throw new Error("Gagal menambahkan ruangan");
+                      const resData = await res.json();
+                      console.log("ROOM CREATED:", resData);
+
+                      // langsung tambah ke state FE biar muncul tanpa reload
+                      await fetchRuangan();
+
+                      // reset modal & input
+                      setShowCreateModal(false);
+                      setNewRoom({ nama: "" });
+                    } catch (err) {
+                      console.error(err);
+                      alert("Gagal menambah ruangan");
+                    }
                   }
                 }}
                 className="bg-[#0E364A] text-white px-8 py-2 rounded-md hover:bg-[#1a4a5a] transition-colors"
@@ -477,15 +415,22 @@ export default function RuanganSuperAdmin() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-6">
+          <div className="bg-[#B9D9DD] rounded-lg w-full max-w-md p-6 relative">
+            <button
+              onClick={cancelDeleteRoom}
+              className="absolute top-4 right-4 text-[#0E364A] hover:text-gray-800 text-xl"
+            >
+              ×
+            </button>
+            
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                 <i className="fas fa-exclamation-triangle text-red-600 text-xl"></i>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <h3 className="text-lg font-medium text-[#0E364A] mb-2">
                 Konfirmasi Hapus Ruangan
               </h3>
-              <p className="text-sm text-gray-500 mb-6">
+              <p className="text-sm text-[#0E364A] mb-6">
                 Apakah Anda yakin ingin menghapus ruangan{" "}
                 <strong>{roomToDelete?.nama}</strong>? Tindakan ini tidak dapat
                 dibatalkan.
@@ -500,13 +445,27 @@ export default function RuanganSuperAdmin() {
               </button>
               <button
                 onClick={confirmDeleteRoom}
-                className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                className="flex-1 bg-[#0E364A] text-white px-4 py-2 rounded-md hover:bg-[#1a4a5a] transition-colors"
               >
                 Hapus
               </button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Sticky Footer */}
+      <footer className="mt-auto bg-[#0B7A95] text-white py-4 px-6">
+        <div className="text-center space-y-1">
+          <p className="text-sm font-medium">
+            Copyright 2025 © SafeNurse All Rights reserved.
+          </p>
+          <p className="text-xs text-white/80">
+            Universitas Hasanuddin
+          </p>
+        </div>
+      </footer>
+        </>
       )}
     </div>
   );

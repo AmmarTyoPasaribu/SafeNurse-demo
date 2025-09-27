@@ -1,25 +1,16 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProfileKepalaRuanganPage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const [userData] = useState({
-    nama: "Dr. Siti Aminah",
-    noStr: "12345678901234567890",
-    nip: "198501012010012001",
-    unitKerja: "Ruang ICU",
-    jabatan: "Kepala Ruangan",
-    noTelp: "081234567890",
-    email: "kepalaruangan@gmail.com",
-  });
-
+  // State lain (harus di atas, sebelum return)
   const [showEditModal, setShowEditModal] = useState(false);
   const [showChangeProfileModal, setShowChangeProfileModal] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -29,24 +20,70 @@ export default function ProfileKepalaRuanganPage() {
     confirmPassword: "",
   });
   const [profileForm, setProfileForm] = useState({
-    nama: userData.nama || "",
-    jabatan: userData.jabatan || "",
-    noTelp: userData.noTelp || "",
+    nama: "",
+    ruangan: "",
+    jabatan: "",
+    no_telp: "",
   });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  useEffect(() => {
+    const token = Cookies.get("token"); // ambil JWT dari cookie
+    if (!token) {
+      window.location.href = "/login"; // kalau token ga ada → redirect
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/kepala_ruangan/h2RgvOhkqkBT7O5oQLJ1A`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Gagal ambil data Kepala Ruangan");
+        }
+
+        const data = await res.json();
+        console.log("API response:", data); // 🔥 cek isi response
+        setUserData(data);
+        setProfileForm({
+          nama: data.nama_kepala_ruangan || "",
+          ruangan: data.ruangan?.nama_ruangan || "",
+          jabatan: data.jabatan || "",
+          no_telp: data.no_telp || "",
+        });
+      } catch (error) {
+        console.error("Error fetch kepala ruangan:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleChangeAccount = () => {
     setEditForm({
-      email: userData.email,
+      email: userData.users?.email || "",
       oldPassword: "",
       password: "",
       confirmPassword: "",
     });
     setShowEditModal(true);
   };
-
 
   const handleCloseModal = () => {
     setShowEditModal(false);
@@ -58,24 +95,155 @@ export default function ProfileKepalaRuanganPage() {
     });
   };
 
-  const handleSubmitEdit = (e: React.FormEvent) => {
+  const handleSubmitEdit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (editForm.password !== editForm.confirmPassword) {
-      alert("Password dan konfirmasi password tidak cocok!");
+      toast.error("Password dan konfirmasi password tidak cocok!");
       return;
     }
-    // Handle form submission here
-    console.log("Form submitted:", editForm);
-    setShowEditModal(false);
+
+    try {
+      const token = Cookies.get("token");
+      if (!token) {
+        toast.error("Token tidak ada, silakan login ulang.");
+        return;
+      }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/forgot_password/change_password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPassword: editForm.oldPassword,
+            newPassword: editForm.password,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Gagal mengubah password");
+      }
+
+      const result = await res.json();
+      console.log("Password updated:", result);
+
+      toast.success("Password berhasil diubah!");
+
+      // ✅ Tutup modal otomatis
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error change password:", error);
+      toast.error("Terjadi kesalahan saat mengubah password");
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
     setEditForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleLogout = () => {
-    window.location.href = "/login";
+  // Tambahkan fungsi baru
+  const handleSubmitProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const token = Cookies.get("token");
+      if (!token) {
+        toast.error("Token tidak ada, silakan login ulang.");
+        return;
+      }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/kepala_ruangan/update`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            nama_kepala_ruangan: profileForm.nama,
+            jabatan: profileForm.jabatan,
+            no_telp: profileForm.no_telp,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Gagal update profile");
+      }
+
+      const result = await res.json();
+      console.log("Profile updated:", result);
+
+      toast.success("Profil berhasil diperbarui!");
+
+      // update state biar tampilan ikut berubah
+      setUserData((prev: any) => ({
+        ...prev,
+        nama_kepala_ruangan: profileForm.nama,
+        jabatan: profileForm.jabatan,
+        no_telp: profileForm.no_telp,
+      }));
+
+      // Tutup modal
+      setShowChangeProfileModal(false);
+    } catch (error) {
+      console.error("Error update profile:", error);
+      toast.error("Terjadi kesalahan saat update profil");
+    }
   };
+
+  const handleLogout = () => {
+    Cookies.remove("token"); // hapus token
+    window.location.href = "/login"; // redirect
+  };
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-[#d9f0f6] z-50 flex items-center justify-center">
+        <div className="text-center">
+          {/* Loading Spinner */}
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-[#B9D9DD] border-t-[#0B7A95] rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-[#0B7A95] rounded-full animate-ping mx-auto"></div>
+          </div>
+
+          {/* Loading Text */}
+          <div className="space-y-2">
+            <h3 className="text-[#0B7A95] text-lg font-semibold animate-pulse">
+              Memuat Data Profil...
+            </h3>
+            <p className="text-[#0B7A95]/70 text-sm">Mohon tunggu sebentar</p>
+          </div>
+
+          {/* Loading Dots Animation */}
+          <div className="flex justify-center space-x-1 mt-4">
+            <div
+              className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+              style={{ animationDelay: "150ms" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-[#0B7A95] rounded-full animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userData) {
+    return <p className="text-center mt-10">Data tidak ditemukan</p>;
+  }
 
   return (
     <div className="bg-[#d9f0f6] min-h-screen flex flex-col">
@@ -195,10 +363,30 @@ export default function ProfileKepalaRuanganPage() {
       {/* Header/Navbar */}
       <header className="bg-[#B9D9DD] rounded-xl px-6 py-3 mx-6 mt-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-white text-xl font-bold">
-            Safe
-            <span className="font-bold text-[#0B7A95]">Nurse</span>
-          </h1>
+          <div className="flex items-center space-x-3">
+            {/* Logo SafeNurse */}
+            <Image
+              src="/logosafenurse.png"
+              alt="Logo SafeNurse"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+
+            {/* Logo Unhas */}
+            <Image
+              src="/logounhas.png"
+              alt="Logo Unhas"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+
+            <h1 className="text-white text-xl font-bold">
+              Safe
+              <span className="font-bold text-[#0B7A95]">Nurse</span>
+            </h1>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -215,12 +403,18 @@ export default function ProfileKepalaRuanganPage() {
 
             {/* Notifikasi */}
             <button
-              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors"
+              className="flex flex-col items-center text-white hover:text-[#0B7A95] transition-colors relative"
               onClick={() =>
                 (window.location.href = "/notifications-kepala-ruangan")
               }
             >
-              <i className="fas fa-bell text-lg mb-1"></i>
+              <div className="relative">
+                <i className="fas fa-bell text-lg mb-1"></i>
+                {/* Notification Count Badge */}
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  3
+                </span>
+              </div>
               <span className="text-xs">Notifikasi</span>
             </button>
 
@@ -272,12 +466,18 @@ export default function ProfileKepalaRuanganPage() {
 
               {/* Notifikasi */}
               <button
-                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded"
+                className="flex items-center text-white hover:text-[#0B7A95] transition-colors p-2 rounded relative"
                 onClick={() =>
                   (window.location.href = "/notifications-kepala-ruangan")
                 }
               >
-                <i className="fas fa-bell text-lg mr-3"></i>
+                <div className="relative">
+                  <i className="fas fa-bell text-lg mr-3"></i>
+                  {/* Notification Count Badge */}
+                  <span className="absolute -top-2 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    3
+                  </span>
+                </div>
                 <span>Notifikasi</span>
               </button>
 
@@ -332,10 +532,10 @@ export default function ProfileKepalaRuanganPage() {
                       <i className="fas fa-user text-2xl md:text-3xl text-white"></i>
                     </div>
                     <h2 className="text-base md:text-lg font-bold text-gray-800 text-center mb-1">
-                      Nama Lengkap
+                      {userData.nama_kepala_ruangan}
                     </h2>
                     <p className="text-gray-600 text-center text-xs md:text-sm">
-                      {userData.email}
+                      {userData.users.email}
                     </p>
                   </div>
 
@@ -350,15 +550,7 @@ export default function ProfileKepalaRuanganPage() {
                           Nama Lengkap :
                         </span>
                         <span className="text-gray-800 text-sm md:text-base">
-                          {userData.nama || "-"}
-                        </span>
-                      </div>
-                      <div className="flex flex-col sm:flex-row animate-fade-in-delay-2">
-                        <span className="text-gray-600 text-sm md:text-base sm:w-40">
-                          Nama Ruangan :
-                        </span>
-                        <span className="text-gray-800 text-sm md:text-base">
-                          {userData.unitKerja || "-"}
+                          {userData.nama_kepala_ruangan || "-"}
                         </span>
                       </div>
                       <div className="flex flex-col sm:flex-row animate-fade-in-delay-3">
@@ -369,12 +561,20 @@ export default function ProfileKepalaRuanganPage() {
                           {userData.jabatan || "-"}
                         </span>
                       </div>
+                      <div className="flex flex-col sm:flex-row animate-fade-in-delay-2">
+                        <span className="text-gray-600 text-sm md:text-base sm:w-40">
+                          Nama Ruangan :
+                        </span>
+                        <span className="text-gray-800 text-sm md:text-base">
+                          {userData.ruangan?.nama_ruangan || "-"}
+                        </span>
+                      </div>
                       <div className="flex flex-col sm:flex-row animate-fade-in-delay-4">
                         <span className="text-gray-600 text-sm md:text-base sm:w-40">
                           No Telp :
                         </span>
                         <span className="text-gray-800 text-sm md:text-base">
-                          {userData.noTelp || "-"}
+                          {userData.no_telp || "-"}
                         </span>
                       </div>
                     </div>
@@ -402,7 +602,7 @@ export default function ProfileKepalaRuanganPage() {
                           Email
                         </label>
                         <p className="text-sm md:text-base text-gray-800">
-                          {userData.email}
+                          {userData.users.email}
                         </p>
                       </div>
                       <div className="animate-fade-in-delay-6">
@@ -460,21 +660,6 @@ export default function ProfileKepalaRuanganPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmitEdit} className="space-y-4">
-              {/* Email Field */}
-              <div>
-                <label className="block text-[#2C3E50] font-medium mb-2">
-                  Email :
-                </label>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
-                  placeholder="Masukkan email baru"
-                  required
-                />
-              </div>
-
               {/* Old Password Field */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-2">
@@ -602,7 +787,7 @@ export default function ProfileKepalaRuanganPage() {
             </div>
 
             {/* Form */}
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmitProfile}>
               {/* Nama Lengkap Field */}
               <div>
                 <label className="block text-[#2C3E50] font-medium mb-2">
@@ -644,9 +829,9 @@ export default function ProfileKepalaRuanganPage() {
                 </label>
                 <input
                   type="tel"
-                  value={profileForm.noTelp}
+                  value={profileForm.no_telp}
                   onChange={(e) =>
-                    setProfileForm({ ...profileForm, noTelp: e.target.value })
+                    setProfileForm({ ...profileForm, no_telp: e.target.value })
                   }
                   className="w-full px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-[#6B8CAE] bg-white text-gray-800"
                   placeholder="Masukkan nomor telepon"
@@ -667,6 +852,36 @@ export default function ProfileKepalaRuanganPage() {
           </div>
         </div>
       )}
+
+      {/* Sticky Footer */}
+      <footer className="mt-auto bg-[#0B7A95] text-white py-4 px-6">
+        <div className="text-center space-y-1">
+          <p className="text-sm font-medium">
+            Copyright 2025 © SafeNurse All Rights reserved.
+          </p>
+          <p className="text-xs text-white/80">Universitas Hasanuddin</p>
+        </div>
+      </footer>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            style: {
+              background: '#10B981',
+            },
+          },
+          error: {
+            style: {
+              background: '#EF4444',
+            },
+          },
+        }}
+      />
     </div>
   );
 }

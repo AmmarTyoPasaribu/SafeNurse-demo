@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function HomePage() {
+
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function HomePage() {
                 </p>
               </div>
               
-              <div className={`flex gap-6 max-w-md relative z-10 transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+             <div className={`flex gap-6 max-w-md relative z-10 transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <div className="bg-[#C9F1FA] rounded-lg p-6 w-44 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300">
                   <Image 
                     alt="3D style icon representing voice waves and a microphone in teal and blue colors" 
@@ -129,6 +130,18 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+
+      {/* Sticky Footer */}
+      <footer className="mt-auto bg-[#0B7A95] text-white py-4 px-6">
+        <div className="text-center space-y-1">
+          <p className="text-sm font-medium">
+            Copyright 2025 © SafeNurse All Rights reserved.
+          </p>
+          <p className="text-xs text-white/80">
+            Universitas Hasanuddin
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
